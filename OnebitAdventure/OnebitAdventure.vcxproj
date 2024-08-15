@@ -247,8 +247,10 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Home.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="OneBitAdventure.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -261,8 +263,11 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Home.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="OneBitAdventure.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Scene.h" />
