@@ -10,12 +10,11 @@ Scene* Home::scene = nullptr;
 
 // ------------------------------------------------------------------------------
 
-void Home::Init() {
-
+void Home::Init()
+{
 	scene = new Scene();
 
-    backg = new Sprite("Resources/telainicio2.png");
-    backg->InitSpriteData(700, 700);
+    backg = new Animation(new TileSet("Resources/telainicio.png", 700, 1400, 2, 2), 1.0f, true);
 
 	player = new Player();
 
@@ -37,6 +36,8 @@ void Home::Update()
         ctrlKeyESC = true;
     }
 
+    backg->NextFrame();
+
     // atualiza cena do jogo
     scene->Update();
 
@@ -47,15 +48,17 @@ void Home::Update()
 
 // ------------------------------------------------------------------------------
 
-void Home::Finalize() {
+void Home::Finalize()
+{
     delete backg;
     delete scene;
 }
 
 // ------------------------------------------------------------------------------
 
-void Home::Draw() {
-    backg->Draw(float(window->CenterX()), float(window->CenterY()), Layer::BACK);
+void Home::Draw()
+{
+    backg->Draw(window->CenterX(), 2 * window->CenterY());
     scene->Draw();
 }
 

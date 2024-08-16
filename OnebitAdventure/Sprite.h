@@ -52,7 +52,6 @@ private:
     bool localImage;                // imagem local ou externa
     const Image * image;            // ponteiro para uma imagem
     void InitSpriteData();          // ajusta valores iniciais do sprite
-    
 
 public:
     void InitSpriteData(uint width, uint height);          // ajusta valores iniciais do sprite
