@@ -6,12 +6,19 @@
 
 // ------------------------------------------------------------------------------
 
+Scene* Home::scene = nullptr;
+
+// ------------------------------------------------------------------------------
+
 void Home::Init() {
+
+	scene = new Scene();
 
     backg = new Sprite("Resources/telainicio.png");
 
 	player = new Player();
 
+    scene->Add(player, MOVING);
 }
 
 // ------------------------------------------------------------------------------
@@ -29,7 +36,8 @@ void Home::Update()
         ctrlKeyESC = true;
     }
 
-	player->Update();
+    // atualiza cena do jogo
+    scene->Update();
 
     // passa ao primeiro nível com ENTER
     /*if (window->KeyPress(VK_RETURN))
@@ -40,14 +48,14 @@ void Home::Update()
 
 void Home::Finalize() {
     delete backg;
-    delete player;
+    delete scene;
 }
 
 // ------------------------------------------------------------------------------
 
 void Home::Draw() {
     backg->Draw(float(window->CenterX()), float(window->CenterY()), Layer::BACK);
-	player->Draw();
+    scene->Draw();
 }
 
 // ------------------------------------------------------------------------------

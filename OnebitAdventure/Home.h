@@ -16,6 +16,8 @@ private:
 	bool ctrlKeyESC = false;	// controle de saída na tela inicial
 
 public:
+	static Scene* scene;           // gerenciador de cena
+
 	void Init();                    // inicialização
 	void Update();                  // atualização
 	void Draw();                    // desenho
