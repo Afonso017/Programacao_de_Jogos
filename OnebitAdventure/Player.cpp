@@ -7,7 +7,7 @@
 
 Player::Player()
 {
-	walking = new TileSet("Resources/WizardSprite.png", 64, 64, 4, 8);
+	walking = new TileSet("Resources/WizardSprite2.png", 64, 64, 4, 8);
 	anim = new Animation(walking, 0.070f, true);
 
 	uint SeqRight[8] = { 0,1,2,3};
