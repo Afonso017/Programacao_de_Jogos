@@ -15,6 +15,7 @@ void Home::Init() {
 	scene = new Scene();
 
     backg = new Sprite("Resources/telainicio2.png");
+    backg->InitSpriteData(700, 700);
 
 	player = new Player();
 
