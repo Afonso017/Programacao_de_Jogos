@@ -7,7 +7,11 @@
 // ------------------------------------------------------------------------------
 
 void Home::Init() {
-    backg = new Sprite("Resources/TitleScreen.png");
+
+    backg = new Sprite("Resources/telainicio.png");
+
+	player = new Player();
+
 }
 
 // ------------------------------------------------------------------------------
@@ -25,20 +29,25 @@ void Home::Update()
         ctrlKeyESC = true;
     }
 
+	player->Update();
+
     // passa ao primeiro nível com ENTER
-    if (window->KeyDown(VK_RETURN)) {}
+    /*if (window->KeyPress(VK_RETURN))
+        Engine::Next<Level1>();*/
 }
 
 // ------------------------------------------------------------------------------
 
 void Home::Finalize() {
     delete backg;
+    delete player;
 }
 
 // ------------------------------------------------------------------------------
 
 void Home::Draw() {
     backg->Draw(float(window->CenterX()), float(window->CenterY()), Layer::BACK);
+	player->Draw();
 }
 
 // ------------------------------------------------------------------------------

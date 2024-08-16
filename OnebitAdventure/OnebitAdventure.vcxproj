@@ -243,6 +243,9 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Downloads\Lab13\Platformer\Platformer\Animation.cpp" />
+    <ClCompile Include="..\..\..\..\Downloads\Lab13\Platformer\Platformer\Renderer.cpp" />
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Geometry.cpp" />
@@ -251,14 +254,18 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="OneBitAdventure.cpp" />
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TileSet.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Downloads\Lab13\Platformer\Platformer\Animation.h" />
+    <ClInclude Include="..\..\..\..\Downloads\Lab13\Platformer\Platformer\Renderer.h" />
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Geometry.h" />
@@ -268,11 +275,12 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="OneBitAdventure.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TileSet.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Window.h" />

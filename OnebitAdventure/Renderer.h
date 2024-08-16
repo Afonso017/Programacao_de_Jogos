@@ -2,7 +2,7 @@
 // Renderer (Arquivo de Cabeçalho)
 //
 // Criação:     11 Mai 2014
-// Atualização: 28 Fev 2023
+// Atualização: 07 Mar 2023
 // Compilador:  Visual C++ 2022
 //
 // Descrição:   Define um renderizador de grupos de sprites
@@ -14,12 +14,12 @@
 
 // ---------------------------------------------------------------------------------
 
-#include "Window.h"                                                // cria e configura uma janela do Windows
-#include "Graphics.h"                                            // inicializa dispositivo gráfico da engine
-#include "Sprite.h"                                                // representação de um sprite
-#include "Types.h"                                                // tipos específicos da engine        
-#include "Geometry.h"                                            // formas geométricas para desenho
-#include <vector>                                                // vetor da Standard Template Library
+#include "Window.h"                                             // cria e configura uma janela do Windows
+#include "Graphics.h"                                           // inicializa dispositivo gráfico da engine
+#include "Sprite.h"                                             // representação de um sprite
+#include "Types.h"                                              // tipos específicos da engine        
+#include "Geometry.h"                                           // formas geométricas para desenho
+#include <vector>                                               // vetor da Standard Template Library
 #include <DirectXMath.h>                                        // tipos da biblioteca matemática do DirectX
 using namespace DirectX;
 using std::vector;

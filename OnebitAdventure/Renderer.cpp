@@ -2,7 +2,7 @@
 // Renderer (Código Fonte)
 //
 // Criação:     11 Mai 2014
-// Atualização: 28 Fev 2023
+// Atualização: 07 Mar 2023
 // Compilador:  Visual C++ 2022
 //
 // Descrição:   Define um renderizador de grupos de sprites
@@ -997,6 +997,10 @@ bool Renderer::Initialize(Window * window, Graphics * graphics)
     pixelPlotSprite.width = window->Width();
     pixelPlotSprite.height = window->Height();
     pixelPlotSprite.texture = pixelPlotView;
+    pixelPlotSprite.texCoord.x = 0;
+    pixelPlotSprite.texCoord.y = 0;
+    pixelPlotSprite.texSize.x = 1;
+    pixelPlotSprite.texSize.y = 1;
 
     // inicialização bem sucedida
     return true;
@@ -1053,12 +1057,12 @@ void Renderer::RenderBatch(ID3D11ShaderResourceView * texture, SpriteData ** spr
             // organiza informações do sprite
             XMFLOAT2 positionxy(sprites[i]->x, sprites[i]->y);
             float scale = 1.0f;
-            XMFLOAT2 center(sprites[i]->width / 2.0f, sprites[i]->height / 2.0f);
+            XMFLOAT2 center(sprites[i]->width * sprites[i]->texSize.x / 2.0f, sprites[i]->height * sprites[i]->texSize.y / 2.0f);
             float rotation = 0.0f;
             float layerDepth = sprites[i]->depth;
 
             // carrega informações do sprite em registros SIMD
-            XMVECTOR source = XMVectorSet(0, 0, 1, 1);
+            XMVECTOR source = XMVectorSet(sprites[i]->texCoord.x, sprites[i]->texCoord.y, sprites[i]->texSize.x, sprites[i]->texSize.y);
             XMVECTOR destination = XMVectorPermute<0, 1, 4, 4>(XMLoadFloat2(&positionxy), XMLoadFloat(&scale));
             XMVECTOR color = XMVectorSet(1, 1, 1, 1);
             XMVECTOR originRotationDepth = XMVectorSet(center.x, center.y, rotation, layerDepth);
