@@ -7,18 +7,26 @@
 
 Player::Player()
 {
-	walking = new TileSet("Resources/WizardSprite.png", 64, 64, 4, 8);
-	anim = new Animation(walking, 0.070f, true);
+	walking = new TileSet("Resources/WizardSprite.png", 70, 70, 4, 8);
+	anim = new Animation(walking, 0.125f, true);
 
-	uint SeqRight[8] = { 0,1,2,3};
-	uint SeqLeft[8] = { 4,5,6,7 };
+	uint SeqRight[4] = { 0,1,2,3 };
+	uint SeqLeft[4] = { 4,5,6,7 };
 
 	anim->Add(WALKRIGHT, SeqRight, 4);
 	anim->Add(WALKLEFT, SeqLeft, 4);
 
 	state = WALKLEFT;
-	speed = 300.0f;
+	speed = 70.0f; // player se move de 70 em 70 pixels
+	// 700 (tamanho da janela) / 70 (tamanho do player) = 10 (tamanho do quadro)
+	// a janela tem 70 quadros de dimensão 10x10
+
 	MoveTo(window->CenterX(), window->CenterY(), Layer::FRONT);
+
+	timer = new Timer();
+	timer->Start();
+
+	moved = true;
 }
 
 // ---------------------------------------------------------------------------------
@@ -27,6 +35,41 @@ Player::~Player()
 {
 	delete walking;
 	delete anim;
+	delete timer;
+}
+
+// ---------------------------------------------------------------------------------
+
+void Player::Move()
+{
+	// anda para cima
+	if (window->KeyDown(VK_UP))
+	{
+		MoveTo(X(), Y() - speed);
+	}
+	else if (window->KeyDown(VK_DOWN))
+	{
+		// anda para baixo
+		MoveTo(X(), Y() + speed);
+	}
+	else if (window->KeyDown(VK_LEFT))
+	{
+		// anda para esquerda
+		state = WALKLEFT;
+		MoveTo(X() - speed, Y());
+	}
+	else if (window->KeyDown(VK_RIGHT))
+	{
+		// anda para direita
+		state = WALKRIGHT;
+		MoveTo(X() + speed, Y());
+	}
+}
+
+void Player::MoveTo(float px, float py, float layer)
+{
+	Object::MoveTo(px, py, layer);
+	moved = true;
 }
 
 // ---------------------------------------------------------------------------------
@@ -39,30 +82,10 @@ void Player::OnCollision(Object* obj)
 
 void Player::Update()
 {
-	// anda para cima
-	if (window->KeyDown(VK_UP))
-	{
-		Translate(0, -speed * gameTime);
-	}
-
-	// anda para baixo
-	if (window->KeyDown(VK_DOWN))
-	{
-		Translate(0, speed * gameTime);
-	}
-
-	// anda para esquerda
-	if (window->KeyDown(VK_LEFT))
-	{
-		state = WALKLEFT;
-		Translate(-speed * gameTime, 0);
-	}
-
-	// anda para direita
-	if (window->KeyDown(VK_RIGHT))
-	{
-		state = WALKRIGHT;
-		Translate(speed * gameTime, 0);
+	// atualiza a cena caso player tenha movido e tenha se passado 200 ms
+	if (timer->Elapsed(0.375f)) {
+		Move();
+		timer->Reset();
 	}
 
 	// atualiza animação

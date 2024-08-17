@@ -1,48 +1,47 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
+#include "Level1.h"
 #include "Engine.h"
 #include "Home.h"
-#include "Level1.h"
 
 // ------------------------------------------------------------------------------
 
-void Home::Init()
+void Level1::Init()
 {
-    // tela de fundo é uma animação de um tile set 1x2
-    backg = new Animation(new TileSet("Resources/telainicio.png", 700, 1400, 2, 2), 1.0f, true);
+    player = new Player();
+
+    scene = new Scene();
+    scene->Add(player, PLAYER);
 }
 
 // ------------------------------------------------------------------------------
 
-void Home::Update()
-{
-    // sai do jogo com a tecla ESC
+void Level1::Update()
+{   
+    // volta para a tela de inicio
     if (window->KeyPress(VK_ESCAPE))
-        window->Close();
-    
-    // passa ao primeiro nível com ENTER
-    if (window->KeyPress(VK_RETURN))
     {
-        Engine::Next<Level1>();
+        Engine::Next<Home>();
         return;
     }
 
-    backg->NextFrame();
+    scene->Update();
 }
 
 // ------------------------------------------------------------------------------
 
-void Home::Draw()
+void Level1::Draw()
 {
-    backg->Draw(window->CenterX(), 2 * window->CenterY());
+    scene->Draw();
+    // scene->CollisionDetection();
 }
 
 // ------------------------------------------------------------------------------
 
-void Home::Finalize()
+void Level1::Finalize()
 {
-    delete backg;
+    delete scene;
 }
 
 // ------------------------------------------------------------------------------

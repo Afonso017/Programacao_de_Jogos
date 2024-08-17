@@ -4,6 +4,7 @@
 #include "Types.h"                      // tipos específicos da engine
 #include "Object.h"                     // interface de Object
 #include "Animation.h"                  // animação de sprites
+#include "Timer.h"
 
 // ------------------------------------------------------------------------------
 
@@ -21,15 +22,21 @@ private:
 	TileSet * walking;                  // folha de sprites do personagem
 	Animation * anim;                   // animação do personagem
 	float       speed;                  // velocidade do personagem
-	PlayerState state = WALKLEFT;          // estado atual do jogador
+	PlayerState state = WALKLEFT;       // estado atual do jogador
+	Timer * timer = nullptr;			// timer para limitar o movimento do jogador
+	bool moved;							// controle para movimento do jogador
 
 public:
 	Player();                           // construtor
 	~Player();                          // destrutor
 	
-	void OnCollision(Object* obj);     // resolução da colisão
+	void OnCollision(Object* obj);      // resolução da colisão
 	void Update();                      // atualização
 	void Draw();                        // desenho
+
+	void Move();						// mover o player
+	void MoveTo(float px, float py, float layer = Layer::FRONT);	// Sobrecarga do método pai (MoveTo de Object)
+	bool Moved() const;					// saber se o player se moveu para mover as outras entidades
 };
 
 // ---------------------------------------------------------------------------------
@@ -40,5 +47,9 @@ inline void Player::Draw()
 	anim->Draw(x, y, z);
 }
 
+inline bool Player::Moved() const
+{
+	return moved;
+}
 
 // ---------------------------------------------------------------------------------
