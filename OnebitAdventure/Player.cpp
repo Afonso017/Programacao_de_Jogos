@@ -3,6 +3,7 @@
 
 #include "OneBitAdventure.h"
 #include "Player.h"
+#include <iostream>
 
 // ------------------------------------------------------------------------------
 
@@ -21,8 +22,8 @@ Player::Player(int widthT, int heightT)
 
 	type = PLAYER;    // tipo do jogador
 
-	speedVertical = 60;   // Esses foram os valores ideias que encontrei para o movimento do player
-	speedHorizontal = 57; // Esses foram os valores ideias que encontrei para o movimento do player
+	VelX = 57.0f;   // Esses foram os valores ideias que encontrei para o movimento do player
+	VelY = 60.0f;	    // Esses foram os valores ideias que encontrei para o movimento do player
 
 	width = widthT;   // largura da tela
 	height = heightT; // altura da tela
@@ -35,8 +36,6 @@ Player::Player(int widthT, int heightT)
 
 	timer = new Timer();
 	timer->Start();
-
-	moved = true;
 }
 
 // ---------------------------------------------------------------------------------
@@ -50,60 +49,59 @@ Player::~Player()
 
 // ---------------------------------------------------------------------------------
 
-boolean Player::Move()
-{
-		if (window->KeyDown(VK_UP))
-		{
-			// anda para cima
-			MoveTo(X(), Y() - speedVertical);
-			return true;
-		}
-		if (window->KeyDown(VK_DOWN))
-		{
-			// anda para baixo
-			MoveTo(X(), Y() + speedVertical);
-			return true;
-		}
-		if (window->KeyDown(VK_LEFT))
-		{
-			// anda para esquerda
-			state = WALKLEFT;
-			MoveTo(X() - speedHorizontal, Y());
-			return true;
-		}
-		if (window->KeyDown(VK_RIGHT))
-		{
-			// anda para direita
-			state = WALKRIGHT;
-			MoveTo(X() + speedHorizontal, Y());
-			return true;
-		}
-
-		return false;
-}
-
-void Player::MoveTo(float px, float py, float layer)
-{
-	Object::MoveTo(px, py, layer);
-	moved = true;
-}
-
-// ---------------------------------------------------------------------------------
-
 void Player::OnCollision(Object* obj)
 {
+
 }
 
 // ---------------------------------------------------------------------------------
 
 void Player::Update()
 {
-	// atualiza a cena caso player tenha movido e tenha se passado um tempo ms
-	if (timer->Elapsed(0.100f)) {
-		Move();
-		timer->Reset();
-	}
+	if (window->KeyPress(VK_UP)) {
 
+		targetY = Y() - VelY;
+
+		while(targetY < Y()) {
+			Translate(0.0f, -VelY * gameTime);
+		}
+
+		MoveTo(X(), targetY);
+	}
+	else if (window->KeyPress(VK_DOWN)) {
+
+		targetY = Y() + VelY;
+
+		while (targetY > Y()) {
+			Translate(0.0f, VelY * gameTime);
+		}
+
+		MoveTo(X(), targetY);
+	}
+	else if (window->KeyPress(VK_LEFT)) {
+		state = WALKLEFT;
+
+		targetX = X() - VelX;
+
+		while (targetX < X()) {
+			Translate(-VelX * gameTime,0.0f);
+		}
+
+		MoveTo(targetX, Y());
+
+	}
+	else if (window->KeyPress(VK_RIGHT)) {
+		state = WALKRIGHT;
+
+		targetX = X() + VelX;
+
+		while (targetY > X()) {
+			Translate(VelX * gameTime, 0.0f);
+		}
+
+		MoveTo(targetX, Y());
+	}
+	
 	// atualiza animação
 	anim->Select(state);
 	anim->NextFrame();
