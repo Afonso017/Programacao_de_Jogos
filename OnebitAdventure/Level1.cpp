@@ -9,10 +9,12 @@
 
 void Level1::Init()
 {
-    player = new Player();
+    
+	backg = new Sprite("Resources/tam.png");
+    player = new Player(backg->Width(), backg->Height());
 
     scene = new Scene();
-    scene->Add(player, PLAYER);
+    scene->Add(player, MOVING);
 }
 
 // ------------------------------------------------------------------------------
@@ -33,6 +35,8 @@ void Level1::Update()
 
 void Level1::Draw()
 {
+    // desenha cena
+    backg->Draw(window->CenterX(), window->CenterY(), Layer::BACK);
     scene->Draw();
     // scene->CollisionDetection();
 }
@@ -41,7 +45,8 @@ void Level1::Draw()
 
 void Level1::Finalize()
 {
-    delete scene;
+    delete scene;   
+	delete backg;
 }
 
 // ------------------------------------------------------------------------------

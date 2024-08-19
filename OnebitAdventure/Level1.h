@@ -1,4 +1,3 @@
-// ------------------------------------------------------------------------------
 // Inclusões
 
 #include "Game.h"
@@ -7,16 +6,18 @@
 
 // ------------------------------------------------------------------------------
 
-// 4 tipos de objeto que terá na cena, o jogador, inimigos, objetos do tipo que pode interagir como baús e obstáculos
-enum Types { PLAYER, ENEMY, ITEM, OBSTACLE };
-
 class Level1 : public Game
 {
 private:
 	Scene * scene;				// gerenciador de cena
 	Player* player = nullptr;	// jogador
+	Sprite* backg = nullptr;    // background
+	Sprite* backg2 = nullptr;   // background
 
 public:
+	int  Width();                                           // retorna a largura atual da janela
+	int  Height();                                          // retorna a altura atual da janela
+
 	void Init();                // inicialização
 	void Update();              // atualização
 	void Draw();                // desenho
@@ -24,3 +25,15 @@ public:
 };
 
 // -----------------------------------------------------------------------------
+
+// retorna a largura atual da janela
+inline int Level1::Width()
+{
+	return backg->Width();
+}
+
+// retorna a altura atual da janela
+inline int Level1::Height()
+{
+	return backg->Height();
+}

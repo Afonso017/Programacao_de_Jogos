@@ -3,14 +3,15 @@
 
 #include "Engine.h"
 #include "Home.h"
-#include "Level1.h"
+#include "Select.h"
 
 // ------------------------------------------------------------------------------
 
 void Home::Init()
 {
+	TileSet * tileBackg = new TileSet("Resources/TitleScreen22.png", 1920, 1080, 2, 2);
     // tela de fundo é uma animação de um tile set 1x2
-    backg = new Animation(new TileSet("Resources/telainicio.png", 700, 1400, 2, 2), 1.0f, true);
+    backg = new Animation(tileBackg, 0.6f, true);
 }
 
 // ------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ void Home::Update()
     // passa ao primeiro nível com ENTER
     if (window->KeyPress(VK_RETURN))
     {
-        Engine::Next<Level1>();
+        Engine::Next<Select>();
         return;
     }
 
@@ -35,7 +36,7 @@ void Home::Update()
 
 void Home::Draw()
 {
-    backg->Draw(window->CenterX(), 2 * window->CenterY());
+    backg->Draw(window->CenterX(), window->CenterY() - 1);
 }
 
 // ------------------------------------------------------------------------------

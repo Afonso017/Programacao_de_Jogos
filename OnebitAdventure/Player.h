@@ -21,20 +21,24 @@ class Player : public Object
 private:
 	TileSet * walking;                  // folha de sprites do personagem
 	Animation * anim;                   // animação do personagem
-	float       speed;                  // velocidade do personagem
 	PlayerState state = WALKLEFT;       // estado atual do jogador
 	Timer * timer = nullptr;			// timer para limitar o movimento do jogador
 	bool moved;							// controle para movimento do jogador
+	float speedHorizontal;				// velocidade horizontal do jogador
+	float speedVertical;				// velocidade vertical do jogador
+	int width;							// largura da tela do jogo
+	int height;							// altura da tela do jogo
 
 public:
-	Player();                           // construtor
+	Player(int width, int height);                           // construtor
 	~Player();                          // destrutor
 	
 	void OnCollision(Object* obj);      // resolução da colisão
 	void Update();                      // atualização
 	void Draw();                        // desenho
 
-	void Move();						// mover o player
+	boolean Move();
+	// mover o player
 	void MoveTo(float px, float py, float layer = Layer::FRONT);	// Sobrecarga do método pai (MoveTo de Object)
 	bool Moved() const;					// saber se o player se moveu para mover as outras entidades
 };
