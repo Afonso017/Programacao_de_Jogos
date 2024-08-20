@@ -9,8 +9,8 @@
 
 Player::Player(int widthT, int heightT)
 {
-	walking = new TileSet("Resources/WizardSprite.png", 70, 70, 4, 8); // 4x8 sprites de 70x70
-	anim = new Animation(walking, 0.125f, true); // 0.125f é o tempo de troca de frames
+	walking = new TileSet("Resources/WizardSprite.png", 70, 70, 4, 8);  // 4x8 sprites de 70x70
+	anim = new Animation(walking, 0.125f, true);						// 0.125f é o tempo de troca de frames
 
 	uint SeqRight[4] = { 0,1,2,3 }; // sequência de sprites para andar para a direita
 	uint SeqLeft[4] = { 4,5,6,7 };  // sequência de sprites para andar para a esquerda
@@ -18,15 +18,16 @@ Player::Player(int widthT, int heightT)
 	anim->Add(WALKRIGHT, SeqRight, 4); // adiciona a sequência de sprites para andar para a direita
 	anim->Add(WALKLEFT, SeqLeft, 4);   // adiciona a sequência de sprites para andar para a esquerda
 
-	state = WALKLEFT; // estado inicial do jogador
+	state = WALKLEFT;   // estado inicial do jogador
 
-	type = PLAYER;    // tipo do jogador
+	type = PLAYER;      // tipo do jogador
 
-	VelX = 57.0f;   // Esses foram os valores ideias que encontrei para o movimento do player
+	VelX = 57.0f;       // Esses foram os valores ideias que encontrei para o movimento do player
 	VelY = 60.0f;	    // Esses foram os valores ideias que encontrei para o movimento do player
+	vel = 5.0f;
 
-	width = widthT;   // largura da tela
-	height = heightT; // altura da tela
+	width = widthT;     // largura da tela
+	height = heightT;   // altura da tela
 
 	
 	// 700 (tamanho da janela) / 70 (tamanho do player) = 10 (tamanho do quadro)
@@ -34,8 +35,8 @@ Player::Player(int widthT, int heightT)
 
 	MoveTo(window->CenterX(), window->CenterY() - 3, Layer::FRONT);
 
-	timer = new Timer();
-	timer->Start();
+	targetX = X();
+	targetY = Y();
 }
 
 // ---------------------------------------------------------------------------------
@@ -58,60 +59,45 @@ void Player::OnCollision(Object* obj)
 
 void Player::Update()
 {
-	if (window->KeyPress(VK_UP)) {
+	float interpolationSpeed = 12.0f; // Velocidade de interpolação
 
-		targetY = Y() - VelY;
-
-		while(targetY < Y()) {
-			Translate(0.0f, -VelY * gameTime);
-		}
-
-		MoveTo(X(), targetY);
+	// Verifica se uma tecla de movimento foi pressionada e define o alvo
+	if (window->KeyDown(VK_UP) && Y() == targetY) {
+		targetY = Y() - 60.0f; // Movimenta exatamente 60 pixels para cima
 	}
-	else if (window->KeyPress(VK_DOWN)) {
-
-		targetY = Y() + VelY;
-
-		while (targetY > Y()) {
-			Translate(0.0f, VelY * gameTime);
-		}
-
-		MoveTo(X(), targetY);
+	else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
+		targetY = Y() + 60.0f; // Movimenta exatamente 60 pixels para baixo
 	}
-	else if (window->KeyPress(VK_LEFT)) {
+	else if (window->KeyDown(VK_LEFT) && X() == targetX) {
 		state = WALKLEFT;
-
-		targetX = X() - VelX;
-
-		while (targetX < X()) {
-			Translate(-VelX * gameTime,0.0f);
-		}
-
-		MoveTo(targetX, Y());
-
+		targetX = X() - 57.0f; // Movimenta exatamente 57 pixels para a esquerda
 	}
-	else if (window->KeyPress(VK_RIGHT)) {
+	else if (window->KeyDown(VK_RIGHT) && X() == targetX) {
 		state = WALKRIGHT;
-
-		targetX = X() + VelX;
-
-		while (targetY > X()) {
-			Translate(VelX * gameTime, 0.0f);
-		}
-
-		MoveTo(targetX, Y());
+		targetX = X() + 57.0f; // Movimenta exatamente 57 pixels para a direita
 	}
-	
-	// atualiza animação
+
+	// Interpolação linear para suavizar o movimento
+	float newX = X() + (targetX - X()) * interpolationSpeed * gameTime;
+	float newY = Y() + (targetY - Y()) * interpolationSpeed * gameTime;
+
+	// Garante que o personagem não ultrapasse o alvo, corrigindo a posição caso necessário
+	if (abs(targetX - newX) < 0.5f) newX = targetX;
+	if (abs(targetY - newY) < 0.5f) newY = targetY;
+
+	// Move o personagem para a nova posição interpolada
+	MoveTo(newX, newY);
+
+	// Atualiza a animação
 	anim->Select(state);
 	anim->NextFrame();
 
-	// mantém personagem dentro da tela
+	// Mantém personagem dentro da tela
 	if (x + walking->TileWidth() / 2.0f > (window->CenterX() + (width - 100) / 2.0f))
 		MoveTo(window->CenterX() + (width - 157) / 2.0f, y);
 
-	if (x - walking->TileWidth() / 2.0f < (window->CenterX() - (width - 100) / 2.0f))
-		MoveTo(window->CenterX() - (width - 160) / 2.0f, y);
+	if (x - walking->TileWidth() / 2.0f < window->CenterX() - ((width - 80) / 2.0f))
+		MoveTo(window->CenterX() - ((width - 160)  / 2.0f), y);
 
 	if (y + walking->TileHeight() / 2.0f > window->Height())
 		MoveTo(x, window->Height() - walking->TileHeight() / 2.0f);

@@ -23,13 +23,14 @@ private:
 	Animation * anim;                   // animação do personagem
 	PlayerState state = WALKLEFT;       // estado atual do jogador
 	Timer * timer = nullptr;			// timer para limitar o movimento do jogador
-	boolean isMoving = false;			// controle para movimento do jogador
+	boolean isMoving = true;			// controle para movimento do jogador
 	float VelX;							// velocidade horizontal do jogador
 	float VelY;							// velocidade vertical do jogador
 	int width;							// largura da tela do jogo
 	int height;							// altura da tela do jogo
-	int targetX;						// posição x do destino do jogador
-	int targetY;						// posição y do destino do jogador
+	int targetX = 0;						// posição x do destino do jogador
+	int targetY = 0;						// posição y do destino do jogador
+	float vel = 0.0f;					// velocidade do jogador
 
 public:
 	Player(int width, int height);      // construtor
