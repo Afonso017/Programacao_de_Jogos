@@ -13,6 +13,7 @@ private:
 	Player* player = nullptr;	// jogador
 	Sprite* backg = nullptr;    // background
 	Sprite* backg2 = nullptr;   // background
+	boolean viewBox = false;
 
 public:
 	int  Width();                                           // retorna a largura atual da janela

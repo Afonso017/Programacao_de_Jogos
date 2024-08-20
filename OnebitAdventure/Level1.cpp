@@ -28,6 +28,9 @@ void Level1::Update()
         return;
     }
 
+    if (window->KeyPress('B'))
+        viewBox = ~viewBox;
+
     scene->Update();
 }
 
@@ -39,6 +42,9 @@ void Level1::Draw()
     backg->Draw(window->CenterX(), window->CenterY(), Layer::BACK);
     scene->Draw();
     // scene->CollisionDetection();
+
+    if (viewBox)
+        scene->DrawBBox();
 }
 
 // ------------------------------------------------------------------------------

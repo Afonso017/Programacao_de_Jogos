@@ -12,6 +12,8 @@ Player::Player(int widthT, int heightT)
 	walking = new TileSet("Resources/WizardSprite.png", 70, 70, 4, 8);  // 4x8 sprites de 70x70
 	anim = new Animation(walking, 0.125f, true);						// 0.125f é o tempo de troca de frames
 
+	BBox(new Rect(x - walking->TileWidth() / 2.0f, y - walking->TileHeight() / 2.0f, x + walking->TileWidth() / 2.0f, y + walking->TileHeight() / 2.0f));
+
 	uint SeqRight[4] = { 0,1,2,3 }; // sequência de sprites para andar para a direita
 	uint SeqLeft[4] = { 4,5,6,7 };  // sequência de sprites para andar para a esquerda
 
@@ -93,11 +95,19 @@ void Player::Update()
 	anim->NextFrame();
 
 	// Mantém personagem dentro da tela
-	if (x + walking->TileWidth() / 2.0f > (window->CenterX() + (width - 100) / 2.0f))
-		MoveTo(window->CenterX() + (width - 157) / 2.0f, y);
+	if (x + walking->TileWidth() / 2.0f > (window->CenterX() + (width - 85) / 2.0f)) {
+		MoveTo(window->CenterX() + (width - 160) / 2.0f, y);
+		newX = window->CenterX() + ((width - 160) / 2.0f);
+		targetX = newX;
+	}
+		
 
-	if (x - walking->TileWidth() / 2.0f < window->CenterX() - ((width - 80) / 2.0f))
-		MoveTo(window->CenterX() - ((width - 160)  / 2.0f), y);
+	if (x - walking->TileWidth() / 2.0f < window->CenterX() - ((width - 85) / 2.0f)) {
+		MoveTo(window->CenterX() - ((width - 160) / 2.0f), y);
+		newX = window->CenterX() - ((width - 160) / 2.0f);
+		targetX = newX;
+	}
+		
 
 	if (y + walking->TileHeight() / 2.0f > window->Height())
 		MoveTo(x, window->Height() - walking->TileHeight() / 2.0f);

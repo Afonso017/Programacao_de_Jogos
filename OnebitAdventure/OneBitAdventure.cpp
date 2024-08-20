@@ -14,7 +14,7 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     Engine* engine = new Engine();
 
     // configura a janela do jogo
-    engine->window->Mode(WINDOWED);
+    engine->window->Mode(FULLSCREEN);
     engine->window->Color(25, 25, 25);
     engine->window->Title("OneBit Adventure");
     engine->window->Icon(IDI_ICON);
