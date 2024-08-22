@@ -4,13 +4,12 @@
 
 Background::Background()
 {
-    MoveTo(window->CenterX(), window->CenterY(), Layer::BACK);
+    MoveTo(window->CenterX(), 0, Layer::BACK);
 
-    uint w = window->Width() / 3;
-    uint h = window->Height() * 2;
-    //backg = new TileSet(new Image("Resources/tam.png", w, h), w, h / 2, 2, 1);
+    width = window->Width() / 3;
+    height = window->Height() * 2;
 
-    backg = new Sprite(new Image("Resources/tam.png", w, h));
+    backg = new Sprite(new Image("Resources/tam.png", width, height));
 }
 
 // ---------------------------------------------------------------------------------
@@ -24,15 +23,11 @@ Background::~Background()
 
 void Background::Update()
 {
-
-}
-
-// -------------------------------------------------------------------------------
-
-void Background::Draw()
-{
-    // desenha pano de fundo (corrigir a posição de desenho)
-    backg->Draw(window->CenterX(), backg->Height() / 2.0f, Layer::BACK);
+    // Mantém background dentro da janela
+    if (y - backg->Height() / 2.0f > 0)
+        MoveTo(x, window->Height() - 1.0f);
+    else if (y + backg->Height() / 2.0f < window->Height())
+        MoveTo(x, -backg->Height() / 2.0f);
 }
 
 // -------------------------------------------------------------------------------

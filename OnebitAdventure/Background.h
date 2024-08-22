@@ -13,6 +13,8 @@ class Background : public Object
 {
 private:
     Sprite * backg = nullptr;           // sprite do background
+    uint width;
+    uint height;
 
 public:
     Background();                       // construtor
@@ -36,5 +38,12 @@ inline int Background::Height()
 {
     return backg->Height();
 }
+
+inline void Background::Draw()
+{
+    backg->Draw(x, y, Layer::BACK);
+}
+
+// ---------------------------------------------------------------------------------
 
 #endif

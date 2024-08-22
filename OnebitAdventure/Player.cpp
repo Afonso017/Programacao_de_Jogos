@@ -86,9 +86,10 @@ void Player::Update()
 	anim->NextFrame();
 
 	// Move background se o player passar da metade da tela para cima
-	if (Y() < window->CenterY() - backg->Height() / 2.0f + 8.0f)
+	if (y < window->CenterY())
 	{
-		backg->Translate(0, -4);
+		// Translate não é ideal
+		backg->Translate(0, 1);
 	}
 
 	// Mantém personagem dentro da tela

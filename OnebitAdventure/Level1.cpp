@@ -16,6 +16,7 @@ void Level1::Init()
 
     scene = new Scene();
     scene->Add(player, MOVING);
+    scene->Add(backg, STATIC);
 }
 
 // ------------------------------------------------------------------------------
@@ -40,7 +41,6 @@ void Level1::Update()
 void Level1::Draw()
 {
     // desenha cena
-    backg->Draw();
     scene->Draw();
     // scene->CollisionDetection();
 
@@ -53,7 +53,6 @@ void Level1::Draw()
 void Level1::Finalize()
 {
     delete scene;
-	delete backg;
 }
 
 // ------------------------------------------------------------------------------
