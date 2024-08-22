@@ -28,6 +28,12 @@
     <Filter Include="Engine\Arquivos de Sombreamento">
       <UniqueIdentifier>{6eefbe06-0d99-4677-b4ce-54bd3cc97d9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Arquivos de Origem\Class">
+      <UniqueIdentifier>{e97dcada-aed4-47de-9cef-223dd8c3eb35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Class">
+      <UniqueIdentifier>{7522dc7d-7004-4cc4-9815-f14458f601a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -69,7 +75,7 @@
     <ClCompile Include="OneBitAdventure.cpp">
       <Filter>Game\Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="Character.cpp">
       <Filter>Game\Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="TileSet.cpp">
@@ -92,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="Background.cpp">
       <Filter>Game\Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Warrior.cpp">
+      <Filter>Game\Arquivos de Origem\Class</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,7 +149,7 @@
     <ClInclude Include="OneBitAdventure.h">
       <Filter>Game\Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="Character.h">
       <Filter>Game\Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="TileSet.h">
@@ -166,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="Background.h">
       <Filter>Game\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Warrior.h">
+      <Filter>Game\Arquivos de Cabeçalho\Class</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

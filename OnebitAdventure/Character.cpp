@@ -2,57 +2,43 @@
 // Inclusões
 
 #include "OneBitAdventure.h"
-#include "Player.h"
+#include "Character.h"
 #include <iostream>
 
 // ------------------------------------------------------------------------------
 
-Player::Player(float width, float height, Background * backg) : width((uint) width), height((uint) height), backg(backg)
-{
-	Image * img = new Image("Resources/WizardSprite.png", this->width * 4, this->height * 2); // carrega sprite sheet do player
-	walking = new TileSet(img, this->width, this->height, 4, 8);		// 2x4 sprites
-	anim = new Animation(walking, 0.125f, true);						// 0.125f é o tempo de troca de frames
-
-	uint SeqRight[4] = { 0,1,2,3 }; // sequência de sprites para andar para a direita
-	uint SeqLeft[4] = { 4,5,6,7 };  // sequência de sprites para andar para a esquerda
-	anim->Add(WALKRIGHT, SeqRight, 4); // adiciona a sequência de sprites para andar para a direita
-	anim->Add(WALKLEFT, SeqLeft, 4);   // adiciona a sequência de sprites para andar para a esquerda
-
-	// Bounding Box do player (posição x e y começa no meio do sprite)
+// construtor para inicializar os atributos genéricos do jogador
+Character::Character(float width, float height, Background* backg) : width(width), height(height), backg(backg) {
+	// Bounding Box do Character (posição x e y começa no meio do sprite)
 	BBox(new Rect(x - walking->TileWidth() / 2.0f, y - walking->TileHeight() / 2.0f, x + walking->TileWidth() / 2.0f, y + walking->TileHeight() / 2.0f));
 
 	state = WALKLEFT;   // estado inicial do jogador
 	type = PLAYER;      // tipo do jogador
 
-	// Player se movimenta a cada quadro
+	// Character se movimenta a cada quadro
 	VelX = width;
 	VelY = height;
 
-	MoveTo(window->CenterX(), window->CenterY(), Layer::FRONT);
+	MoveTo(window->CenterX(), window->CenterY(), Layer::FRONT); // Move o Character para o centro da tela
 
-	targetX = X();
-	targetY = Y();
+	targetX = X(); // Define a posição x do destino do jogador
+	targetY = Y(); // Define a posição y do destino do jogador
+
+	interpolationSpeed = 12.0f; // Define a velocidade de interpolação
 }
 
 // ---------------------------------------------------------------------------------
 
-Player::~Player()
+Character::~Character()
 {
 	delete walking;
 	delete anim;
-	delete timer;
+	delete backg;
 }
 
 // ---------------------------------------------------------------------------------
 
-void Player::OnCollision(Object* obj)
-{
-
-}
-
-// ---------------------------------------------------------------------------------
-
-void Player::Update()
+void Character::Update()
 {
 	// Verifica se uma tecla de movimento foi pressionada e define o alvo
 	if (window->KeyDown(VK_UP) && Y() == targetY) {
@@ -85,7 +71,7 @@ void Player::Update()
 	anim->Select(state);
 	anim->NextFrame();
 
-	// Move background se o player passar da metade da tela para cima
+	// Move background se o Character passar da metade da tela para cima
 	if (y < window->CenterY())
 	{
 		// Translate não é ideal
@@ -94,6 +80,7 @@ void Player::Update()
 
 	// Mantém personagem dentro da tela
 	float diff = 0.067f * backg->Width();	// 49 pixels / largura do background = 0.067 de proporção
+
 	if (x + width / 2.0f > window->CenterX() + backg->Width() / 2.0f - diff + 8.0f)
 	{
 		Translate(-4, 0);
@@ -104,6 +91,18 @@ void Player::Update()
 		Translate(4, 0);
 		targetX = newX = window->CenterX() - backg->Width() / 2.0f + diff + width / 2.0f;
 	}
+
+	if (y + walking->TileHeight() / 2.0f > window->Height()) 
+	{
+		Translate(0,-5);
+		targetY = newY = window->Height();
+	}
+	else if (y - walking->TileHeight() / 2.0f < 0) 
+	{
+		Translate(0,4);
+		targetY = newY = 0;
+	}
+		
 }
 
 // ---------------------------------------------------------------------------------
