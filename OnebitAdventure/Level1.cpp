@@ -3,15 +3,16 @@
 
 #include "Level1.h"
 #include "Engine.h"
-#include "Home.h"
+#include "Select.h"
 
 // ------------------------------------------------------------------------------
 
 void Level1::Init()
 {
-    
-	backg = new Sprite("Resources/tam.png");
-    player = new Player(backg->Width(), backg->Height());
+    backg = new Background();
+
+    // Background original tem 11.25 quadros de largura e 38.57 de altura
+    player = new Player((backg->Width() - backg->Width() * 0.13f) / 11.25f, backg->Height() / 38.57f, backg);
 
     scene = new Scene();
     scene->Add(player, MOVING);
@@ -24,7 +25,7 @@ void Level1::Update()
     // volta para a tela de inicio
     if (window->KeyPress(VK_ESCAPE))
     {
-        Engine::Next<Home>();
+        Engine::Next<Select>();
         return;
     }
 
@@ -39,7 +40,7 @@ void Level1::Update()
 void Level1::Draw()
 {
     // desenha cena
-    backg->Draw(window->CenterX(), window->CenterY(), Layer::BACK);
+    backg->Draw();
     scene->Draw();
     // scene->CollisionDetection();
 
@@ -51,7 +52,7 @@ void Level1::Draw()
 
 void Level1::Finalize()
 {
-    delete scene;   
+    delete scene;
 	delete backg;
 }
 

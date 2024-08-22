@@ -4,22 +4,26 @@
 #include "Engine.h"
 #include "Sprite.h"
 #include "Select.h"
+#include "Home.h"
 #include "Level1.h"
 
 // ------------------------------------------------------------------------------
 
 void Select::Init()
 {
-	backg = new Sprite("Resources/TelaEscolha5.png");
+	backg = new Sprite(new Image("Resources/TelaEscolha5.png", window->Width(), window->Height()));
 }
 
 // ------------------------------------------------------------------------------
 
 void Select::Update()
 {
-	// sai do jogo com a tecla ESC
+	// volta para a tela inicial
 	if (window->KeyPress(VK_ESCAPE))
-		window->Close();
+	{
+		Engine::Next<Home>();
+		return;
+	}
 
 	// passa ao primeiro nível com ENTER
 	if (window->KeyPress(VK_RETURN))

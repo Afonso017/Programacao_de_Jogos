@@ -5,64 +5,34 @@
 Background::Background()
 {
     MoveTo(window->CenterX(), window->CenterY(), Layer::BACK);
-    xF = xB = x;
 
-    // carrega imagens
-    imgF = new Image("Resources/BackgFront.png");
-    imgB = new Image("Resources/BackgBack.png");
+    uint w = window->Width() / 3;
+    uint h = window->Height() * 2;
+    //backg = new TileSet(new Image("Resources/tam.png", w, h), w, h / 2, 2, 1);
 
-    // cria sprites do plano de fundo
-    sky     = new Sprite("Resources/Sky.png");    
-    backgF1 = new Sprite(imgF);
-    backgF2 = new Sprite(imgF);
-    backgB1 = new Sprite(imgB);
-    backgB2 = new Sprite(imgB);
+    backg = new Sprite(new Image("Resources/tam.png", w, h));
 }
 
 // ---------------------------------------------------------------------------------
 
 Background::~Background()
 {
-    delete imgF;
-    delete imgB;    
-    delete backgF1;
-    delete backgF2;
-    delete backgB1;
-    delete backgB2;
-    delete sky;
+    delete backg;
 }
 
 // -------------------------------------------------------------------------------
 
 void Background::Update()
 {
-    // move sprites com velocidades diferentes
-    xF -= 200 * gameTime;
-    xB -= 150 * gameTime;
+
 }
 
 // -------------------------------------------------------------------------------
 
 void Background::Draw()
 {
-    // desenha pano de fundo
-    sky->Draw(window->CenterX(), window->CenterY(), Layer::BACK);
-
-    // desenha prédios mais distantes
-    backgB1->Draw(xB, y, Layer::LOWER);
-    backgB2->Draw(xB + imgB->Width(), y, Layer::LOWER);
-    
-    // traz pano de fundo de volta para dentro da tela
-    if (xB + imgB->Width()/2.0f < 0)
-        xB += imgB->Width();
-
-    // desenha prédios mais próximos
-    backgF1->Draw(xF, y, Layer::MIDDLE);
-    backgF2->Draw(xF + imgF->Width(), window->Height()/2.0f, Layer::MIDDLE);
-
-    // traz pano de fundo de volta para dentro da tela
-    if (xF + imgF->Width()/2.0f < 0)
-        xF += imgF->Width();
+    // desenha pano de fundo (corrigir a posição de desenho)
+    backg->Draw(window->CenterX(), backg->Height() / 2.0f, Layer::BACK);
 }
 
 // -------------------------------------------------------------------------------

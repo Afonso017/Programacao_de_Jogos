@@ -9,7 +9,12 @@
 
 void Home::Init()
 {
-	TileSet * tileBackg = new TileSet("Resources/TitleScreen22.png", 1920, 1080, 2, 2);
+    // Carrega a imagem e redimensiona conforme o tamanho da janela
+    Image * img = new Image("Resources/TitleScreen.png", window->Width() * 2, window->Height());
+    //img->Resize(window->Width() * 2, window->Height()); // Largura x2 porque o tileset é 2x2
+
+    TileSet* tileBackg = new TileSet(img, img->Width() / 2, img->Height(), 2, 2);
+
     // tela de fundo é uma animação de um tile set 1x2
     backg = new Animation(tileBackg, 0.6f, true);
 }
@@ -21,7 +26,7 @@ void Home::Update()
     // sai do jogo com a tecla ESC
     if (window->KeyPress(VK_ESCAPE))
         window->Close();
-    
+
     // passa ao primeiro nível com ENTER
     if (window->KeyPress(VK_RETURN))
     {
@@ -36,7 +41,7 @@ void Home::Update()
 
 void Home::Draw()
 {
-    backg->Draw(window->CenterX(), window->CenterY() - 1);
+    backg->Draw(window->CenterX(), window->CenterY());
 }
 
 // ------------------------------------------------------------------------------

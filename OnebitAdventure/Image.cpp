@@ -11,12 +11,29 @@
 
 #include "Image.h"
 #include "Graphics.h"
+#include "Image.h"
+#include "Graphics.h"
 
 // -------------------------------------------------------------------------------
 
 Image::Image(string filename) : textureView(nullptr), width(0), height(0)
 {
-    // cria sharer resource view da imagem em disco
+    // cria shader resource view da imagem em disco
+    D3D11CreateTextureFromFile(
+        Graphics::device,               // dispositivo Direct3D
+        Graphics::context,              // contexto do dispositivo
+        filename.c_str(),               // nome do arquivo de imagem
+        nullptr,                        // retorna textura 
+        &textureView,                   // retorna view da textura
+        width,                          // retorna largura da imagem
+        height);                        // retorna altura da imagem
+}
+
+// -------------------------------------------------------------------------------
+
+Image::Image(string filename, uint width, uint height) : textureView(nullptr), width(width), height(height)
+{
+    // cria shader resource view da imagem em disco
     D3D11CreateTextureFromFile(
         Graphics::device,               // dispositivo Direct3D
         Graphics::context,              // contexto do dispositivo
@@ -31,15 +48,11 @@ Image::Image(string filename) : textureView(nullptr), width(0), height(0)
 
 Image::~Image()
 {
-    // libera memória ocupada pela texture view
     if (textureView)
     {
-        // pega ponteiro para recurso
-        ID3D11Resource * resource = nullptr;
+        ID3D11Resource* resource = nullptr;
         textureView->GetResource(&resource);
 
-        // liberando a view não libera automaticamente
-        // o recurso que foi criado junto com a view
         if (resource)
         {
             resource->Release();
