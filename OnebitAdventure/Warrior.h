@@ -14,7 +14,7 @@ private:
 
 public:
 	Warrior(float width, float height, Background* backg);
-	~Warrior();
+	~Warrior() override;
 
 	void OnCollision(Object* obj) override;					// resolução da colisão
 };

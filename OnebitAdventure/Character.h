@@ -1,4 +1,6 @@
 ﻿// Character.h
+
+#pragma once
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
@@ -9,7 +11,7 @@
 #include "Object.h"                     // interface de Object
 #include "Animation.h"                  // animaçõoes de sprites
 #include "Background.h"					// background do jogo
-#include "OneBitAdventure.h"
+#include "OneBitAdventure.h"			// .h do jogo
 
 // ------------------------------------------------------------------------------
 
@@ -24,7 +26,7 @@ class Character : public Object
 {
 protected:
 	// são comuns para todos os personagens e tem o mesmo valor
-	steeringState state;				// estado atual do jogador
+	steeringState characterState;				// estado atual do jogador
 	Background* backg;					// background variável para obter informações do background do jogo
 	float targetX = x;					// posição x do destino do jogador pós movimento
 	float targetY = y;					// posição y do destino do jogador pós movimento
@@ -33,6 +35,7 @@ protected:
 	float VelY;							// velocidade vertical do jogador
 	uint width;							// largura do Character
 	uint height;						// altura do Character
+	boolean isMoving = false;			// verifica se o personagem está se movendo
 
 	//--------------------------------------------------------------------------------------------
 	// Atributos básicos do jogador
@@ -45,7 +48,7 @@ protected:
 	void InitializeBBox();				// inicializa a BBox
 public:
 	Character(float width, float height, Background* backg);	// construtor
-	~Character();												// destrutor
+	virtual ~Character() = 0;									// destrutor
 
 	//--------------------------------------------------------------------------------------------
 
@@ -54,6 +57,12 @@ public:
 
 	//--------------------------------------------------------------------------------------------
 
+	// Sobrescrevendo métodos virtuais de Object
+	float X() const override;
+	float Y() const override;
+	float Z() const override;
+
+	boolean IsMoving();								// verifica se o personagem está se movendo
 	void Update();											// atualização
 	void Draw();											// desenho
 };
@@ -67,5 +76,32 @@ inline void Character::Draw()
 }
 
 // ---------------------------------------------------------------------------------
+
+inline boolean Character::IsMoving()
+{
+	boolean move = isMoving;
+	isMoving = false;
+	return move;
+}
+
+// ---------------------------------------------------------------------------------
+// Métodos Inline sobrescritos de Object
+
+inline float Character::X() const
+{
+	return x; // Ou você pode modificar se a lógica de posição for diferente
+}
+
+inline float Character::Y() const
+{
+	return y; // Ou você pode modificar se a lógica de posição for diferente
+}
+
+inline float Character::Z() const
+{
+	return z; // Ou você pode modificar se a lógica de posição for diferente
+}
+
+// -----------------------------------------------------------------------------
 
 #endif // CHARACTER_H

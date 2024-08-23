@@ -11,9 +11,9 @@
 class Level1 : public Game
 {
 private:
-	Warrior* warrior;		// instancia do jogador (classe guerreiro)
-	Background * backg   = nullptr;	// background principal
-	Sprite * backg2  = nullptr;		// background
+	Warrior* warrior;				// instancia do jogador (classe guerreiro)
+	Background* backg   = nullptr;	// background principal
+	Sprite* backg2  = nullptr;		// background
 	boolean  viewBox = false;		// controle de visualização de caixas de colisão
 	Scene* scene;					// gerenciador de cena
 	Ghost* ghost;					// instancia do inimigo (classe fantasma)

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef ONEBITADVENTURE_H
 #define ONEBITADVENTURE_H
 

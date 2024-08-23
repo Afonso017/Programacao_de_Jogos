@@ -3,6 +3,7 @@
 
 #include "Character.h"
 #include <iostream>
+#include "Enemy.h"
 
 // ------------------------------------------------------------------------------
 
@@ -19,7 +20,7 @@ void Character::InitializeBBox()
 Character::Character(float width, float height, Background* backg)
 	: width(width), height(height), backg(backg), walking(nullptr), anim(nullptr) {
 
-	state = WALKLEFT;			// estado inicial do jogador
+	characterState = WALKLEFT;			// estado inicial do jogador
 	type = PLAYER;				// tipo do jogador
 
 	VelX = width;				// velocidade horizontal do jogador (Em pixeis percorridos)
@@ -31,9 +32,7 @@ Character::Character(float width, float height, Background* backg)
 // ---------------------------------------------------------------------------------
 
 Character::~Character()
-{
-	delete walking;
-	delete anim;
+{	
 }
 
 // ---------------------------------------------------------------------------------
@@ -43,17 +42,21 @@ void Character::Update()
 	// Verifica se uma tecla de movimento foi pressionada e define o alvo
 	if (window->KeyDown(VK_UP) && Y() == targetY) {
 		targetY = Y() - VelY - 1; 
+		isMoving = true;
 	}
 	else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
 		targetY = Y() + VelY + 1;
+		isMoving = true;
 	}
 	else if (window->KeyDown(VK_LEFT) && X() == targetX) {
-		state = WALKLEFT;
+		characterState = WALKLEFT;
 		targetX = X() - VelX - 1;
+		isMoving = true;
 	}
 	else if (window->KeyDown(VK_RIGHT) && X() == targetX) {
-		state = WALKRIGHT;
+		characterState = WALKRIGHT;
 		targetX = X() + VelX + 1;
+		isMoving = true;
 	}
 
 	// Interpolação linear para suavizar o movimento
@@ -68,14 +71,14 @@ void Character::Update()
 	MoveTo(newX, newY);
 
 	// Atualiza a animação
-	anim->Select(state);
+	anim->Select(characterState);
 	anim->NextFrame();
 
 	// Move background se o Character passar da metade da tela para cima
 	if (y < window->CenterY())
 	{
 		// Translate não é ideal
-		backg->Translate(0, 1);
+		//backg->Translate(0, 1);
 	}
 
 	// Mantém personagem dentro da tela

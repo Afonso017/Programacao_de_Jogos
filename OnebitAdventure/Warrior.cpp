@@ -2,6 +2,7 @@
 // Inclusões
 
 #include "Warrior.h"
+#include "Enemy.h"
 
 // ---------------------------------------------------------------------------------
 
@@ -32,15 +33,22 @@ Warrior::Warrior(float width, float height, Background* backg)
 	targetY = Y();
 }
 
+// ---------------------------------------------------------------------------------
+
 Warrior::~Warrior()
 {
 	delete walking;
 	delete anim;
 }
 
+// ---------------------------------------------------------------------------------
+
 void Warrior::OnCollision(Object* obj)
 {
-	// Implemente a lógica de resolução de colisão aqui
+	// Detecção de colisão com o inimigo
+	if (obj->Type() == ENEMY) {
+		
+	}
 }
 
 // ---------------------------------------------------------------------------------
