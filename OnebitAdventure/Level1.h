@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Background.h"
 #include "Warrior.h"
+#include "Ghost.h"
 
 // ------------------------------------------------------------------------------
 
@@ -15,6 +16,7 @@ private:
 	Sprite * backg2  = nullptr;		// background
 	boolean  viewBox = false;		// controle de visualização de caixas de colisão
 	Scene* scene;					// gerenciador de cena
+	Ghost* ghost;					// instancia do inimigo (classe fantasma)
 
 public:
 

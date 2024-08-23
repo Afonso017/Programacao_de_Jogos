@@ -245,10 +245,12 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Home.cpp" />
     <ClCompile Include="Image.cpp" />
@@ -270,7 +272,9 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="Ghost.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Geometry.h" />

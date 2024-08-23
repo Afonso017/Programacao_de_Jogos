@@ -1,12 +1,12 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
-#include "Character.h"
 #include <iostream>
+#include "Enemy.h"
 
 // ------------------------------------------------------------------------------
 
-void Character::InitializeBBox()
+void Enemy::InitializeBBox()
 {
 	// Inicializa a BBox
 	BBox(new Rect(x - walking->TileWidth() / 2.0f, y - walking->TileHeight() / 2.0f,
@@ -15,22 +15,22 @@ void Character::InitializeBBox()
 
 // ---------------------------------------------------------------------------------
 
-// construtor para inicializar os atributos genéricos do jogador
-Character::Character(float width, float height, Background* backg)
+// construtor para inicializar os atributos genéricos do enemy
+Enemy::Enemy(float width, float height, Background* backg)
 	: width(width), height(height), backg(backg), walking(nullptr), anim(nullptr) {
 
-	state = WALKLEFT;			// estado inicial do jogador
-	type = PLAYER;				// tipo do jogador
+	state = WALKLEFT;			// estado inicial do enemy
+	type = ENEMY;				// tipo do enemy
 
-	VelX = width;				// velocidade horizontal do jogador (Em pixeis percorridos)
-	VelY = height;				// velocidade vertical do jogador (Em pixeis percorridos)
+	VelX = width;				// velocidade horizontal do enemy (Em pixeis percorridos)
+	VelY = height;				// velocidade vertical do enemy (Em pixeis percorridos)
 
 	interpolationSpeed = 18.0f; // velocidade de interpolação
 }
 
 // ---------------------------------------------------------------------------------
 
-Character::~Character()
+Enemy::~Enemy()
 {
 	delete walking;
 	delete anim;
@@ -38,23 +38,23 @@ Character::~Character()
 
 // ---------------------------------------------------------------------------------
 
-void Character::Update()
+void Enemy::Update()
 {
 	// Verifica se uma tecla de movimento foi pressionada e define o alvo
-	if (window->KeyDown(VK_UP) && Y() == targetY) {
-		targetY = Y() - VelY - 1; 
-	}
-	else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
-		targetY = Y() + VelY + 1;
-	}
-	else if (window->KeyDown(VK_LEFT) && X() == targetX) {
-		state = WALKLEFT;
-		targetX = X() - VelX - 1;
-	}
-	else if (window->KeyDown(VK_RIGHT) && X() == targetX) {
-		state = WALKRIGHT;
-		targetX = X() + VelX + 1;
-	}
+	//if (window->KeyDown(VK_UP) && Y() == targetY) {
+	//	targetY = Y() - VelY - 1;
+	//}
+	//else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
+	//	targetY = Y() + VelY + 1;
+	//}
+	//else if (window->KeyDown(VK_LEFT) && X() == targetX) {
+	//	state = WALKLEFT;
+	//	targetX = X() - VelX - 1;
+	//}
+	//else if (window->KeyDown(VK_RIGHT) && X() == targetX) {
+	//	state = WALKRIGHT;
+	//	targetX = X() + VelX + 1;
+	//}
 
 	// Interpolação linear para suavizar o movimento
 	float newX = X() + (targetX - X()) * interpolationSpeed * gameTime;
@@ -92,16 +92,16 @@ void Character::Update()
 		targetX = newX = window->CenterX() - backg->Width() / 2.0f + diff + width / 2.0f;
 	}
 
-	if (y + walking->TileHeight() / 2.0f > window->Height()) 
+	if (y + walking->TileHeight() / 2.0f > window->Height())
 	{
-		Translate(0,-4);
+		Translate(0, -4);
 		targetY = newY = window->Height() - walking->TileHeight() / 2.0f;
 	}
-	else if (y - walking->TileHeight() / 2.0f < 0) 
+	else if (y - walking->TileHeight() / 2.0f < 0)
 	{
-		Translate(0,4);
+		Translate(0, 4);
 		targetY = newY = walking->TileHeight() / 2.0f;
-	}	
+	}
 }
 
 // ---------------------------------------------------------------------------------

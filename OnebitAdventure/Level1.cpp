@@ -13,9 +13,11 @@ void Level1::Init()
 
     // Background original tem 11.25 quadros de largura e 38.57 de altura
     warrior = new Warrior((backg->Width() - backg->Width() * 0.13f) / 11.25f, backg->Height() / 38.57f, backg);
+	ghost = new Ghost((backg->Width() - backg->Width() * 0.13f) / 11.25f, backg->Height() / 38.57f, backg);
 
     scene = new Scene();
     scene->Add(warrior, MOVING);
+	scene->Add(ghost, MOVING);
     scene->Add(backg, STATIC);
 }
 

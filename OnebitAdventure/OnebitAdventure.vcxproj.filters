@@ -34,6 +34,12 @@
     <Filter Include="Game\Arquivos de Cabeçalho\Class">
       <UniqueIdentifier>{7522dc7d-7004-4cc4-9815-f14458f601a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Arquivos de Origem\Enemys">
+      <UniqueIdentifier>{709fe330-2f70-41ef-88b5-682ca104b247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Enemys">
+      <UniqueIdentifier>{7772968c-3c38-4c7a-8b75-41eda9efb09a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -101,6 +107,12 @@
     </ClCompile>
     <ClCompile Include="Warrior.cpp">
       <Filter>Game\Arquivos de Origem\Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>Game\Arquivos de Origem\Enemys</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="Warrior.h">
       <Filter>Game\Arquivos de Cabeçalho\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Ghost.h">
+      <Filter>Game\Arquivos de Cabeçalho\Enemys</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
