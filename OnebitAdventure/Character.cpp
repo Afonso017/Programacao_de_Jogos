@@ -9,32 +9,24 @@
 
 void Character::InitializeBBox()
 {
-	if (walking != nullptr)
-	{
-		BBox(new Rect(x - walking->TileWidth() / 2.0f, y - walking->TileHeight() / 2.0f,
-			x + walking->TileWidth() / 2.0f, y + walking->TileHeight() / 2.0f));
-	}
+	// Inicializa a BBox
+	BBox(new Rect(x - walking->TileWidth() / 2.0f, y - walking->TileHeight() / 2.0f,
+		x + walking->TileWidth() / 2.0f, y + walking->TileHeight() / 2.0f));
 }
 
 // ---------------------------------------------------------------------------------
 
 // construtor para inicializar os atributos genéricos do jogador
 Character::Character(float width, float height, Background* backg)
-	: width(width), height(height), backg(backg), walking(nullptr), anim(nullptr)
-{
-	// Inicialização inicial dos atributos
-	state = WALKLEFT;   // estado inicial do jogador
-	type = PLAYER;      // tipo do jogador
+	: width(width), height(height), backg(backg), walking(nullptr), anim(nullptr) {
 
-	VelX = width;
-	VelY = height;
+	state = WALKLEFT;			// estado inicial do jogador
+	type = PLAYER;				// tipo do jogador
 
-	MoveTo(window->CenterX(), window->CenterY(), Layer::FRONT);
+	VelX = width;				// velocidade horizontal do jogador (Em pixeis percorridos)
+	VelY = height;				// velocidade vertical do jogador (Em pixeis percorridos)
 
-	targetX = X();
-	targetY = Y();
-
-	interpolationSpeed = 12.0f;
+	interpolationSpeed = 15.0f; // velocidade de interpolação
 }
 
 // ---------------------------------------------------------------------------------
@@ -43,7 +35,6 @@ Character::~Character()
 {
 	delete walking;
 	delete anim;
-	delete backg;
 }
 
 // ---------------------------------------------------------------------------------
@@ -52,7 +43,7 @@ void Character::Update()
 {
 	// Verifica se uma tecla de movimento foi pressionada e define o alvo
 	if (window->KeyDown(VK_UP) && Y() == targetY) {
-		targetY = Y() - VelY - 1;
+		targetY = Y() - VelY - 1; 
 	}
 	else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
 		targetY = Y() + VelY + 1;
@@ -104,15 +95,14 @@ void Character::Update()
 
 	if (y + walking->TileHeight() / 2.0f > window->Height()) 
 	{
-		Translate(0,-5);
-		targetY = newY = window->Height();
+		Translate(0,-4);
+		targetY = newY = window->Height() - walking->TileHeight() / 2.0f;
 	}
 	else if (y - walking->TileHeight() / 2.0f < 0) 
 	{
 		Translate(0,4);
-		targetY = newY = 0;
-	}
-		
+		targetY = newY = walking->TileHeight() / 2.0f;
+	}	
 }
 
 // ---------------------------------------------------------------------------------

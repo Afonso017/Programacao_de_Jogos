@@ -7,27 +7,28 @@
 
 #include "Types.h"                      // tipos espec�ficos da engine
 #include "Object.h"                     // interface de Object
-#include "Animation.h"                  // anima��o de sprites
+#include "Animation.h"                  // animaçõoes de sprites
 #include "Background.h"
 
 // ------------------------------------------------------------------------------
 
-enum CharacterState { STILL, WALKUP, WALKDOWN, WALKLEFT, WALKRIGHT };
+enum CharacterState { STILL, WALKUP, WALKDOWN, WALKLEFT, WALKRIGHT }; // estados de movimento do jogador
 
 // Os casos WALKUp,WALKDOWN e STILL s�o os �nicos que n�o precisam de um sprite de costas e de frente.
 // Logo, são opcionais, coloquei apenas para o caso de precisar.
-// Como o personagem em estado STILL � o mesmo que o personagem em estado WALKRIGHT, n�o � necess�rio esse estado, mas... n�.
+// Como o personagem em estado STILL é o mesmo que o personagem em estado WALKRIGHT, não é necessário esse estado, mas... ne.
 
 // ------------------------------------------------------------------------------
+// Classe Character : É a classe base para todos os personagens (classes) do jogo
 
 class Character : public Object
 {
 protected:
 	// são comuns para todos os personagens e tem o mesmo valor
 	CharacterState state;				// estado atual do jogador
-	Background* backg;					// background
-	float targetX;						// posição x do destino do jogador
-	float targetY;						// posição y do destino do jogador
+	Background* backg;					// background variável para obter informações do background do jogo
+	float targetX = x;					// posição x do destino do jogador pós movimento
+	float targetY = y;					// posição y do destino do jogador pós movimento
 	float interpolationSpeed;			// velocidade de interpolação
 	float VelX;							// velocidade horizontal do jogador
 	float VelY;							// velocidade vertical do jogador
@@ -42,7 +43,7 @@ protected:
 	TileSet* walking = nullptr;         // folha de sprites do personagem
 	Animation* anim = nullptr;          // animação do personagem
 	
-	void InitializeBBox();					// inicializa a BBox
+	void InitializeBBox();				// inicializa a BBox
 public:
 	Character(float width, float height, Background* backg);	// construtor
 	~Character();												// destrutor
@@ -61,7 +62,7 @@ public:
 // ---------------------------------------------------------------------------------
 // Função Membro Inline
 
-inline void Character::Draw()
+inline void Character::Draw()	
 {
 	anim->Draw(x, y, z);
 }
