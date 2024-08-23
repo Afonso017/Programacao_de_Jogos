@@ -10,7 +10,7 @@
 Ghost::Ghost(float width, float height, Background* backg)
 	: Enemy(width, height, backg) // Chamada do construtor da classe base
 {
-	Image* img = new Image("Resources/Ghost.png", this->width * 4, this->height * 2);		// Carrega a imagem do Ghost
+	Image* img = new Image("Resources/Ghost.png", this->width * 3, this->height * 1);		// Carrega a imagem do Ghost
 	walking = new TileSet(img, this->width, this->height, 3, 3);  // Cria o TileSet do Ghost
 	anim = new Animation(walking, 0.125f, true);
 
