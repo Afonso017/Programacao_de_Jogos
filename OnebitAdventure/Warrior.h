@@ -9,12 +9,13 @@
 class Warrior : public Character
 {
 private:
-	TileSet* walking = nullptr;         // folha de sprites do personagem
-	Animation* anim = nullptr;          // animação do personagem
-	
-public:
+	// atributos específicos do Warrior
+	float chanceCritica;
 
-	void init() override;									// inicialização
+public:
+	Warrior(float width, float height, Background* backg);
+	~Warrior();
+
 	void OnCollision(Object* obj) override;					// resolução da colisão
 };
 

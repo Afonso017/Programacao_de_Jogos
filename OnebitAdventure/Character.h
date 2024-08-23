@@ -23,7 +23,7 @@ enum CharacterState { STILL, WALKUP, WALKDOWN, WALKLEFT, WALKRIGHT };
 class Character : public Object
 {
 protected:
-	// são comuns para todos os personagens
+	// são comuns para todos os personagens e tem o mesmo valor
 	CharacterState state;				// estado atual do jogador
 	Background* backg;					// background
 	float targetX;						// posição x do destino do jogador
@@ -39,11 +39,10 @@ protected:
 
 	int vida = 0;						// vida do jogador
 	float danoAtaque = 0.0f;			// dano de ataque fisico do jogador (não utiliza mana e todas classes tem)
-	float defesaFisica = 0.0f;			// defesa fisica do jogador (não bloqueia dano mágico)
 	TileSet* walking = nullptr;         // folha de sprites do personagem
 	Animation* anim = nullptr;          // animação do personagem
 	
-
+	void InitializeBBox();					// inicializa a BBox
 public:
 	Character(float width, float height, Background* backg);	// construtor
 	~Character();												// destrutor

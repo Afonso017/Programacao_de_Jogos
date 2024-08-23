@@ -2,21 +2,22 @@
 
 #include "Game.h"
 #include "Scene.h"
-#include "Player.h"
 #include "Background.h"
+#include "Warrior.h"
 
 // ------------------------------------------------------------------------------
 
 class Level1 : public Game
 {
 private:
-	Scene  * scene;					// gerenciador de cena
-	Player * player  = nullptr;		// jogador
+	Warrior* warrior;		// instancia do jogador (classe guerreiro)
 	Background * backg   = nullptr;	// background principal
 	Sprite * backg2  = nullptr;		// background
 	boolean  viewBox = false;		// controle de visualização de caixas de colisão
+	Scene* scene;					// gerenciador de cena
 
 public:
+
 	int  Width();                   // retorna a largura atual da janela
 	int  Height();                  // retorna a altura atual da janela
 

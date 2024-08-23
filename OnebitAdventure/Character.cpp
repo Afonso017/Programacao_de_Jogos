@@ -7,24 +7,34 @@
 
 // ------------------------------------------------------------------------------
 
-// construtor para inicializar os atributos genéricos do jogador
-Character::Character(float width, float height, Background* backg) : width(width), height(height), backg(backg) {
-	// Bounding Box do Character (posição x e y começa no meio do sprite)
-	BBox(new Rect(x - walking->TileWidth() / 2.0f, y - walking->TileHeight() / 2.0f, x + walking->TileWidth() / 2.0f, y + walking->TileHeight() / 2.0f));
+void Character::InitializeBBox()
+{
+	if (walking != nullptr)
+	{
+		BBox(new Rect(x - walking->TileWidth() / 2.0f, y - walking->TileHeight() / 2.0f,
+			x + walking->TileWidth() / 2.0f, y + walking->TileHeight() / 2.0f));
+	}
+}
 
+// ---------------------------------------------------------------------------------
+
+// construtor para inicializar os atributos genéricos do jogador
+Character::Character(float width, float height, Background* backg)
+	: width(width), height(height), backg(backg), walking(nullptr), anim(nullptr)
+{
+	// Inicialização inicial dos atributos
 	state = WALKLEFT;   // estado inicial do jogador
 	type = PLAYER;      // tipo do jogador
 
-	// Character se movimenta a cada quadro
 	VelX = width;
 	VelY = height;
 
-	MoveTo(window->CenterX(), window->CenterY(), Layer::FRONT); // Move o Character para o centro da tela
+	MoveTo(window->CenterX(), window->CenterY(), Layer::FRONT);
 
-	targetX = X(); // Define a posição x do destino do jogador
-	targetY = Y(); // Define a posição y do destino do jogador
+	targetX = X();
+	targetY = Y();
 
-	interpolationSpeed = 12.0f; // Define a velocidade de interpolação
+	interpolationSpeed = 12.0f;
 }
 
 // ---------------------------------------------------------------------------------

@@ -6,26 +6,36 @@
 
 // ---------------------------------------------------------------------------------
 
-void Warrior::init()
+Warrior::Warrior(float width, float height, Background* backg)
+    : Character(width, height, backg)
 {
-	Image* img = new Image("Resources/WizardSprite.png", this->width * 4, this->height * 2); // carrega sprite sheet do player
-	walking = new TileSet(img, this->width, this->height, 4, 8);		// 2x4 sprites
-	anim = new Animation(walking, 0.125f, true);						// 0.125f é o tempo de troca de frames
+    Image* img = new Image("Resources/WarriorSprite.png", this->width * 4, this->height * 2);
+    walking = new TileSet(img, this->width, this->height, 4, 8);
+    anim = new Animation(walking, 0.125f, true);
 
-	uint SeqRight[4] = { 0,1,2,3 }; // sequência de sprites para andar para a direita
-	uint SeqLeft[4] = { 4,5,6,7 };  // sequência de sprites para andar para a esquerda
-	anim->Add(WALKRIGHT, SeqRight, 4); // adiciona a sequência de sprites para andar para a direita
-	anim->Add(WALKLEFT, SeqLeft, 4);   // adiciona a sequência de sprites para andar para a esquerda
+    uint SeqRight[4] = { 0,1,2,3 };
+    uint SeqLeft[4] = { 4,5,6,7 };
+    anim->Add(WALKRIGHT, SeqRight, 4);
+    anim->Add(WALKLEFT, SeqLeft, 4);
 
+    vida = 52;
+    danoAtaque = 2.0f;
+    chanceCritica = 2.0f;   
 
+    // Inicialize BBox após walking ser definido
+    InitializeBBox();
 }
 
-// ---------------------------------------------------------------------------------
+Warrior::~Warrior()
+{
+	delete walking;
+	delete anim;
+	delete backg;
+}
 
 void Warrior::OnCollision(Object* obj)
 {
-	// Se colidir com um inimigo, perde vida
-	
+	// Implemente a lógica de resolução de colisão aqui
 }
 
 // ---------------------------------------------------------------------------------
