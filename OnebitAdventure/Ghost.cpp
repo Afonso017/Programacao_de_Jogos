@@ -46,18 +46,21 @@ void Ghost::OnCollision(Object* obj)
 {
 	// Implemente a lógica de resolução de colisão aqui
 	if (obj->Type() == PLAYER) {
-		/*targetX = prevX;
-		targetY = prevY;*/
 
-		Character* player = (Character*) (obj);
+		// Marca que o Ghost foi atingido
+		targetX = prevX;
+		targetY = prevY;
 
+		Character* player = (Character*)(obj);
 		vida -= player->GetDamage();
 
-		if (player->GetVida() <= 0) {
+		if (vida <= 0) {
 			// Morreu
 			// Deleta o objeto
-			Level1::scene->Delete(obj, MOVING);
+			Level1::scene->Delete(this, MOVING);
 		}
+
+		isHit = false;
 	}
 }
 

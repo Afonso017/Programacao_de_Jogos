@@ -34,6 +34,7 @@ protected:
 	uint width;							// largura do Enemy
 	uint height;						// altura do Enemy
 	float proximityThreshold;			// Distância para começar a perseguir o player
+	bool isHit;							// Flag para indicar se o personagem já foi atingido
 
 	//--------------------------------------------------------------------------------------------
 	// Atributos básicos do enemy
@@ -55,6 +56,7 @@ public:
 
 	float GetDamage() const;								// retorna o dano de ataque do enemy
 	int GetVida() const;									// retorna a vida do enemy
+	boolean IsHit();										// verifica se o personagem foi atingido
 
 	// Métodos
 	void Update();											// atualização
@@ -81,6 +83,13 @@ inline float Enemy::GetDamage() const
 inline int Enemy::GetVida() const
 {
 	return vida;
+}
+
+// ---------------------------------------------------------------------------------
+
+inline boolean Enemy::IsHit()
+{
+	return isHit;
 }
 
 // ---------------------------------------------------------------------------------

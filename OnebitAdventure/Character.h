@@ -41,6 +41,7 @@ protected:
 	uint width;							// largura do Character
 	uint height;						// altura do Character
 	boolean isMoving = false;			// verifica se o personagem está se movendo
+	bool isHit;							// Flag para indicar se o personagem já foi atingido
 
 	//--------------------------------------------------------------------------------------------
 	// Atributos básicos do jogador
@@ -71,6 +72,7 @@ public:
 
 	float GetDamage() const;	// retorna o dano de ataque do enemy
 	int GetVida() const;		// retorna a vida do jogador
+	boolean IsHit();			// verifica se o personagem foi atingido
 
 	boolean IsMoving();			// verifica se o personagem está se movendo
 	void Update();				// atualização
@@ -106,6 +108,13 @@ inline int Character::GetVida() const
 inline float Character::GetDamage() const
 {
 	return danoAtaque;
+}
+
+// ---------------------------------------------------------------------------------
+
+inline boolean Character::IsHit()
+{
+	return isHit;
 }
 
 // ---------------------------------------------------------------------------------

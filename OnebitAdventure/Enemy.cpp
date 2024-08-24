@@ -26,9 +26,11 @@ Enemy::Enemy(float width, float height, Background* backg, Character* player)
 	VelX = width;				// velocidade horizontal do enemy (Em pixeis percorridos)
 	VelY = height;				// velocidade vertical do enemy (Em pixeis percorridos)
 
+	isHit = false;				// Flag para indicar se o personagem já foi atingido
+
 	interpolationSpeed = 18.0f; // velocidade de interpolação
 
-	proximityThreshold = 100.0f; // Distância para começar a perseguir o player
+	proximityThreshold = 150.0f; // Distância para começar a perseguir o player
 
 	prevX = x;					// posição x anterior do enemy
 	prevY = y;					// posição y anterior do enemy
@@ -44,8 +46,10 @@ Enemy::~Enemy()
 
 void Enemy::Update() {
 	if (player->IsMoving()) {
+		isHit = true;
 		prevX = X();
 		prevY = Y();
+
 		// Distância do inimigo ao player
 		float deltaX = player->X() - X();
 		float deltaY = player->Y() - Y();

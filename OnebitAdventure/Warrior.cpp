@@ -47,7 +47,18 @@ Warrior::~Warrior()
 
 void Warrior::OnCollision(Object* obj)
 {
-	if (obj->Type() == ENEMY) {
+	if (obj->Type() == ENEMY && isHit) {
+
+		Enemy* enemy = (Enemy*)obj;
+		vida -= enemy->GetDamage();
+
+		// Distância do inimigo ao player
+		float deltaX = enemy->X() - X();
+		float deltaY = enemy->Y() - Y();
+
+
+		// Calcular a distância ao quadrado (mais eficiente do que calcular a distância real)
+		float distanceSquared = deltaX * deltaX + deltaY * deltaY;
 
 		switch (direction)
 		{
@@ -67,12 +78,12 @@ void Warrior::OnCollision(Object* obj)
 			break;
 		}
 
-		Ghost* ghost = (Ghost*) obj;
-		vida -= ghost->GetDamage();
 
-		if (ghost->GetVida() <= 0) {
-			Level1::scene->Delete(obj, MOVING);
+		if (vida <= 0) {
+			Level1::scene->Delete(this, MOVING);
 		}
+
+		isHit = false;
 	}
 }
 

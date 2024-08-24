@@ -27,6 +27,8 @@ Character::Character(float width, float height, Background* backg)
 	VelX = width;				// velocidade horizontal do jogador (Em pixeis percorridos)
 	VelY = height;				// velocidade vertical do jogador (Em pixeis percorridos)
 
+	isHit = false;				// Flag para indicar se o personagem já foi atingido
+
 	interpolationSpeed = 18.0f; // velocidade de interpolação
 
 	prevX = x;					// posição x anterior do jogador
@@ -49,12 +51,14 @@ void Character::Update()
 		direction = WALKUP;
 		targetY = Y() - VelY - 1; 
 		isMoving = true;
+		isHit = true;
 	}
 	else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
 		prevY = Y();
 		direction = WALKDOWN;
 		targetY = Y() + VelY + 1;
 		isMoving = true;
+		isHit = true;
 	}
 	else if (window->KeyDown(VK_LEFT) && X() == targetX) {
 		prevX = X();
@@ -62,6 +66,7 @@ void Character::Update()
 		characterState = WALKLEFT;
 		targetX = X() - VelX - 1;
 		isMoving = true;
+		isHit = true;
 	}
 	else if (window->KeyDown(VK_RIGHT) && X() == targetX) {
 		prevX = X();
@@ -69,6 +74,7 @@ void Character::Update()
 		characterState = WALKRIGHT;
 		targetX = X() + VelX + 1;
 		isMoving = true;
+		isHit = true;
 	}
 
 	// Interpolação linear para suavizar o movimento
