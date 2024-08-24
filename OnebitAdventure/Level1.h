@@ -1,5 +1,9 @@
 // Inclusões
 
+#pragma once
+#ifndef LEVEL1_H
+#define LEVEL1_H
+
 #include "Game.h"
 #include "Scene.h"
 #include "Background.h"
@@ -15,10 +19,11 @@ private:
 	Background* backg   = nullptr;	// background principal
 	Sprite* backg2  = nullptr;		// background
 	boolean  viewBox = false;		// controle de visualização de caixas de colisão
-	Scene* scene;					// gerenciador de cena
+	
 	Ghost* ghost;					// instancia do inimigo (classe fantasma)
 
 public:
+	static Scene* scene;			// gerenciador de cena
 
 	int  Width();                   // retorna a largura atual da janela
 	int  Height();                  // retorna a altura atual da janela
@@ -44,3 +49,5 @@ inline int Level1::Height()
 }
 
 // -----------------------------------------------------------------------------
+
+#endif LEVEL1_H

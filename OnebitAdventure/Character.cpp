@@ -20,13 +20,17 @@ void Character::InitializeBBox()
 Character::Character(float width, float height, Background* backg)
 	: width(width), height(height), backg(backg), walking(nullptr), anim(nullptr) {
 
-	characterState = WALKLEFT;			// estado inicial do jogador
+	characterState = WALKLEFT;	// estado inicial do jogador
+	direction = WALKLEFT;		// direção inicial do jogador
 	type = PLAYER;				// tipo do jogador
 
 	VelX = width;				// velocidade horizontal do jogador (Em pixeis percorridos)
 	VelY = height;				// velocidade vertical do jogador (Em pixeis percorridos)
 
 	interpolationSpeed = 18.0f; // velocidade de interpolação
+
+	prevX = x;					// posição x anterior do jogador
+	prevY = y;					// posição y anterior do jogador
 }
 
 // ---------------------------------------------------------------------------------
@@ -41,27 +45,35 @@ void Character::Update()
 {
 	// Verifica se uma tecla de movimento foi pressionada e define o alvo
 	if (window->KeyDown(VK_UP) && Y() == targetY) {
+		prevY = Y();
+		direction = WALKUP;
 		targetY = Y() - VelY - 1; 
 		isMoving = true;
 	}
 	else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
+		prevY = Y();
+		direction = WALKDOWN;
 		targetY = Y() + VelY + 1;
 		isMoving = true;
 	}
 	else if (window->KeyDown(VK_LEFT) && X() == targetX) {
+		prevX = X();
+		direction = WALKLEFT;
 		characterState = WALKLEFT;
 		targetX = X() - VelX - 1;
 		isMoving = true;
 	}
 	else if (window->KeyDown(VK_RIGHT) && X() == targetX) {
+		prevX = X();
+		direction = WALKRIGHT;
 		characterState = WALKRIGHT;
 		targetX = X() + VelX + 1;
 		isMoving = true;
 	}
 
 	// Interpolação linear para suavizar o movimento
-	float newX = X() + (targetX - X()) * interpolationSpeed * gameTime;
-	float newY = Y() + (targetY - Y()) * interpolationSpeed * gameTime;
+	newX = X() + (targetX - X()) * interpolationSpeed * gameTime;
+	newY = Y() + (targetY - Y()) * interpolationSpeed * gameTime;
 
 	// Garante que o personagem não ultrapasse o alvo, corrigindo a posição caso necessário
 	if (abs(targetX - newX) < 0.5f) newX = targetX;

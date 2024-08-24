@@ -3,6 +3,7 @@
 
 #include "OneBitAdventure.h"
 #include "Ghost.h"
+#include "Level1.h"
 
 // ---------------------------------------------------------------------------------
 
@@ -44,6 +45,20 @@ Ghost::~Ghost()
 void Ghost::OnCollision(Object* obj)
 {
 	// Implemente a lógica de resolução de colisão aqui
+	if (obj->Type() == PLAYER) {
+		targetX = prevX;
+		targetY = prevY;
+
+		Character* player = (Character*) (obj);
+
+		vida -= player->GetDamage();
+
+		if (player->GetVida() <= 0) {
+			// Morreu
+			// Deleta o objeto
+			Level1::scene->Delete(obj, MOVING);
+		}
+	}
 }
 
 // ---------------------------------------------------------------------------------

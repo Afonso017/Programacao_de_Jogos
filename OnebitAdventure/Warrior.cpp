@@ -3,6 +3,8 @@
 
 #include "Warrior.h"
 #include "Enemy.h"
+#include "Ghost.h"
+#include "Level1.h"
 
 // ---------------------------------------------------------------------------------
 
@@ -45,9 +47,31 @@ Warrior::~Warrior()
 
 void Warrior::OnCollision(Object* obj)
 {
-	// Detecção de colisão com o inimigo
 	if (obj->Type() == ENEMY) {
-		
+		switch (direction)
+		{
+		case WALKUP:
+			targetY = prevY;
+			break;
+		case WALKDOWN:
+			targetY = prevY;
+			break;
+		case WALKLEFT:
+			targetX = prevX;
+			break;
+		case WALKRIGHT:
+			targetX = prevX;
+			break;
+		default:
+			break;
+		}
+
+		Ghost* ghost = (Ghost*) obj;
+		vida -= ghost->GetDamage();
+
+		if (ghost->GetVida() <= 0) {
+			Level1::scene->Delete(obj, MOVING);
+		}
 	}
 }
 

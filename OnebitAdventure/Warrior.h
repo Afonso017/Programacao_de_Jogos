@@ -1,6 +1,10 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
+#pragma once
+#ifndef WARRIOR_H
+#define WARRIOR_H
+
 #include "Object.h"							// interface de Object
 #include "Character.h"						// interface de Player		
 
@@ -20,3 +24,5 @@ public:
 };
 
 // ---------------------------------------------------------------------------------
+
+#endif WARRIOR_H

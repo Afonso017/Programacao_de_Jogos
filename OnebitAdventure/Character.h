@@ -30,6 +30,11 @@ protected:
 	Background* backg;					// background variável para obter informações do background do jogo
 	float targetX = x;					// posição x do destino do jogador pós movimento
 	float targetY = y;					// posição y do destino do jogador pós movimento
+	float prevX = x;					// posição x anterior do jogador
+	float prevY = y;					// posição y anterior do jogador
+	float newX = x;						// nova posição x do jogador
+	float newY = y;						// nova posição y do jogador
+	steeringState direction;			// direção do jogador
 	float interpolationSpeed;			// velocidade de interpolação
 	float VelX;							// velocidade horizontal do jogador
 	float VelY;							// velocidade vertical do jogador
@@ -62,9 +67,14 @@ public:
 	float Y() const override;
 	float Z() const override;
 
-	boolean IsMoving();								// verifica se o personagem está se movendo
-	void Update();											// atualização
-	void Draw();											// desenho
+	// Métodos de recuperação
+
+	float GetDamage() const;	// retorna o dano de ataque do enemy
+	int GetVida() const;		// retorna a vida do jogador
+
+	boolean IsMoving();			// verifica se o personagem está se movendo
+	void Update();				// atualização
+	void Draw();				// desenho
 };
 
 // ---------------------------------------------------------------------------------
@@ -82,6 +92,20 @@ inline boolean Character::IsMoving()
 	boolean move = isMoving;
 	isMoving = false;
 	return move;
+}
+
+// ---------------------------------------------------------------------------------
+
+inline int Character::GetVida() const
+{
+	return vida;
+}
+
+// ---------------------------------------------------------------------------------
+
+inline float Character::GetDamage() const
+{
+	return danoAtaque;
 }
 
 // ---------------------------------------------------------------------------------
