@@ -36,10 +36,13 @@ Enemy::Enemy(float width, float height, Background* backg, Character* player)
 	prevY = y;					// posição y anterior do enemy
 	newX = x;					// nova posição x do enemy
 	newY = y;					// nova posição y do enemy
+
+	consolas->Spacing("Resources/consolas12.dat");
 }
 
 Enemy::~Enemy()
 {
+	delete consolas;
 }
 
 // ---------------------------------------------------------------------------------

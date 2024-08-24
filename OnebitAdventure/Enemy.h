@@ -12,6 +12,7 @@
 #include "Background.h"					// background do jogo
 #include "OneBitAdventure.h"			// .h do jogo
 #include "Character.h"					// classe base para todos os personagens
+#include "Font.h"						// fonte para exibir texto na tela
 
 // ------------------------------------------------------------------------------
 
@@ -35,6 +36,7 @@ protected:
 	uint height;						// altura do Enemy
 	float proximityThreshold;			// Distância para começar a perseguir o player
 	bool isHit;							// Flag para indicar se o personagem já foi atingido
+	Font* consolas = new Font("Resources/consolas12.png");
 
 	//--------------------------------------------------------------------------------------------
 	// Atributos básicos do enemy
@@ -55,6 +57,7 @@ public:
 	// Métodos de recuperação
 
 	float GetDamage() const;								// retorna o dano de ataque do enemy
+	void SetVida(float damage);								// retorna a vida do enemy
 	int GetVida() const;									// retorna a vida do enemy
 	boolean IsHit();										// verifica se o personagem foi atingido
 
@@ -76,6 +79,13 @@ inline void Enemy::Draw() {
 inline float Enemy::GetDamage() const
 {
 	return danoAtaque;
+}
+
+// ---------------------------------------------------------------------------------
+
+inline void Enemy::SetVida(float damage)
+{
+	vida = vida - damage;
 }
 
 // ---------------------------------------------------------------------------------

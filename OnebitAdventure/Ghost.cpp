@@ -25,7 +25,7 @@ Ghost::Ghost(float width, float height, Background* backg, Character* player)
 	InitializeBBox();
 
 	// Inicializa a posição do Ghost
-	MoveTo(window->CenterX(), window->CenterY() - (4 * height), Layer::FRONT);
+	MoveTo(window->CenterX(), window->CenterY() - (3 * height), Layer::FRONT);
 
 	targetX = X();
 	targetY = Y();
@@ -45,14 +45,14 @@ Ghost::~Ghost()
 void Ghost::OnCollision(Object* obj)
 {
 	// Implemente a lógica de resolução de colisão aqui
-	if (obj->Type() == PLAYER) {
+	if (obj->Type() == PLAYER && isHit) {
 
 		// Marca que o Ghost foi atingido
 		targetX = prevX;
 		targetY = prevY;
 
 		Character* player = (Character*)(obj);
-		vida -= player->GetDamage();
+		player->SetVida(danoAtaque);
 
 		if (vida <= 0) {
 			// Morreu

@@ -12,6 +12,7 @@
 #include "Animation.h"                  // animaçõoes de sprites
 #include "Background.h"					// background do jogo
 #include "OneBitAdventure.h"			// .h do jogo
+#include "Font.h"						// fonte para exibir texto na tela
 
 // ------------------------------------------------------------------------------
 
@@ -42,6 +43,8 @@ protected:
 	uint height;						// altura do Character
 	boolean isMoving = false;			// verifica se o personagem está se movendo
 	bool isHit;							// Flag para indicar se o personagem já foi atingido
+	bool isDead = false;				// Flag para indicar se o personagem está morto
+	Font* consolas = new Font("Resources/consolas12.png");
 
 	//--------------------------------------------------------------------------------------------
 	// Atributos básicos do jogador
@@ -72,6 +75,7 @@ public:
 
 	float GetDamage() const;	// retorna o dano de ataque do enemy
 	int GetVida() const;		// retorna a vida do jogador
+	void SetVida(float damage);	// retorna a vida do jogador
 	boolean IsHit();			// verifica se o personagem foi atingido
 
 	boolean IsMoving();			// verifica se o personagem está se movendo
@@ -101,6 +105,13 @@ inline boolean Character::IsMoving()
 inline int Character::GetVida() const
 {
 	return vida;
+}
+
+// ---------------------------------------------------------------------------------
+
+inline void Character::SetVida(float damage)
+{
+	vida = vida - damage;
 }
 
 // ---------------------------------------------------------------------------------

@@ -4,6 +4,7 @@
 #include "Level1.h"
 #include "Engine.h"
 #include "Select.h"
+#include "Sprite.h"
 
 // ------------------------------------------------------------------------------
 
@@ -15,10 +16,12 @@ void Level1::Init()
 {
     backg = new Background();
 
+    consolas = new Font("Resources/consolas12.png");
+    consolas->Spacing("Resources/consolas12.dat");
+
     // Background original tem 11.25 quadros de largura e 38.57 de altura
     warrior = new Warrior((backg->Width() - backg->Width() * 0.13f) / 11.25f, backg->Height() / 38.57f, backg);
 	
-
     scene = new Scene();
     scene->Add(warrior, MOVING);
 
@@ -57,6 +60,13 @@ void Level1::Draw()
 
     if (viewBox)
         scene->DrawBBox();
+
+	string dano = "Dano: ";
+	dano.append(std::to_string(warrior->GetDamage()));
+	dano.append(" Vida: ");
+	dano.append(std::to_string(ghost->GetVida()));
+        
+    consolas->Draw(975, 150, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.0f, 0.0f);
 }
 
 // ------------------------------------------------------------------------------
@@ -64,6 +74,7 @@ void Level1::Draw()
 void Level1::Finalize()
 {
     delete scene;
+    delete consolas;
 }
 
 // ------------------------------------------------------------------------------

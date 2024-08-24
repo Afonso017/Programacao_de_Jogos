@@ -27,54 +27,60 @@ Character::Character(float width, float height, Background* backg)
 	VelX = width;				// velocidade horizontal do jogador (Em pixeis percorridos)
 	VelY = height;				// velocidade vertical do jogador (Em pixeis percorridos)
 
-	isHit = false;				// Flag para indicar se o personagem já foi atingido
+	isHit = false;				// Flag para indicar se o personagem já foi atingido	
+	isDead = false;				// Flag para indicar se o personagem está morto
 
 	interpolationSpeed = 18.0f; // velocidade de interpolação
 
 	prevX = x;					// posição x anterior do jogador
 	prevY = y;					// posição y anterior do jogador
+
+	consolas->Spacing("Resources/consolas12.dat");
 }
 
 // ---------------------------------------------------------------------------------
 
 Character::~Character()
-{	
+{
+	delete consolas;
 }
 
 // ---------------------------------------------------------------------------------
 
 void Character::Update()
 {
-	// Verifica se uma tecla de movimento foi pressionada e define o alvo
-	if (window->KeyDown(VK_UP) && Y() == targetY) {
-		prevY = Y();
-		direction = WALKUP;
-		targetY = Y() - VelY - 1; 
-		isMoving = true;
-		isHit = true;
-	}
-	else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
-		prevY = Y();
-		direction = WALKDOWN;
-		targetY = Y() + VelY + 1;
-		isMoving = true;
-		isHit = true;
-	}
-	else if (window->KeyDown(VK_LEFT) && X() == targetX) {
-		prevX = X();
-		direction = WALKLEFT;
-		characterState = WALKLEFT;
-		targetX = X() - VelX - 1;
-		isMoving = true;
-		isHit = true;
-	}
-	else if (window->KeyDown(VK_RIGHT) && X() == targetX) {
-		prevX = X();
-		direction = WALKRIGHT;
-		characterState = WALKRIGHT;
-		targetX = X() + VelX + 1;
-		isMoving = true;
-		isHit = true;
+	if (!isDead) {
+		// Verifica se uma tecla de movimento foi pressionada e define o alvo
+		if (window->KeyDown(VK_UP) && Y() == targetY) {
+			prevY = Y();
+			direction = WALKUP;
+			targetY = Y() - VelY - 1;
+			isMoving = true;
+			isHit = true;
+		}
+		else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
+			prevY = Y();
+			direction = WALKDOWN;
+			targetY = Y() + VelY + 1;
+			isMoving = true;
+			isHit = true;
+		}
+		else if (window->KeyDown(VK_LEFT) && X() == targetX) {
+			prevX = X();
+			direction = WALKLEFT;
+			characterState = WALKLEFT;
+			targetX = X() - VelX - 1;
+			isMoving = true;
+			isHit = true;
+		}
+		else if (window->KeyDown(VK_RIGHT) && X() == targetX) {
+			prevX = X();
+			direction = WALKRIGHT;
+			characterState = WALKRIGHT;
+			targetX = X() + VelX + 1;
+			isMoving = true;
+			isHit = true;
+		}
 	}
 
 	// Interpolação linear para suavizar o movimento

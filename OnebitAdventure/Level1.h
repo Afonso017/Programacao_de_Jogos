@@ -9,6 +9,7 @@
 #include "Background.h"
 #include "Warrior.h"
 #include "Ghost.h"
+#include "Font.h"
 
 // ------------------------------------------------------------------------------
 
@@ -19,9 +20,11 @@ private:
 	Background* backg   = nullptr;	// background principal
 	Sprite* backg2  = nullptr;		// background
 	boolean  viewBox = false;		// controle de visualização de caixas de colisão
+	Font* consolas;					// Fonte para exibir texto na tela!
+
+	int progress = 0;				// Variável para contar o progresso do player!
 	
 	Ghost* ghost;					// instancia do inimigo (classe fantasma)
-
 public:
 	static Scene* scene;			// gerenciador de cena
 

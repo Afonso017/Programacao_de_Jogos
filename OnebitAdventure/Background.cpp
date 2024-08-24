@@ -6,6 +6,7 @@ Background::Background()
 {
     MoveTo(window->CenterX(), 0, Layer::BACK);
 
+	// Divide a largura da janela por 3 e multiplica a altura por 2
     width = window->Width() / 3;
     height = window->Height() * 2;
 
