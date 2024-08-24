@@ -46,8 +46,8 @@ void Ghost::OnCollision(Object* obj)
 {
 	// Implemente a lógica de resolução de colisão aqui
 	if (obj->Type() == PLAYER) {
-		targetX = prevX;
-		targetY = prevY;
+		/*targetX = prevX;
+		targetY = prevY;*/
 
 		Character* player = (Character*) (obj);
 

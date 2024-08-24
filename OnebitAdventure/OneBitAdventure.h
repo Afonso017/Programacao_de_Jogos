@@ -19,7 +19,8 @@ enum steeringState
     WALKUP, 
     WALKDOWN, 
     WALKLEFT, 
-    WALKRIGHT 
+    WALKRIGHT,
+    DAMAGE
 };
 
 // ------------------------------------------------------------------------------

@@ -10,8 +10,8 @@
 void Character::InitializeBBox()
 {
 	// Inicializa a BBox
-	BBox(new Rect(x - walking->TileWidth() / 2.0f, y - walking->TileHeight() / 2.0f,
-		x + walking->TileWidth() / 2.0f, y + walking->TileHeight() / 2.0f));
+	BBox(new Rect(x - walking->TileWidth() / 5.0f, y - walking->TileHeight() / 5.0f,
+		x + walking->TileWidth() / 5.0f, y + walking->TileHeight() / 5.0f));
 }
 
 // ---------------------------------------------------------------------------------

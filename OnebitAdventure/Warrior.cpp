@@ -48,6 +48,7 @@ Warrior::~Warrior()
 void Warrior::OnCollision(Object* obj)
 {
 	if (obj->Type() == ENEMY) {
+
 		switch (direction)
 		{
 		case WALKUP:
