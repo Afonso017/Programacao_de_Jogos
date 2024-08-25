@@ -15,7 +15,7 @@ Warrior::Warrior(float width, float height, Background* backg)
 {
 	Image* img = new Image("Resources/WarriorSprite.png", this->width * 4, this->height * 2); // Carrega a imagem do Warrior
 	walking = new TileSet(img, this->width, this->height, 4, 8);                              // Cria o TileSet do Warrior
-    anim = new Animation(walking, 0.125f, true);
+	anim = new Animation(walking, 0.125f, true);											  // Cria a animação do Warrior
 
     uint SeqRight[4] = { 0,1,2,3 };
     uint SeqLeft[4] = { 4,5,6,7 };
@@ -53,8 +53,16 @@ void Warrior::OnCollision(Object* obj)
 	if (obj->Type() == ENEMY && isHit) {
 
 		timer->Start(); // Inicia o timer para o cálculo de tempo de exibição da mensagem!
+		attackTimer->Start(); // Inicia o timer para o cálculo de tempo de pausa entre os ataques!
 
-		if (targetX == enemy->GetPrevX() && targetY == enemy->GetPrevY()) {
+		float EnemyX = enemy->GetPrevX();
+		float EnemyY = enemy->GetPrevY();
+
+		// Se o player vai para a posição anterior do inimigo, ele ataca o inimigo e vice-versa
+		if (targetX == EnemyX && targetY == EnemyY) {
+
+			SetMovementType(BACK);
+
 			// Recupera a referência ao inimigo colidido
 			float dano = danoAtaque;
 
@@ -85,10 +93,10 @@ void Warrior::OnCollision(Object* obj)
 				anim = new Animation(walking, 0.125f, true);		   //
 				isDead = true;										   // foi de base
 			}
-
-			SetMovementType(BACK);
 		}
 		else {
+			// Se o player não vai para a posição anterior do inimigo, ele é atingido pelo inimigo
+			SetMovementType(WALK);
 			// Dano que o inimigo causou
 			text.insert({ std::to_string((int)enemy->GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f) });
 		}

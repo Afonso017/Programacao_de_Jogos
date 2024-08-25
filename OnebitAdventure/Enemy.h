@@ -57,7 +57,7 @@ protected:
     // --------------------------------------------------------------------------------------------
     // Atributos Básicos do Inimigo
 
-    float danoAtaque = 0.0f;         // Dano de ataque físico do inimigo
+    int danoAtaque = 0;         // Dano de ataque físico do inimigo
     int vida = 0;                    // Vida do inimigo
     int level;                       // Nível do inimigo
 
@@ -105,6 +105,8 @@ public:
     float GetTargetY() const;        // Retorna a posição Y do destino do inimigo
     float GetPrevX() const;          // Retorna a posição X anterior do inimigo
     float GetPrevY() const;          // Retorna a posição Y anterior do inimigo
+	float GetVelX() const;           // Retorna a velocidade horizontal do inimigo
+	float GetVelY() const;           // Retorna a velocidade vertical do inimigo
     bool IsHit() const;              // Verifica se o inimigo foi atingido
 
     // --------------------------------------------------------------------------------------------
@@ -168,6 +170,20 @@ inline float Enemy::GetPrevX() const
 inline float Enemy::GetPrevY() const
 {
     return prevY;      // Retorna a posição Y anterior do inimigo
+}
+
+// ---------------------------------------------------------------------------------
+
+inline float Enemy::GetVelX() const
+{
+	return VelX;       // Retorna a velocidade horizontal do inimigo
+}
+
+// ---------------------------------------------------------------------------------
+
+inline float Enemy::GetVelY() const
+{
+	return VelY;       // Retorna a velocidade vertical do inimigo
 }
 
 // ---------------------------------------------------------------------------------

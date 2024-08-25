@@ -34,7 +34,7 @@ Character::Character(float width, float height, Background* backg)
 	// --------------------------------------------------------------------------------------------
 	// Inicializar variáveis de movimentação do jogador
 
-	interpolationSpeed = 18.0f; // Velocidade de interpolação do movimento do jogador, aumentar esse número para acelerar
+	interpolationSpeed = 20.0f; // Velocidade de interpolação do movimento do jogador, aumentar esse número para acelerar
 	VelX = width;				// Velocidade horizontal (Quanto ele percorre horizontalmente)
 	VelY = height;				// Velocidade vertical	 (Quanto ele percorre verticalmente)
 	targetX = x;				// Posição x do destino do jogador pós movimento
@@ -55,6 +55,7 @@ Character::Character(float width, float height, Background* backg)
 	timer = new Timer();							// Timer para controlar o tempo de exibição do texto
 	consolas = new Font("Resources/Pexilify.png");	// Fonte para exibir texto na tela
 	consolas->Spacing("Resources/Pexilify.dat");	// Espaçamento da fonte
+	attackTimer = new Timer();							// Timer para controlar o tempo de exibição do texto
 
 	// --------------------------------------------------------------------------------------------
 	// Inicializar atributos básicos de todo jogador
@@ -72,6 +73,7 @@ Character::~Character()
 {
 	delete consolas;
 	delete timer;
+	delete attackTimer;
 }
 
 // ---------------------------------------------------------------------------------
@@ -107,7 +109,7 @@ void Character::BackMovement() {
 // ---------------------------------------------------------------------------------
 
 void Character::HandleInput() {
-	if (!isDead && (newX == targetX && newY == targetY)) {
+	if (!isDead && (newX == targetX && newY == targetY) && attackTimer->Elapsed(0.2f)) {
 		if (window->KeyDown(VK_UP) && Y() == targetY) {							// Moveu para cima
 			SetMovementDirection(WALKUP, characterState, 0.0f, -VelY);
 		}

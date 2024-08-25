@@ -30,15 +30,15 @@ Enemy::Enemy(float width, float height, Background* backg, Character* player)
 	// --------------------------------------------------------------------------------------------
     // Inicializa as variáveis de movimentação do inimigo
 
-    interpolationSpeed = 18.0f;   // Velocidade de interpolação
+    interpolationSpeed = 25.0f;   // Velocidade de interpolação (Fazendo testes com os inimigos sendo mais rápidos que o player)
     VelX = width;                 // Velocidade horizontal do inimigo (em pixels por frame)
     VelY = height;                // Velocidade vertical do inimigo (em pixels por frame)
     targetX = x;                  // Posição X do destino do inimigo pós-movimento
     targetY = y;                  // Posição Y do destino do inimigo pós-movimento
-    newX = x;                     // Nova posição X do inimigo
-    newY = y;                     // Nova posição Y do inimigo
     prevX = x;                    // Posição X anterior do inimigo
     prevY = y;                    // Posição Y anterior do inimigo
+    newX = x;                     // Nova posição X do inimigo
+    newY = y;                     // Nova posição Y do inimigo
 
 	// --------------------------------------------------------------------------------------------
     // Inicializa variáveis de sprites e animação
@@ -47,7 +47,7 @@ Enemy::Enemy(float width, float height, Background* backg, Character* player)
 	// --------------------------------------------------------------------------------------------
     // Inicializa variáveis auxiliares
 
-    proximityThreshold = 100.0f; // Distância para começar a perseguir o jogador
+    proximityThreshold = 150.0f; // Distância para começar a perseguir o jogador
 
 	// --------------------------------------------------------------------------------------------
     // Inicializa atributos básicos do inimigo
@@ -72,22 +72,36 @@ void Enemy::Update() {
         HandleMovement(); // Atualiza a movimentação do inimigo
     }
 
-    InterpolateMovement(gameTime);  // Interpola o movimento do inimigo
-    UpdateAnimation();              // Atualiza a animação do inimigo
-    ConstrainToScreen();           // Garante que o inimigo não ultrapasse os limites da tela
+    InterpolateMovement(gameTime);      // Interpola o movimento do inimigo
+    UpdateAnimation();                  // Atualiza a animação do inimigo
+    ConstrainToScreen();                // Garante que o inimigo não ultrapasse os limites da tela
 }
 
 // ------------------------------------------------------------------------------
 
 // Move o inimigo aleatoriamente
 void Enemy::MoveRandomly() {
-    int direction = rand() % 4;          // 4 direções possíveis
+    int direction = rand() % 7;         // 4 direções possíveis
+
     switch (direction) {
-    case 0: targetX = X() + VelX; break; // Move para a direita
-    case 1: targetX = X() - VelX; break; // Move para a esquerda
-    case 2: targetY = Y() + VelY; break; // Move para baixo
-    case 3: targetY = Y() - VelY; break; // Move para cima
-    default: break;                      // Fica parado
+    case 0: 
+        targetX = X() + VelX;           // Move para a direita
+		enemyState = WALKRIGHT;
+        break; 
+    case 1: 
+        targetX = X() - VelX;           // Move para a esquerda
+		enemyState = WALKLEFT;
+        break; 
+    case 2: 
+        targetY = Y() + VelY; 
+		enemyState = WALKDOWN;          // Move para baixo
+        break; 
+    case 3: 
+        targetY = Y() - VelY; 
+		enemyState = WALKUP;            // Move para cima
+        break;
+    default: 
+        break;                          // Fica parado
     }
 }
 
@@ -127,8 +141,8 @@ void Enemy::InterpolateMovement(float gameTime) {
     newY = Y() + (targetY - Y()) * interpolationSpeed * gameTime;
 
     // Ajusta a nova posição se estiver muito perto do alvo
-    if (abs(targetX - newX) < 0.5f) newX = targetX;
-    if (abs(targetY - newY) < 0.5f) newY = targetY;
+    if (abs(targetX - newX) < 0.99f) newX = targetX;
+    if (abs(targetY - newY) < 0.99f) newY = targetY;
 
     MoveTo(newX, newY); // Move o inimigo para a nova posição
 }
@@ -138,7 +152,7 @@ void Enemy::InterpolateMovement(float gameTime) {
 // Atualiza a animação do inimigo
 void Enemy::UpdateAnimation() {
     anim->Select(enemyState); // Seleciona o estado atual da animação
-    anim->NextFrame();       // Avança para o próximo frame da animação
+    anim->NextFrame();        // Avança para o próximo frame da animação
 }
 
 // ------------------------------------------------------------------------------
@@ -178,18 +192,22 @@ void Enemy::MoveTowardsPlayer(float deltaX, float deltaY) {
         // Move horizontalmente
 		if (deltaX > 0) {    // Delta X positivo significa que o jogador está à direita
             targetX += VelX; // Move para a direita
+			enemyState = WALKRIGHT; // Atualiza o estado do inimigo
         }
 		else {               // Delta X negativo significa que o jogador está à esquerda
             targetX -= VelX; // Move para a esquerda
+			enemyState = WALKLEFT; // Atualiza o estado do inimigo
         }
     }
     else {
         // Move verticalmente
 		if (deltaY > 0) {    // Delta Y positivo significa que o jogador está abaixo
             targetY += VelY; // Move para baixo
+			enemyState = WALKDOWN; // Atualiza o estado do inimigo
         }
 		else {               // Delta Y negativo significa que o jogador está acima
             targetY -= VelY; // Move para cima
+			enemyState = WALKUP; // Atualiza o estado do inimigo
         }
     }
 }

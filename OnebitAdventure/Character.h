@@ -53,6 +53,7 @@ protected:
 	float prevY;						// posição y anterior do jogador
 	float newX;							// nova posição x do jogador
 	float newY;							// nova posição y do jogador
+	Timer* attackTimer;					// timer para controlar o tempo de ataque do jogador
 
 	// --------------------------------------------------------------------------------------------
 	// Atributos de sprites e animação
@@ -74,7 +75,7 @@ protected:
 	// Atributos básicos de todo jogador
 
 	int vida = 0;						// vida do jogador
-	int danoAtaque = 0.0f;				// dano de ataque fisico do jogador (não utiliza mana e todas classes tem)
+	int danoAtaque = 0;				// dano de ataque fisico do jogador (não utiliza mana e todas classes tem)
 	int level;							// nível do jogador
 	
 	// --------------------------------------------------------------------------------------------
@@ -119,8 +120,11 @@ public:
 	float GetTargetY() const;								// retorna a posição y do destino do jogador
 	float GetPrevX() const;									// retorna a posição x anterior do jogador
 	float GetPrevY() const;									// retorna a posição y anterior do jogador
+	float GetVelX() const;									// Retorna a velocidade horizontal do inimigo
+	float GetVelY() const;									// Retorna a velocidade vertical do inimigo
+	DirectingAnimation GetDirection() const;				// retorna a direção do jogador
 	void setIsMoving(boolean move);							// seta se o personagem está se movendo
-	boolean IsHit();										// verifica se o personagem foi atingido
+	boolean IsHit() const;									// verifica se o personagem foi atingido
 	MovementType GetMovementType() const;					// retorna o tipo de movimento do jogador
 	void SetMovementType(MovementType newMovementType);		// seta o tipo de movimento do jogador
 
@@ -160,6 +164,13 @@ inline boolean Character::IsMoving()
 	boolean move = isMoving;
 	isMoving = false;
 	return move;
+}
+
+// ---------------------------------------------------------------------------------
+
+inline DirectingAnimation Character::GetDirection() const
+{
+	return direction;
 }
 
 // ---------------------------------------------------------------------------------
@@ -234,9 +245,21 @@ inline float Character::GetPrevY() const
 
 // ---------------------------------------------------------------------------------
 
+inline float Character::GetVelX() const
+{
+	return VelX;       // Retorna a velocidade horizontal do inimigo
+}
+
 // ---------------------------------------------------------------------------------
 
-inline boolean Character::IsHit()
+inline float Character::GetVelY() const
+{
+	return VelY;       // Retorna a velocidade vertical do inimigo
+}
+
+// ---------------------------------------------------------------------------------
+
+inline boolean Character::IsHit() const
 {
 	return isHit;
 }

@@ -69,6 +69,10 @@ void Level1::Draw()
 	dano.append(std::to_string(ghost->GetTargetX()));
 	dano.append(", ");
 	dano.append(std::to_string(ghost->GetTargetY()));
+	dano.append(" - ");
+	dano.append(std::to_string(ghost->GetVelX()));
+	dano.append(", ");
+	dano.append(std::to_string(ghost->GetVelY()));
 
     consolas->Draw(700, 150, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.2f, 0.0f);
 
@@ -80,6 +84,10 @@ void Level1::Draw()
 	dano.append(std::to_string(warrior->GetTargetX()));
 	dano.append(", ");
 	dano.append(std::to_string(warrior->GetTargetY()));
+	dano.append(" - ");
+	dano.append(std::to_string(warrior->GetVelX()));
+	dano.append(", ");
+	dano.append(std::to_string(warrior->GetVelY()));
 
 	consolas->Draw(700, 200, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.2f, 0.0f);
 
