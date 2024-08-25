@@ -20,22 +20,50 @@ void Character::InitializeBBox()
 Character::Character(float width, float height, Background* backg)
 	: width(width), height(height), backg(backg), walking(nullptr), anim(nullptr) {
 
-	characterState = WALKLEFT;	// estado inicial do jogador
-	direction = WALKLEFT;		// direção inicial do jogador
-	type = PLAYER;				// tipo do jogador
+	// --------------------------------------------------------------------------------------------
+	// Inicializar variáveis de estado do jogador
 
-	VelX = width;				// velocidade horizontal do jogador (Em pixeis percorridos)
-	VelY = height;				// velocidade vertical do jogador (Em pixeis percorridos)
-
-	isHit = false;				// Flag para indicar se o personagem já foi atingido	
+	characterState = WALKLEFT;	// Estado inicial do jogador
+	direction = WALKLEFT;		// Direção inicial do jogador
+	type = PLAYER;				// Tipo do jogador
+	movementType = WALK;		// Tipo de animação do jogador
+	isHit = false;				// Flag para indicar se o personagem já foi atingido
 	isDead = false;				// Flag para indicar se o personagem está morto
+	isMoving = false;			// Flag para indicar se o personagem está se movendo
 
-	interpolationSpeed = 18.0f; // velocidade de interpolação
+	// --------------------------------------------------------------------------------------------
+	// Inicializar variáveis de movimentação do jogador
 
-	prevX = x;					// posição x anterior do jogador
-	prevY = y;					// posição y anterior do jogador
+	interpolationSpeed = 18.0f; // Velocidade de interpolação do movimento do jogador, aumentar esse número para acelerar
+	VelX = width;				// Velocidade horizontal (Quanto ele percorre horizontalmente)
+	VelY = height;				// Velocidade vertical	 (Quanto ele percorre verticalmente)
+	targetX = x;				// Posição x do destino do jogador pós movimento
+	targetY = y;				// Posição y do destino do jogador pós movimento
+	newX = x;					// Nova posição x do jogador
+	newY = y;					// Nova posição y do jogador
+	prevX = x;					// Posição x anterior do jogador
+	prevY = y;					// Posição y anterior do jogador
 
-	consolas->Spacing("Resources/consolas12.dat");
+	// --------------------------------------------------------------------------------------------
+	// Inicializar variáveis de sprites e animação do jogador
+
+	// Nenhuma é inicializada aqui, pois cada personagem tem suas próprias folhas de sprites e animações
+
+	// --------------------------------------------------------------------------------------------
+	// Inicializar variáveis auxiliares para construções de lógicas
+
+	timer = new Timer();							// Timer para controlar o tempo de exibição do texto
+	consolas = new Font("Resources/Pexilify.png");	// Fonte para exibir texto na tela
+	consolas->Spacing("Resources/Pexilify.dat");	// Espaçamento da fonte
+
+	// --------------------------------------------------------------------------------------------
+	// Inicializar atributos básicos de todo jogador
+
+	level = 1;					// Nível do jogador
+
+	// Apenas o level é inicializado aqui, pois cada classe tem sua própria vida e dano de ataque
+
+	// --------------------------------------------------------------------------------------------
 }
 
 // ---------------------------------------------------------------------------------
@@ -43,92 +71,112 @@ Character::Character(float width, float height, Background* backg)
 Character::~Character()
 {
 	delete consolas;
+	delete timer;
 }
 
 // ---------------------------------------------------------------------------------
 
 void Character::Update()
 {
-	if (!isDead) {
-		// Verifica se uma tecla de movimento foi pressionada e define o alvo
-		if (window->KeyDown(VK_UP) && Y() == targetY) {
-			prevY = Y();
-			direction = WALKUP;
-			targetY = Y() - VelY - 1;
-			isMoving = true;
-			isHit = true;
+	HandleInput();					// Detecta a entrada do jogador para movimentá-lo na direção correta
+
+	if (movementType == BACK)
+		BackMovement();				// Realiza a animação de recuo do jogador
+
+	InterpolateMovement(gameTime);  // Interpolação do movimento do jogador para suavizar a movimentação
+	UpdateAnimation(); 				// Atualiza a animação do jogador para o próximo frame
+	ConstrainToScreen();			// Limita o jogador a ficar dentro da tela do jogo
+}
+
+// ---------------------------------------------------------------------------------
+
+void Character::PerformAttack() {
+	// Lógica que movimenta o jogador para a direção do ataque apenas para colidir com o inimigo
+}
+
+// ---------------------------------------------------------------------------------
+
+void Character::BackMovement() {
+	// Lógica que movimenta o jogador para a direção oposta ao ataque pois houve colisão
+	targetX = prevX;		// Volta para a posição x anterior do jogador
+	targetY = prevY;		// Volta para a posição y anterior do jogador
+
+	SetMovementType(WALK);	// Define o tipo de movimento do jogador para andar
+}
+
+// ---------------------------------------------------------------------------------
+
+void Character::HandleInput() {
+	if (!isDead && (newX == targetX && newY == targetY)) {
+		if (window->KeyDown(VK_UP) && Y() == targetY) {							// Moveu para cima
+			SetMovementDirection(WALKUP, characterState, 0.0f, -VelY);
 		}
-		else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
-			prevY = Y();
-			direction = WALKDOWN;
-			targetY = Y() + VelY + 1;
-			isMoving = true;
-			isHit = true;
+		else if (window->KeyDown(VK_DOWN) && Y() == targetY) {					// Moveu para baixo
+			SetMovementDirection(WALKDOWN, characterState, 0.0f, VelY);
 		}
-		else if (window->KeyDown(VK_LEFT) && X() == targetX) {
-			prevX = X();
-			direction = WALKLEFT;
-			characterState = WALKLEFT;
-			targetX = X() - VelX - 1;
-			isMoving = true;
-			isHit = true;
+		else if (window->KeyDown(VK_LEFT) && X() == targetX) {					// Moveu para esquerda	
+			SetMovementDirection(WALKLEFT, WALKLEFT, -VelX, 0.0f);
 		}
-		else if (window->KeyDown(VK_RIGHT) && X() == targetX) {
-			prevX = X();
-			direction = WALKRIGHT;
-			characterState = WALKRIGHT;
-			targetX = X() + VelX + 1;
-			isMoving = true;
-			isHit = true;
+		else if (window->KeyDown(VK_RIGHT) && X() == targetX) {					// Moveu para direita
+			SetMovementDirection(WALKRIGHT, WALKRIGHT, VelX, 0.0f);
 		}
 	}
+}
 
-	// Interpolação linear para suavizar o movimento
-	newX = X() + (targetX - X()) * interpolationSpeed * gameTime;
-	newY = Y() + (targetY - Y()) * interpolationSpeed * gameTime;
+// ---------------------------------------------------------------------------------
 
-	// Garante que o personagem não ultrapasse o alvo, corrigindo a posição caso necessário
-	if (abs(targetX - newX) < 0.5f) newX = targetX;
-	if (abs(targetY - newY) < 0.5f) newY = targetY;
+void Character::SetMovementDirection(DirectingAnimation newDirection, DirectingAnimation newAnimation, float deltaX, float deltaY) {
+	prevX = X();					// Salva a posição x anterior do jogador
+	prevY = Y();					// Salva a posição y anterior do jogador
+	direction = newDirection; 		// Atualiza a direção do jogador
+	characterState = newAnimation;  // Atualiza a animação do jogador
+	targetX = X() + deltaX;			// Define a posição x do destino do jogador pós movimento
+	targetY = Y() + deltaY;			// Define a posição y do destino do jogador pós movimento
+	isMoving = true;				// Indica que o jogador está se movendo
+	isHit = true;					// Indica que o jogador pode atacar o inimigo e ser atingido (Se houver colisão)
+}
 
-	// Move o personagem para a nova posição interpolada
-	MoveTo(newX, newY);
+// ---------------------------------------------------------------------------------
 
-	// Atualiza a animação
-	anim->Select(characterState);
-	anim->NextFrame();
+void Character::InterpolateMovement(float gameTime) {
+	newX = X() + (targetX - X()) * interpolationSpeed * gameTime;	// Interpola a posição x do jogador
+	newY = Y() + (targetY - Y()) * interpolationSpeed * gameTime;	// Interpola a posição y do jogador
 
-	// Move background se o Character passar da metade da tela para cima
-	if (y < window->CenterY())
-	{
-		// Translate não é ideal
-		//backg->Translate(0, 1);
-	}
+	if (abs(targetX - newX) < 0.5f) newX = targetX;					// Corrige a posição x do jogador em pequenos passos
+	if (abs(targetY - newY) < 0.5f) newY = targetY;					// Corrige a posição y do jogador em pequenos passos
 
-	// Mantém personagem dentro da tela
-	float diff = 0.067f * backg->Width();	// 49 pixels / largura do background = 0.067 de proporção
+	MoveTo(newX, newY);												// Move o jogador para a nova posição
+}
 
-	if (x + width / 2.0f > window->CenterX() + backg->Width() / 2.0f - diff + 8.0f)
-	{
+// ---------------------------------------------------------------------------------
+
+void Character::UpdateAnimation() {
+	anim->Select(characterState);	// Atualiza a animação do jogador
+	anim->NextFrame();				// Atualiza o frame da animação
+}
+
+// ---------------------------------------------------------------------------------
+
+void Character::ConstrainToScreen() {
+	float diff = 0.067f * backg->Width();
+
+	if (x + width / 2.0f > window->CenterX() + backg->Width() / 2.0f - diff + 8.0f) {
 		Translate(-4, 0);
 		targetX = newX = window->CenterX() + backg->Width() / 2.0f - diff - width / 2.0f;
 	}
-	else if (x - width / 2.0f < window->CenterX() - backg->Width() / 2.0f + diff - 8.0f)
-	{
+	else if (x - width / 2.0f < window->CenterX() - backg->Width() / 2.0f + diff - 8.0f) {
 		Translate(4, 0);
 		targetX = newX = window->CenterX() - backg->Width() / 2.0f + diff + width / 2.0f;
 	}
 
-	if (y + walking->TileHeight() / 2.0f > window->Height()) 
-	{
-		Translate(0,-4);
+	if (y + walking->TileHeight() / 2.0f > window->Height()) {
+		Translate(0, -4);
 		targetY = newY = window->Height() - walking->TileHeight() / 2.0f;
 	}
-	else if (y - walking->TileHeight() / 2.0f < 0) 
-	{
-		Translate(0,4);
+	else if (y - walking->TileHeight() / 2.0f < 0) {
+		Translate(0, 4);
 		targetY = newY = walking->TileHeight() / 2.0f;
-	}	
+	}
 }
 
 // ---------------------------------------------------------------------------------

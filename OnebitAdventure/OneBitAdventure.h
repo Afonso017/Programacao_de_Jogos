@@ -4,7 +4,7 @@
 
 // ------------------------------------------------------------------------------
 
-enum OneBitObjects
+enum OneBitObjects // Enumeração dos tipos de objetos
 {
     PLAYER,
     ENEMY,
@@ -13,7 +13,7 @@ enum OneBitObjects
 
 // ------------------------------------------------------------------------------
 
-enum steeringState 
+enum DirectingAnimation // Enumeração dos estados de movimentação
 { 
     STILL, 
     WALKUP, 
@@ -21,6 +21,13 @@ enum steeringState
     WALKLEFT, 
     WALKRIGHT,
     DAMAGE
+};
+
+// ------------------------------------------------------------------------------
+
+enum MovementType // Enumeração dos estados de animação
+{
+	ATACK, WALK, BACK, IDLE
 };
 
 // ------------------------------------------------------------------------------

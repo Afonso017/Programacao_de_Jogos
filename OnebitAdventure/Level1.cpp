@@ -61,12 +61,28 @@ void Level1::Draw()
     if (viewBox)
         scene->DrawBBox();
 
-	string dano = "Dano: ";
-	dano.append(std::to_string(warrior->GetDamage()));
-	dano.append(" Vida: ");
-	dano.append(std::to_string(ghost->GetVida()));
-        
-    consolas->Draw(975, 150, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.0f, 0.0f);
+    string dano = "Prev Ghost: ";
+    dano.append(std::to_string(ghost->GetPrevX()));
+	dano.append(", ");
+	dano.append(std::to_string(ghost->GetPrevY()));
+	dano.append(" - ");
+	dano.append(std::to_string(ghost->GetTargetX()));
+	dano.append(", ");
+	dano.append(std::to_string(ghost->GetTargetY()));
+
+    consolas->Draw(700, 150, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.2f, 0.0f);
+
+	dano = "Prev Warrior: ";
+	dano.append(std::to_string(warrior->GetPrevX()));
+	dano.append(", ");
+	dano.append(std::to_string(warrior->GetPrevY()));
+	dano.append(" - ");
+	dano.append(std::to_string(warrior->GetTargetX()));
+	dano.append(", ");
+	dano.append(std::to_string(warrior->GetTargetY()));
+
+	consolas->Draw(700, 200, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.2f, 0.0f);
+
 }
 
 // ------------------------------------------------------------------------------

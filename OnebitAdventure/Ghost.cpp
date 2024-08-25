@@ -25,7 +25,7 @@ Ghost::Ghost(float width, float height, Background* backg, Character* player)
 	InitializeBBox();
 
 	// Inicializa a posição do Ghost
-	MoveTo(window->CenterX(), window->CenterY() - (3 * height), Layer::FRONT);
+	MoveTo(window->CenterX(), window->CenterY() - (2 * height), Layer::FRONT);
 
 	targetX = X();
 	targetY = Y();

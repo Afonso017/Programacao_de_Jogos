@@ -1,107 +1,198 @@
 ﻿// Enemy.h
-// ------------------------------------------------------------------------------
-// Inclusões
-
 #pragma once
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "Types.h"                      // tipos espec�ficos da engine
-#include "Object.h"                     // interface de Object
-#include "Animation.h"                  // animaçõoes de sprites
-#include "Background.h"					// background do jogo
-#include "OneBitAdventure.h"			// .h do jogo
-#include "Character.h"					// classe base para todos os personagens
-#include "Font.h"						// fonte para exibir texto na tela
+// ------------------------------------------------------------------------------
+// Inclusões de Arquivos
+
+#include "Types.h"                      // Tipos específicos da engine
+#include "Object.h"                     // Interface base para objetos
+#include "Animation.h"                  // Animações de sprites
+#include "Background.h"                 // Informações do background do jogo
+#include "OneBitAdventure.h"            // Cabeçalhos específicos do jogo
+#include "Character.h"                  // Classe base para todos os personagens
+#include "Font.h"                       // Fonte para exibir texto na tela
 
 // ------------------------------------------------------------------------------
+// Classe Enemy : Representa um inimigo no jogo
 
 class Enemy : public Object
 {
 protected:
-	// são comuns para todos os personagens e tem o mesmo valor
-	steeringState enemyState;			// estado atual do enemy
-	Background* backg;					// background variável para obter informações do background do jogo
-	Character* player;					// enemy do jogo
-	float targetX = x;					// posição x do destino do enemy pós movimento
-	float targetY = y;					// posição y do destino do enemy pós movimento
-	float prevX = x;					// posição x anterior do jogador
-	float prevY = y;					// posição y anterior do jogador
-	float newX = x;						// nova posição x do jogador
-	float newY = y;						// nova posição y do jogador
-	float interpolationSpeed;			// velocidade de interpolação
-	float VelX;							// velocidade horizontal do enemy
-	float VelY;							// velocidade vertical do enemy
-	uint width;							// largura do Enemy
-	uint height;						// altura do Enemy
-	float proximityThreshold;			// Distância para começar a perseguir o player
-	bool isHit;							// Flag para indicar se o personagem já foi atingido
-	Font* consolas = new Font("Resources/consolas12.png");
+    // --------------------------------------------------------------------------------------------
+    // Estados e Flags do Inimigo
 
-	//--------------------------------------------------------------------------------------------
-	// Atributos básicos do enemy
-	float danoAtaque = 0.0f;			// dano de ataque fisico do enemy (não utiliza mana e todas classes tem)
-	int vida = 0;						// vida do enemy
-	TileSet* walking = nullptr;         // folha de sprites do personagem
-	Animation* anim = nullptr;          // animação do personagem
+    DirectingAnimation enemyState;    // Estado atual da animação do inimigo
+    bool isHit;                       // Flag que indica se o inimigo foi atingido
 
-	void InitializeBBox();				// inicializa a BBox
-	void MoveRandomly();				// movimentação aleatória
+    // --------------------------------------------------------------------------------------------
+    // Atributos de Movimentação
+
+    float interpolationSpeed;        // Velocidade de interpolação do movimento
+    float VelX;                      // Velocidade horizontal do inimigo
+    float VelY;                      // Velocidade vertical do inimigo
+    float targetX;                   // Posição X do destino após o movimento
+    float targetY;                   // Posição Y do destino após o movimento
+    float prevX;                     // Posição X anterior do inimigo
+    float prevY;                     // Posição Y anterior do inimigo
+    float newX;                      // Nova posição X do inimigo
+    float newY;                      // Nova posição Y do inimigo
+    float proximityThreshold;        // Distância para iniciar a perseguição ao jogador
+
+    // --------------------------------------------------------------------------------------------
+    // Atributos de Sprites e Animação
+
+    Background* backg;               // Ponteiro para o background do jogo
+    TileSet* walking = nullptr;      // Folha de sprites do inimigo
+    Animation* anim = nullptr;       // Animação do inimigo
+    uint width;                      // Largura do inimigo
+    uint height;                     // Altura do inimigo
+
+    // --------------------------------------------------------------------------------------------
+    // Objetos Auxiliares
+
+    Character* player;               // Referência ao jogador no jogo
+
+    // --------------------------------------------------------------------------------------------
+    // Atributos Básicos do Inimigo
+
+    float danoAtaque = 0.0f;         // Dano de ataque físico do inimigo
+    int vida = 0;                    // Vida do inimigo
+    int level;                       // Nível do inimigo
+
+    // --------------------------------------------------------------------------------------------
+    // Métodos Protegidos 
+
+    void InitializeBBox();          // Inicializa a caixa de colisão (BBox)
+    void MoveRandomly();            // Move o inimigo aleatoriamente
+
 public:
-	Enemy(float width, float height, Background* backg, Character* player);	// construtor
-	virtual ~Enemy() = 0;													// destrutor
+    // --------------------------------------------------------------------------------------------
+    // Construtor e Destrutor
 
-	// Métodos virtuais
-	virtual void OnCollision(Object* obj) = 0;				// resolução da colisão
+    Enemy(float width, float height, Background* backg, Character* player);  // Construtor
+    virtual ~Enemy() = 0;                                                    // Destrutor virtual puro
 
-	// Métodos de recuperação
+    // --------------------------------------------------------------------------------------------
+    // Métodos Virtuais Puras
 
-	float GetDamage() const;								// retorna o dano de ataque do enemy
-	void SetVida(float damage);								// retorna a vida do enemy
-	int GetVida() const;									// retorna a vida do enemy
-	boolean IsHit();										// verifica se o personagem foi atingido
+    virtual void OnCollision(Object* obj) = 0;  // Resolução de colisão com outros objetos
 
-	// Métodos
-	void Update();											// atualização
-	void Draw();											// desenho
+    // --------------------------------------------------------------------------------------------
+    // Sobrescrita de Métodos Virtuais de Object
+
+    float X() const override;     // Obtém a coordenada X do inimigo
+    float Y() const override;     // Obtém a coordenada Y do inimigo
+    float Z() const override;     // Obtém a coordenada Z do inimigo
+
+    // --------------------------------------------------------------------------------------------
+    // Métodos de Movimentação e Animação
+
+    void HandleMovement();                              // Lógica de movimentação do inimigo
+    void InterpolateMovement(float gameTime);           // Interpola o movimento do inimigo
+    void UpdateAnimation();                             // Atualiza a animação do inimigo
+    void ConstrainToScreen();                           // Garante que o inimigo permaneça dentro da tela
+    void MoveTowardsPlayer(float deltaX, float deltaY); // Movimenta o inimigo em direção ao jogador
+
+    // --------------------------------------------------------------------------------------------
+    // Métodos de Recuperação e Modificação de Atributos
+
+    float GetDamage() const;         // Retorna o dano de ataque do inimigo
+    void SetVida(float damage);      // Modifica a vida do inimigo
+    int GetVida() const;             // Retorna a vida do inimigo
+    float GetTargetX() const;        // Retorna a posição X do destino do inimigo
+    float GetTargetY() const;        // Retorna a posição Y do destino do inimigo
+    float GetPrevX() const;          // Retorna a posição X anterior do inimigo
+    float GetPrevY() const;          // Retorna a posição Y anterior do inimigo
+    bool IsHit() const;              // Verifica se o inimigo foi atingido
+
+    // --------------------------------------------------------------------------------------------
+    // Métodos Principais
+
+    void Update();        // Atualiza o estado e a movimentação do inimigo
+    void Draw();          // Desenha o inimigo na tela
 };
 
 // ---------------------------------------------------------------------------------
-// Função Membro Inline
+// Funções Membro Inline
 
 inline void Enemy::Draw() {
-	// Desenha o inimigo
-	anim->Draw(x, y, z);
+    anim->Draw(x, y, z);  // Desenha a animação do inimigo na posição (x, y, z)
 }
 
 // ---------------------------------------------------------------------------------
 
 inline float Enemy::GetDamage() const
 {
-	return danoAtaque;
+    return danoAtaque;    // Retorna o dano de ataque do inimigo
 }
 
 // ---------------------------------------------------------------------------------
 
 inline void Enemy::SetVida(float damage)
 {
-	vida = vida - damage;
+    vida -= damage;      // Reduz a vida do inimigo com base no dano recebido
 }
 
 // ---------------------------------------------------------------------------------
 
 inline int Enemy::GetVida() const
 {
-	return vida;
+    return vida;         // Retorna a vida atual do inimigo
 }
 
 // ---------------------------------------------------------------------------------
 
-inline boolean Enemy::IsHit()
+inline float Enemy::GetTargetX() const
 {
-	return isHit;
+    return targetX;     // Retorna a posição X do destino do inimigo
 }
 
 // ---------------------------------------------------------------------------------
 
-#endif
+inline float Enemy::GetTargetY() const
+{
+    return targetY;     // Retorna a posição Y do destino do inimigo
+}
+
+// ---------------------------------------------------------------------------------
+
+inline float Enemy::GetPrevX() const
+{
+    return prevX;      // Retorna a posição X anterior do inimigo
+}
+
+// ---------------------------------------------------------------------------------
+
+inline float Enemy::GetPrevY() const
+{
+    return prevY;      // Retorna a posição Y anterior do inimigo
+}
+
+// ---------------------------------------------------------------------------------
+
+inline bool Enemy::IsHit() const
+{
+    return isHit;     // Retorna se o inimigo foi atingido
+}
+
+// ---------------------------------------------------------------------------------
+// Métodos Inline Sobrescritos de Object
+
+inline float Enemy::X() const
+{
+    return x;         // Retorna a coordenada X do inimigo (ou pode modificar se a lógica de posição for diferente)
+}
+
+inline float Enemy::Y() const
+{
+    return y;         // Retorna a coordenada Y do inimigo (ou pode modificar se a lógica de posição for diferente)
+}
+
+inline float Enemy::Z() const
+{
+    return z;         // Retorna a coordenada Z do inimigo (ou pode modificar se a lógica de posição for diferente)
+}
+
+#endif // ENEMY_H
