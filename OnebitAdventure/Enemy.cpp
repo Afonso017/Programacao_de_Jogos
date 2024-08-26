@@ -87,7 +87,7 @@ void Enemy::Update() {
 
 // Move o inimigo aleatoriamente
 void Enemy::MoveRandomly() {
-    int direction = rand() % 7;         // 4 direções possíveis
+    int direction = rand() % 6;         // 4 direções possíveis
 
     switch (direction) {
     case 0: 
@@ -107,6 +107,8 @@ void Enemy::MoveRandomly() {
         direction = WALKUP;             // Move para cima
         break;
     default:
+        prevX = X();                    // Armazena a posição X anterior
+        prevY = Y();                    // Armazena a posição Y anterior
 		direction = STILL;              // Fica parado
         break;
     }
@@ -116,27 +118,29 @@ void Enemy::MoveRandomly() {
 
 // Lida com a movimentação do inimigo
 void Enemy::HandleMovement() {
-	isHit = true;   // Indica que o inimigo pode atacar o jogador
-	prevX = X();    // Armazena a posição X anterior
-	prevY = Y();    // Armazena a posição Y anterior
+	if (newX == targetX && newY == targetY) {                           // Se o inimigo chegou ao destino anterior, então, ele pode se mover novamente
+        isHit = true;   // Indica que o inimigo pode atacar o jogador
+        prevX = X();    // Armazena a posição X anterior
+        prevY = Y();    // Armazena a posição Y anterior
 
-    float deltaX = Level1::player->X() - X();                           // Distância em X para o jogador
-    float deltaY = Level1::player->Y() - Y();                           // Distância em Y para o jogador
-    float distanceSquared = deltaX * deltaX + deltaY * deltaY;  // Distância ao quadrado (para eficiência)
+        float deltaX = Level1::player->X() - X();                           // Distância em X para o jogador
+        float deltaY = Level1::player->Y() - Y();                           // Distância em Y para o jogador
+        float distanceSquared = deltaX * deltaX + deltaY * deltaY;  // Distância ao quadrado (para eficiência)
 
-    if (distanceSquared < proximityThreshold * proximityThreshold) {
-        // 85% de chance de mover na direção do jogador
-        if (rand() % 100 < 85) {
-            MoveTowardsPlayer(deltaX, deltaY);
+        if (distanceSquared < proximityThreshold * proximityThreshold) {
+            // 85% de chance de mover na direção do jogador
+            if (rand() % 100 < 90) {
+                MoveTowardsPlayer(deltaX, deltaY);
+            }
+            else {
+                // 15% de chance de mover aleatoriamente
+                MoveRandomly();
+            }
         }
         else {
-            // 15% de chance de mover aleatoriamente
+            // Se o jogador está longe, move aleatoriamente
             MoveRandomly();
         }
-    }
-    else {
-        // Se o jogador está longe, move aleatoriamente
-        MoveRandomly();
     }
 }
 

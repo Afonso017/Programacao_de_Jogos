@@ -117,7 +117,7 @@ void Character::BackMovement() {
 
 void Character::HandleInput() {
 	if (!isDead && newX == targetX && newY == targetY && attackTimer->Elapsed(0.2f)) {
-		if (speedMovement->Elapsed(0.25f)) {  // Verifica se o timer permite um novo movimento
+		if (speedMovement->Elapsed(0.01f)) {  // Verifica se o timer permite um novo movimento
 
 			movementType = WALK;			 // Define o tipo de movimento do jogador para andar
 
