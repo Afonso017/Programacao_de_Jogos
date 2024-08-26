@@ -11,12 +11,17 @@
 Ghost::Ghost(float width, float height, Background* backg, Character* player)
 	: Enemy(width, height, backg, player) // Chamada do construtor da classe base
 {
-	Image* img = new Image("Resources/Ghost.png", this->width * 3, this->height * 1);		// Carrega a imagem do Ghost
-	walking = new TileSet(img, this->width, this->height, 3, 3);							// Cria o TileSet do Ghost
-	anim = new Animation(walking, 0.125f, true);											// Cria a animação do Ghost
+	Image* img = new Image("Resources/GhostFolha.png", this->width * 3, this->height * 2);	// Carrega a imagem do Ghost
+	walking = new TileSet(img, this->width, this->height, 3, 6);							// Cria o TileSet do Ghost
+	anim = new Animation(walking, 0.125f, true);	
+	// Cria a animação do Ghost
 
-	uint Seq[3] = { 0,1,2};
-	anim->Add(WALKRIGHT, Seq, 3);
+	enemyState = WALK;	// Estado inicial do Ghost
+
+	uint Seq1[3] = { 0,1,2};
+	uint Seq2[3] = { 3,4,5 };
+	anim->Add(WALK, Seq1, 3);
+	anim->Add(ATACK, Seq2, 3);
 
 	vida = 5;				// Vida padrão do fastasma (Não tem na wiki informando o máximo nem quanto aumenta)
 	danoAtaque = 1.0f;      // Dano de ataque de 1	(Não tem na wiki informando o máximo nem quanto aumenta)
@@ -45,28 +50,7 @@ void Ghost::OnCollision(Object* obj)
 {
 	// Implemente a lógica de resolução de colisão aqui
 	if (obj->Type() == PLAYER && isHit) {
-
-		//switch (enemyState)
-		//{
-		//case WALKUP:						// Se o inimigo estava indo para cima inverta a direção
-		//	targetY = targetY + VelY;
-		//	enemyState = WALKDOWN;          // Move para baixo
-		//	break;
-		//case WALKDOWN:						// Se o inimigo estava indo para baixo inverta a direção
-		//	targetY = targetY - VelY;
-		//	enemyState = WALKUP;            // Move para cima
-		//	break;
-		//case WALKLEFT:						// Se o inimigo estava indo para esquerda inverta a direção
-		//	targetX = targetX + VelX;
-		//	enemyState = WALKRIGHT;         // Move para direita
-		//	break;
-		//case WALKRIGHT:						// Se o inimigo estava indo para direita inverta a direção
-		//	targetX = targetX - VelX;
-		//	enemyState = WALKLEFT;          // Move para esquerda
-		//	break;
-		//default:
-		//	break;
-		//}
+		//enemyState = ATACK;
 
 		targetX = prevX;
 		targetY = prevY;

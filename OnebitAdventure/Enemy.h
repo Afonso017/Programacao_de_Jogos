@@ -23,7 +23,7 @@ protected:
     // --------------------------------------------------------------------------------------------
     // Estados e Flags do Inimigo
 
-    DirectingAnimation enemyState;    // Estado atual da animação do inimigo
+    MovementType enemyState;    // Estado atual da animação do inimigo
     bool isHit;                       // Flag que indica se o inimigo foi atingido
 
     // --------------------------------------------------------------------------------------------

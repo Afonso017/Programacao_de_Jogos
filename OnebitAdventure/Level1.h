@@ -17,8 +17,8 @@ class Level1 : public Game
 {
 private:
 	Warrior* warrior;				// instancia do jogador (classe guerreiro)
-	Background* backg   = nullptr;	// background principal
-	Sprite* backg2  = nullptr;		// background
+	Background* backg = nullptr;	// background principal
+	Sprite* backg2 = nullptr;		// background
 	boolean  viewBox = false;		// controle de visualização de caixas de colisão
 	Font* consolas;					// Fonte para exibir texto na tela!
 
