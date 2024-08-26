@@ -118,7 +118,8 @@ void Enemy::MoveRandomly() {
 
 // Lida com a movimentação do inimigo
 void Enemy::HandleMovement() {
-	if (newX == targetX && newY == targetY) {                           // Se o inimigo chegou ao destino anterior, então, ele pode se mover novamente
+	if (newX == targetX && newY == targetY) {   // Se o inimigo chegou ao destino anterior, então, ele pode se mover novamente
+
         isHit = true;   // Indica que o inimigo pode atacar o jogador
         prevX = X();    // Armazena a posição X anterior
         prevY = Y();    // Armazena a posição Y anterior
@@ -141,6 +142,7 @@ void Enemy::HandleMovement() {
             // Se o jogador está longe, move aleatoriamente
             MoveRandomly();
         }
+
     }
 }
 
