@@ -8,11 +8,16 @@
 
 // ------------------------------------------------------------------------------
 
+// Inicializa a BBox para colisão
 void Character::InitializeBBox()
 {
 	// Inicializa a BBox
-	BBox(new Rect(x - walking->TileWidth() / 5.0f, y - walking->TileHeight() / 5.0f,
-		x + walking->TileWidth() / 5.0f, y + walking->TileHeight() / 5.0f));
+	BBox(new Rect(
+		x - walking->TileWidth() / 2.4f, 
+		y - walking->TileHeight() / 2.3f,
+		x + walking->TileWidth() / 2.4f, 
+		y + walking->TileHeight() / 2.3f)
+	);
 }
 
 // ---------------------------------------------------------------------------------
@@ -112,7 +117,7 @@ void Character::BackMovement() {
 
 void Character::HandleInput() {
 	if (!isDead && newX == targetX && newY == targetY && attackTimer->Elapsed(0.2f)) {
-		if (speedMovement->Elapsed(0.3f)) {  // Verifica se o timer permite um novo movimento
+		if (speedMovement->Elapsed(0.25f)) {  // Verifica se o timer permite um novo movimento
 
 			movementType = WALK;			 // Define o tipo de movimento do jogador para andar
 

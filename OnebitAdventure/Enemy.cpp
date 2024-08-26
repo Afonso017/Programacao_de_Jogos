@@ -8,11 +8,15 @@
 // ------------------------------------------------------------------------------
 
 // Inicializa a BBox para colisão
-void Enemy::InitializeBBox() {
-    BBox(new Rect(x - walking->TileWidth() / 5.0f,
-        y - walking->TileHeight() / 5.0f,
-        x + walking->TileWidth() / 5.0f,
-        y + walking->TileHeight() / 5.0f));
+void Enemy::InitializeBBox() 
+{
+    // Inicializa a BBox
+    BBox(new Rect(
+        x - walking->TileWidth() / 2.4f,
+        y - walking->TileHeight() / 2.3f,
+        x + walking->TileWidth() / 2.4f,
+        y + walking->TileHeight() / 2.3f)
+    );
 }
 
 // ------------------------------------------------------------------------------
