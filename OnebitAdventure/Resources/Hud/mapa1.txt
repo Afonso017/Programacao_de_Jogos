@@ -1,0 +1,75 @@
+// Arquivo que define as props do primeiro mapa
+// A sequência de cada linha é: Tipo, X, Y, Interagível e Possui BBox
+// onde x e y são a coluna e a linha, respectivamente, em relação ao mapa, de baixo para cima
+// Tipos:
+// 0 = árvore (tree) 0 1
+// 1 = parede (wall) 0 1
+// 2 = moeda (coin) 1 1
+// 3 = porta (door) 1 1
+// 4 = grama (grass) 0 0
+// 5 = baú (chest) 1 1
+// 6 = fogueira (campfire) 0 1
+
+// Linha 1
+0 3 1 0 1
+0 3 2 0 1
+4 3 3 0 0
+4 3 4 0 0
+4 3 7 0 0
+0 3 9 0 1
+0 3 10 0 1
+0 3 11 0 1
+
+// Linha 2
+0 4 1 0 1
+0 4 2 0 1
+1 4 3 0 1
+1 4 4 0 1
+1 4 5 0 1
+1 4 6 0 1
+1 4 7 0 1
+1 4 8 0 1
+1 4 9 0 1
+0 4 10 0 1
+0 4 11 0 1
+
+// Linha 3
+4 5 1 0 1
+0 5 2 0 1
+1 5 3 0 1
+4 5 4 0 1
+4 5 9 0 1
+0 5 10 0 1
+0 5 11 0 1
+
+// Linha 4
+4 6 1 0 1
+0 6 2 0 1
+1 6 3 0 1
+4 6 6 0 1
+4 6 7 0 1
+4 6 9 0 1
+0 6 10 0 1
+0 6 11 0 1
+1 6 12 0 1
+
+// Linha 5
+4 7 1 0 1
+0 7 2 0 1
+1 7 3 0 1
+4 7 6 0 1
+4 7 7 0 1
+4 7 9 0 1
+0 7 10 0 1
+0 7 11 0 1
+1 7 12 0 1
+
+// Linha 6
+0 8 1 0 1
+0 8 2 0 1
+4 8 4 0 1
+6 8 6 0 1
+1 8 9 0 1
+1 8 10 0 1
+1 8 11 0 1
+1 8 12 0 1 

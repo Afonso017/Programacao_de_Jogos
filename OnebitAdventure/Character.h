@@ -10,7 +10,6 @@
 #include "Types.h"                      // tipos espec�ficos da engine
 #include "Object.h"                     // interface de Object
 #include "Animation.h"                  // animaçõoes de sprites
-#include "Background.h"					// background do jogo
 #include "OneBitAdventure.h"			// .h do jogo
 #include "Font.h"						// fonte para exibir texto na tela
 #include "string"						// biblioteca STL
@@ -39,7 +38,7 @@ protected:
 	DirectingAnimation direction;		// direção do jogador
 	bool isHit;							// Flag para indicar se o personagem já foi atingido
 	bool isDead;						// Flag para indicar se o personagem está morto
-	boolean isMoving;					// verifica se o personagem está se movendo
+	bool isMoving = false;				// verifica se o personagem está se movendo
 
 	// --------------------------------------------------------------------------------------------
 	// Atributos de movimentação
@@ -58,7 +57,6 @@ protected:
 	// --------------------------------------------------------------------------------------------
 	// Atributos de sprites e animação
 
-	Background* backg;					// background variável para obter informações do background do jogo
 	TileSet* walking = nullptr;         // folha de sprites do personagem
 	Animation* anim = nullptr;          // animação do personagem
 	uint width;							// largura do Character
@@ -74,6 +72,7 @@ protected:
 	//--------------------------------------------------------------------------------------------
 	// Atributos básicos de todo jogador
 
+	int maxLife = 0;
 	int vida = 0;						// vida do jogador
 	int danoAtaque = 0;				// dano de ataque fisico do jogador (não utiliza mana e todas classes tem)
 	int level;							// nível do jogador
@@ -84,7 +83,7 @@ protected:
 	void InitializeBBox();										// inicializa a BBox
 
 public:
-	Character(float width, float height, Background* backg);	// construtor
+	Character(float width, float height);						// construtor
 	virtual ~Character() = 0;									// destrutor
 
 	//--------------------------------------------------------------------------------------------
@@ -116,6 +115,7 @@ public:
 	int GetDamage() const;									// retorna o dano de ataque do enemy
 	int GetVida() const;									// retorna a vida do jogador
 	void SetVida(int damage);								// retorna a vida do jogador
+	int MaxLife() const;									// retorna a vida máxima do jogador
 	float GetTargetX() const;								// retorna a posição x do destino do jogador
 	float GetTargetY() const;								// retorna a posição y do destino do jogador
 	float GetPrevX() const;									// retorna a posição x anterior do jogador
@@ -131,7 +131,7 @@ public:
 	// --------------------------------------------------------------------------------------------
 	// Métodos auxiliares
 
-	boolean IsMoving();										// verifica se o personagem está se movendo
+	bool IsMoving();										// verifica se o personagem está se movendo
 	void Update();											// atualização
 	void Draw();											// desenho
 };
@@ -159,10 +159,10 @@ inline void Character::Draw()			// Desenha o jogador relacionados ao player e o 
 
 // ---------------------------------------------------------------------------------
 
-inline boolean Character::IsMoving()	
+inline bool Character::IsMoving()
 {
-	boolean move = isMoving;
-	isMoving = false;
+	bool move = Character::isMoving;
+	Character::isMoving = false;
 	return move;
 }
 
@@ -206,6 +206,13 @@ inline void Character::SetVida(int damage)
 inline int Character::GetDamage() const
 {
 	return danoAtaque;
+}
+
+// ---------------------------------------------------------------------------------
+
+inline int Character::MaxLife() const
+{
+	return maxLife;
 }
 
 // ---------------------------------------------------------------------------------

@@ -25,6 +25,7 @@ private:
     ID3D11ShaderResourceView * textureView;      // view associada a textura
     uint width;                                  // largura da imagem
     uint height;                                 // altura da imagem
+    string filename;                             // nome do arquivo
 
 public:
     Image(string filename);                      // constroi imagem a partir de um arquivo
@@ -34,6 +35,7 @@ public:
 
     uint Width() const;                          // retorna largura da imagem
     uint Height() const;                         // retorna altura da imagem
+    void Resize(uint width, uint height);     // redimensiona a imagem
     ID3D11ShaderResourceView * View() const;     // retorna ponteiro para a view da imagem
 };
 

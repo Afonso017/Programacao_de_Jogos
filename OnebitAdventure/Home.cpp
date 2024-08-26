@@ -11,7 +11,6 @@ void Home::Init()
 {
     // Carrega a imagem e redimensiona conforme o tamanho da janela
     Image* img = new Image("Resources/TitleScreen.png", window->Width() * 2.0f, window->Height());
-    //img->Resize(window->Width() * 2, window->Height()); // Largura x2 porque o tileset é 2x2
 
     TileSet* tileBackg = new TileSet(img, img->Width() / 2.0f, img->Height(), 2, 2);
 

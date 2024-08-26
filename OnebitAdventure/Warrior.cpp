@@ -10,8 +10,8 @@
 // ---------------------------------------------------------------------------------
 
 // Construtor da classe Warrior, inicializa tudo especifico do Warrior
-Warrior::Warrior(float width, float height, Background* backg) 
-	: Character(width, height, backg) // Chamada do construtor da classe base
+Warrior::Warrior(float width, float height) 
+	: Character(width, height) // Chamada do construtor da classe base
 {
 	Image* img = new Image("Resources/WarriorSprite.png", this->width * 4, this->height * 2); // Carrega a imagem do Warrior
 	walking = new TileSet(img, this->width, this->height, 4, 8);                              // Cria o TileSet do Warrior
@@ -22,7 +22,8 @@ Warrior::Warrior(float width, float height, Background* backg)
     anim->Add(WALKRIGHT, SeqRight, 4);
     anim->Add(WALKLEFT, SeqLeft, 4);
 
-    vida = 72;				
+	maxLife = 72;
+    vida = maxLife;
 	danoAtaque = 2.0f;      // Dano de ataque de 2
 	chanceCritica = 2.0f;   // Chance de crítico de 2%
 
@@ -30,7 +31,7 @@ Warrior::Warrior(float width, float height, Background* backg)
     InitializeBBox();
 
 	// Inicializa a posição do Warrior
-	MoveTo(window->CenterX(), window->CenterY(), Layer::FRONT);
+	MoveTo(window->CenterX(), window->CenterY(), Layer::UPPER);
 
 	targetX = X();
 	targetY = Y();
@@ -83,16 +84,6 @@ void Warrior::OnCollision(Object* obj)
 
 			// Dano que o inimigo causou
 			text.insert({ std::to_string((int)enemy->GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f) });
-
-			// Se a vida do personagem for menor ou igual a 0, remove-o da cena
-			if (vida <= 0) {
-				//Level1::scene->Delete(this, MOVING);
-
-				Image* img = new Image("Resources/morte.png", 64, 64); // Carrega a imagem do Warrior
-				walking = new TileSet(img, 64, 64, 1, 1);              // Cria o TileSet do Warrior
-				anim = new Animation(walking, 0.125f, true);		   //
-				isDead = true;										   // foi de base
-			}
 		}
 		else {
 			// Se o player não vai para a posição anterior do inimigo, ele é atingido pelo inimigo
@@ -103,6 +94,15 @@ void Warrior::OnCollision(Object* obj)
 
 		// Evita que o Warrior continue a ser atingido até que a próxima colisão seja registrada
 		isHit = false;
+
+		// Se a vida do personagem for menor ou igual a 0, remove-o da cena
+		if (vida <= 0) {
+
+			Image* img = new Image("Resources/morte.png", 64, 64); // Carrega a imagem do Warrior
+			walking = new TileSet(img, 64, 64, 1, 1);              // Cria o TileSet do Warrior
+			anim = new Animation(walking, 0.125f, true);		   //
+			isDead = true;										   // foi de base
+		}
 	}
 }
 

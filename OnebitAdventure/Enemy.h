@@ -9,7 +9,6 @@
 #include "Types.h"                      // Tipos específicos da engine
 #include "Object.h"                     // Interface base para objetos
 #include "Animation.h"                  // Animações de sprites
-#include "Background.h"                 // Informações do background do jogo
 #include "OneBitAdventure.h"            // Cabeçalhos específicos do jogo
 #include "Character.h"                  // Classe base para todos os personagens
 #include "Font.h"                       // Fonte para exibir texto na tela
@@ -43,7 +42,6 @@ protected:
     // --------------------------------------------------------------------------------------------
     // Atributos de Sprites e Animação
 
-    Background* backg;               // Ponteiro para o background do jogo
     TileSet* walking = nullptr;      // Folha de sprites do inimigo
     Animation* anim = nullptr;       // Animação do inimigo
     uint width;                      // Largura do inimigo
@@ -71,7 +69,7 @@ public:
     // --------------------------------------------------------------------------------------------
     // Construtor e Destrutor
 
-    Enemy(float width, float height, Background* backg, Character* player);  // Construtor
+    Enemy(float width, float height);                                        // Construtor
     virtual ~Enemy() = 0;                                                    // Destrutor virtual puro
 
     // --------------------------------------------------------------------------------------------

@@ -1,12 +1,11 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
-#pragma once
 #ifndef WARRIOR_H
 #define WARRIOR_H
 
-#include "Object.h"							// interface de Object
-#include "Character.h"						// interface de Player		
+#include "Object.h"						// interface de Object
+#include "Character.h"						// interface de Player
 
 // ------------------------------------------------------------------------------
 
@@ -21,7 +20,7 @@ private:
 	// --------------------------------------------------------------------------------------------
 
 public:
-	Warrior(float width, float height, Background* backg);
+	Warrior(float width, float height);
 	~Warrior() override;
 
 	void OnCollision(Object* obj) override;					// resolução de colisões
@@ -29,4 +28,4 @@ public:
 
 // ---------------------------------------------------------------------------------
 
-#endif WARRIOR_H
+#endif // WARRIOR_H

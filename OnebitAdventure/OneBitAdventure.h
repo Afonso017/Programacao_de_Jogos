@@ -1,4 +1,5 @@
-#pragma once
+// ONEBITADVENTURE_H
+
 #ifndef ONEBITADVENTURE_H
 #define ONEBITADVENTURE_H
 
@@ -8,7 +9,7 @@ enum OneBitObjects // Enumeração dos tipos de objetos
 {
     PLAYER,
     ENEMY,
-    SPECIAL,
+    PROP,
 };
 
 // ------------------------------------------------------------------------------

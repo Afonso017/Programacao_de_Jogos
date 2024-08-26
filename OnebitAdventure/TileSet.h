@@ -48,6 +48,10 @@ public:
             uint numLines,                  // número de linhas na folha
             uint numCols);                  // número de colunas na folha
 
+    TileSet(Image * image,                  // imagem da folha
+            uint numLines,                  // número de linhas na folha
+            uint numCols);                  // número de colunas na folha
+
     ~TileSet();                                
 
     uint    TileWidth();                    // retorna a largura de um quadro

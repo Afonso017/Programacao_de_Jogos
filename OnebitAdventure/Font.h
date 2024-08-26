@@ -16,6 +16,7 @@
 
 #include "TileSet.h"                            // folha de sprites
 #include "Types.h"                              // tipos do motor de jogos
+#include "Sprite.h"
 #include <string>                               // inclui a classe string da STL
 using std::string;                              // dispensa o uso do std::
 

@@ -1,7 +1,6 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
-#pragma once	
 #ifndef GHOST_H
 #define GHOST_H
 
@@ -16,7 +15,7 @@ private:
 	// atributos específicos do Ghost (Ghost, pelo que vi, não tem muitos atributos diferentes não!)
 
 public:
-	Ghost(float width, float height, Background* backg, Character* player);
+	Ghost(float width, float height);
 	~Ghost() override;
 
 	void OnCollision(Object* obj) override;					// resolução da colisão
@@ -24,4 +23,4 @@ public:
 
 // ---------------------------------------------------------------------------------
 
-#endif GHOST_H
+#endif // GHOST_H

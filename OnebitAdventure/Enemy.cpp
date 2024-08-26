@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Enemy.h"
+#include "Level1.h"
 
 // ------------------------------------------------------------------------------
 
@@ -17,8 +18,8 @@ void Enemy::InitializeBBox() {
 // ------------------------------------------------------------------------------
 
 // Construtor da classe Enemy
-Enemy::Enemy(float width, float height, Background* backg, Character* player)
-    : width(width), height(height), backg(backg), player(player), walking(nullptr), anim(nullptr) {
+Enemy::Enemy(float width, float height)
+    : width(width), height(height), walking(nullptr), anim(nullptr) {
 
 	// --------------------------------------------------------------------------------------------
     // Inicializa as variáveis de estado do inimigo
@@ -159,16 +160,16 @@ void Enemy::UpdateAnimation() {
 
 // Garante que o inimigo não ultrapasse os limites da tela
 void Enemy::ConstrainToScreen() {
-    float diff = 0.067f * backg->Width(); // Margem para a borda da tela
+    float diff = 0.067f * Level1::hud->Width(); // Margem para a borda da tela
 
     // Limita a posição X do inimigo
-    if (x + width / 2.0f > window->CenterX() + backg->Width() / 2.0f - diff + 8.0f) {
+    if (x + width / 2.0f > window->CenterX() + Level1::hud->Width() / 2.0f - diff + 8.0f) {
         Translate(-4, 0);
-        targetX = newX = window->CenterX() + backg->Width() / 2.0f - diff - width / 2.0f;
+        targetX = newX = window->CenterX() + Level1::hud->Width() / 2.0f - diff - width / 2.0f;
     }
-    else if (x - width / 2.0f < window->CenterX() - backg->Width() / 2.0f + diff - 8.0f) {
+    else if (x - width / 2.0f < window->CenterX() - Level1::hud->Width() / 2.0f + diff - 8.0f) {
         Translate(4, 0);
-        targetX = newX = window->CenterX() - backg->Width() / 2.0f + diff + width / 2.0f;
+        targetX = newX = window->CenterX() - Level1::hud->Width() / 2.0f + diff + width / 2.0f;
     }
 
     // Limita a posição Y do inimigo

@@ -8,8 +8,8 @@
 // ---------------------------------------------------------------------------------
 
 // Construtor da classe Ghost, inicializa tudo especifico do Ghost
-Ghost::Ghost(float width, float height, Background* backg, Character* player)
-	: Enemy(width, height, backg, player) // Chamada do construtor da classe base
+Ghost::Ghost(float width, float height)
+	: Enemy(width, height) // Chamada do construtor da classe base
 {
 	Image* img = new Image("Resources/Ghost.png", this->width * 3, this->height * 1);		// Carrega a imagem do Ghost
 	walking = new TileSet(img, this->width, this->height, 3, 3);							// Cria o TileSet do Ghost

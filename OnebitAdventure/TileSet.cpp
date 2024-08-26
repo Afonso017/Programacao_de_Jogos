@@ -49,6 +49,17 @@ TileSet::TileSet(string filename, uint numLines, uint numCols) :
 
 // -------------------------------------------------------------------------------
 
+TileSet::TileSet(Image* image, uint numLines, uint numCols) :
+    image(image),
+    columns(numCols),
+    size(numLines* numCols)
+{
+    width = image->Width() / numCols;
+    height = image->Height() / numLines;
+}
+
+// -------------------------------------------------------------------------------
+
 TileSet::~TileSet()
 {
     // libera memória ocupada pela imagem

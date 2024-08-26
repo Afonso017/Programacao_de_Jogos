@@ -28,17 +28,29 @@
     <Filter Include="Engine\Arquivos de Sombreamento">
       <UniqueIdentifier>{6eefbe06-0d99-4677-b4ce-54bd3cc97d9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Arquivos de Origem\Class">
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity">
+      <UniqueIdentifier>{cad8467a-a47c-4f96-bcdf-300382dde5bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Enemy">
+      <UniqueIdentifier>{7772968c-3c38-4c7a-8b75-41eda9efb09a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Origem\Entity">
+      <UniqueIdentifier>{cb39481d-40e4-4095-bb90-f6bb2c1f2ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Origem\Entity\Player">
       <UniqueIdentifier>{e97dcada-aed4-47de-9cef-223dd8c3eb35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Arquivos de Cabeçalho\Class">
-      <UniqueIdentifier>{7522dc7d-7004-4cc4-9815-f14458f601a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Arquivos de Origem\Enemys">
+    <Filter Include="Game\Arquivos de Origem\Entity\Enemy">
       <UniqueIdentifier>{709fe330-2f70-41ef-88b5-682ca104b247}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Arquivos de Cabeçalho\Enemys">
-      <UniqueIdentifier>{7772968c-3c38-4c7a-8b75-41eda9efb09a}</UniqueIdentifier>
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Player">
+      <UniqueIdentifier>{7522dc7d-7004-4cc4-9815-f14458f601a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Origem\Entity\Prop">
+      <UniqueIdentifier>{a300186c-5f1b-45fe-aba6-9315572dbcce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Prop">
+      <UniqueIdentifier>{376bcf3f-53de-40ba-8e30-ae1ac94ef791}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +93,6 @@
     <ClCompile Include="OneBitAdventure.cpp">
       <Filter>Game\Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>Game\Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="TileSet.cpp">
       <Filter>Engine\Arquivos de Origem</Filter>
     </ClCompile>
@@ -102,17 +111,23 @@
     <ClCompile Include="Font.cpp">
       <Filter>Engine\Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="Background.cpp">
-      <Filter>Game\Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="Warrior.cpp">
-      <Filter>Game\Arquivos de Origem\Class</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Game\Arquivos de Origem</Filter>
+      <Filter>Game\Arquivos de Origem\Entity\Player</Filter>
     </ClCompile>
     <ClCompile Include="Ghost.cpp">
-      <Filter>Game\Arquivos de Origem\Enemys</Filter>
+      <Filter>Game\Arquivos de Origem\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>Game\Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Prop.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Prop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,9 +145,6 @@
     </ClInclude>
     <ClInclude Include="Image.h">
       <Filter>Engine\Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources.h">
-      <Filter>Game\Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Engine\Arquivos de Cabeçalho</Filter>
@@ -161,14 +173,8 @@
     <ClInclude Include="OneBitAdventure.h">
       <Filter>Game\Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>Game\Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="TileSet.h">
       <Filter>Engine\Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Game\Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="Level1.h">
       <Filter>Game\Arquivos de Cabeçalho</Filter>
@@ -185,17 +191,29 @@
     <ClInclude Include="Font.h">
       <Filter>Engine\Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="Background.h">
-      <Filter>Game\Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="Warrior.h">
-      <Filter>Game\Arquivos de Cabeçalho\Class</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\Arquivos de Cabeçalho</Filter>
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Player</Filter>
     </ClInclude>
     <ClInclude Include="Ghost.h">
-      <Filter>Game\Arquivos de Cabeçalho\Enemys</Filter>
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Game\Arquivos de Recurso</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Game\Arquivos de Recurso</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>Game\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Prop.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Prop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -210,5 +228,10 @@
     <ResourceCompile Include="Resources.rc">
       <Filter>Game\Arquivos de Recurso</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\Hud\mapa1.txt">
+      <Filter>Game\Arquivos de Recurso</Filter>
+    </Text>
   </ItemGroup>
 </Project>

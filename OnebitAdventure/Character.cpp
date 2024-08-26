@@ -4,6 +4,7 @@
 #include "Character.h"
 #include <iostream>
 #include "Enemy.h"
+#include "Level1.h"
 
 // ------------------------------------------------------------------------------
 
@@ -17,8 +18,8 @@ void Character::InitializeBBox()
 // ---------------------------------------------------------------------------------
 
 // construtor para inicializar os atributos genéricos do jogador
-Character::Character(float width, float height, Background* backg)
-	: width(width), height(height), backg(backg), walking(nullptr), anim(nullptr) {
+Character::Character(float width, float height)
+	: width(width), height(height), walking(nullptr), anim(nullptr) {
 
 	// --------------------------------------------------------------------------------------------
 	// Inicializar variáveis de estado do jogador
@@ -160,15 +161,15 @@ void Character::UpdateAnimation() {
 // ---------------------------------------------------------------------------------
 
 void Character::ConstrainToScreen() {
-	float diff = 0.067f * backg->Width();
+	float diff = 0.067f * Level1::hud->Width();
 
-	if (x + width / 2.0f > window->CenterX() + backg->Width() / 2.0f - diff + 8.0f) {
+	if (x + width / 2.0f > window->CenterX() + Level1::hud->Width() / 2.0f - diff + 8.0f) {
 		Translate(-4, 0);
-		targetX = newX = window->CenterX() + backg->Width() / 2.0f - diff - width / 2.0f;
+		targetX = newX = window->CenterX() + Level1::hud->Width() / 2.0f - diff - width / 2.0f;
 	}
-	else if (x - width / 2.0f < window->CenterX() - backg->Width() / 2.0f + diff - 8.0f) {
+	else if (x - width / 2.0f < window->CenterX() - Level1::hud->Width() / 2.0f + diff - 8.0f) {
 		Translate(4, 0);
-		targetX = newX = window->CenterX() - backg->Width() / 2.0f + diff + width / 2.0f;
+		targetX = newX = window->CenterX() - Level1::hud->Width() / 2.0f + diff + width / 2.0f;
 	}
 
 	if (y + walking->TileHeight() / 2.0f > window->Height()) {
