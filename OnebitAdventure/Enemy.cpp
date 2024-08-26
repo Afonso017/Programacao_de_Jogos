@@ -24,7 +24,8 @@ Enemy::Enemy(float width, float height)
 	// --------------------------------------------------------------------------------------------
     // Inicializa as variáveis de estado do inimigo
 
-    enemyState = WALK;        // Estado inicial do inimigo
+	direction = STILL;            // Direção inicial do inimigo
+    enemyState = WALK;            // Estado inicial do inimigo
     type = ENEMY;                 // Tipo do inimigo
     isHit = false;                // Flag para indicar se o inimigo foi atingido
 
@@ -69,7 +70,7 @@ Enemy::~Enemy()
 
 // Atualiza o estado do inimigo
 void Enemy::Update() {
-    if (Level1::player->IsMoving()) {
+    if (Level1::player->IsMoving() && Level1::player->GetMovementType() != IDLE) {
         HandleMovement(); // Atualiza a movimentação do inimigo
     }
 
@@ -86,23 +87,24 @@ void Enemy::MoveRandomly() {
 
     switch (direction) {
     case 0: 
-        targetX = X() + VelX;           // Move para a direita
-		//enemyState = WALKRIGHT;
+        targetX = X() + VelX;           
+		direction = WALKRIGHT;          // Move para a direita
         break; 
     case 1: 
-        targetX = X() - VelX;           // Move para a esquerda
-		//enemyState = WALKLEFT;
+        targetX = X() - VelX;           
+		direction = WALKLEFT;           // Move para a esquerda 
         break; 
     case 2: 
         targetY = Y() + VelY; 
-		//enemyState = WALKDOWN;          // Move para baixo
+        direction = WALKDOWN;           // Move para baixo
         break; 
     case 3: 
         targetY = Y() - VelY; 
-		//enemyState = WALKUP;            // Move para cima
+        direction = WALKUP;             // Move para cima
         break;
-    default: 
-        break;                          // Fica parado
+    default:
+		direction = STILL;              // Fica parado
+        break;
     }
 }
 
@@ -158,27 +160,28 @@ void Enemy::UpdateAnimation() {
 
 // ------------------------------------------------------------------------------
 
-// Garante que o inimigo não ultrapasse os limites da tela
 void Enemy::ConstrainToScreen() {
     float diff = 0.067f * Level1::hud->Width();
 
-    if (x + width / 2.0f > window->CenterX() + Level1::hud->Width() / 2.0f - diff) { // Checando se passou do lado direito
-        //Translate(-4, 0);
-        targetX = newX = prevX;
+    // Verifica o limite direito
+    if (x + width / 2.0f > window->CenterX() + Level1::hud->Width() / 2.0f - diff) {
+        newX = targetX = prevX;
     }
-    else if (x - width / 2.0f < window->CenterX() - Level1::hud->Width() / 2.0f + diff) { // Checando se passou do lado esquerdo
-        //Translate(4, 0);
-        targetX = newX = prevX;
+    // Verifica o limite esquerdo
+    if (x - width / 2.0f < window->CenterX() - Level1::hud->Width() / 2.0f + diff) {
+        newX = targetX = prevX;
+    }
+    // Verifica o limite inferior
+    if (y + walking->TileHeight() / 2.0f > window->Height()) {
+        newY = targetY = prevY;
+    }
+    // Verifica o limite superior
+    if (y - walking->TileHeight() / 2.0f < 0) {
+        newY = targetY = prevY;
     }
 
-    if (y + walking->TileHeight() / 2.0f > window->Height()) { // Checando se passou da parte inferior
-        //Translate(0, -4);
-        targetY = newY = prevY;
-    }
-    else if (y - walking->TileHeight() / 2.0f < 0) { // checando se passou da parte superior
-        //Translate(0, 4);
-        targetY = newY = prevY;
-    }
+    // Atualiza a posição se ela estiver dentro dos limites
+    MoveTo(newX, newY);
 }
 
 // ------------------------------------------------------------------------------
@@ -188,25 +191,25 @@ void Enemy::MoveTowardsPlayer(float deltaX, float deltaY) {
 	// Se a diferença em X for maior que a diferença em Y (em valor absoluto) 
 	// o inimigo se move horizontalmente, caso contrário, se move verticalmente
     if (abs(deltaX) > abs(deltaY)) {    
-        // Move horizontalmente
+        //  Move horizontalmente
 		if (deltaX > 0) {    // Delta X positivo significa que o jogador está à direita
             targetX += VelX; // Move para a direita
-			//enemyState = WALKRIGHT; // Atualiza o estado do inimigo
+            direction = WALKRIGHT; // Atualiza o estado do inimigo
         }
 		else {               // Delta X negativo significa que o jogador está à esquerda
             targetX -= VelX; // Move para a esquerda
-			//enemyState = WALKLEFT; // Atualiza o estado do inimigo
+            direction = WALKLEFT; // Atualiza o estado do inimigo
         }
     }
     else {
         // Move verticalmente
 		if (deltaY > 0) {    // Delta Y positivo significa que o jogador está abaixo
             targetY += VelY; // Move para baixo
-			//enemyState = WALKDOWN; // Atualiza o estado do inimigo
+            direction = WALKDOWN; // Atualiza o estado do inimigo
         }
 		else {               // Delta Y negativo significa que o jogador está acima
             targetY -= VelY; // Move para cima
-			//enemyState = WALKUP; // Atualiza o estado do inimigo
+            direction = WALKUP; // Atualiza o estado do inimigo
         }
     }
 }

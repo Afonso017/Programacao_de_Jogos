@@ -68,6 +68,7 @@ protected:
 	unordered_map<string, Color> text;  // unordered_map para armazenar o texto a ser exibido na tela
 	Timer* timer;						// timer para controlar o tempo de exibição do texto
 	Font* consolas;						// fonte para exibir texto na tela
+	Timer* speedMovement;				// timer para controlar a velocidade de movimento do jogador
 
 	//--------------------------------------------------------------------------------------------
 	// Atributos básicos de todo jogador
@@ -161,8 +162,8 @@ inline void Character::Draw()			// Desenha o jogador relacionados ao player e o 
 
 inline bool Character::IsMoving()
 {
-	bool move = Character::isMoving;
-	Character::isMoving = false;
+	bool move = isMoving;
+	isMoving = false;
 	return move;
 }
 

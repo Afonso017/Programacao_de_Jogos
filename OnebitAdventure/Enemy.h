@@ -22,8 +22,9 @@ protected:
     // --------------------------------------------------------------------------------------------
     // Estados e Flags do Inimigo
 
-    MovementType enemyState;    // Estado atual da animação do inimigo
-    bool isHit;                       // Flag que indica se o inimigo foi atingido
+    MovementType enemyState;            // Estado atual da animação do inimigo
+    bool isHit;                         // Flag que indica se o inimigo foi atingido
+	DirectingAnimation direction;       // Direção da animação do inimigo
 
     // --------------------------------------------------------------------------------------------
     // Atributos de Movimentação
@@ -54,7 +55,7 @@ protected:
     // --------------------------------------------------------------------------------------------
     // Atributos Básicos do Inimigo
 
-    int danoAtaque = 0;         // Dano de ataque físico do inimigo
+    int danoAtaque = 0;              // Dano de ataque físico do inimigo
     int vida = 0;                    // Vida do inimigo
     int level;                       // Nível do inimigo
 
@@ -95,8 +96,8 @@ public:
     // --------------------------------------------------------------------------------------------
     // Métodos de Recuperação e Modificação de Atributos
 
-    float GetDamage() const;         // Retorna o dano de ataque do inimigo
-    void SetVida(float damage);      // Modifica a vida do inimigo
+    int GetDamage() const;         // Retorna o dano de ataque do inimigo
+    void SetVida(int damage);      // Modifica a vida do inimigo
     int GetVida() const;             // Retorna a vida do inimigo
     float GetTargetX() const;        // Retorna a posição X do destino do inimigo
     float GetTargetY() const;        // Retorna a posição Y do destino do inimigo
@@ -122,14 +123,14 @@ inline void Enemy::Draw() {
 
 // ---------------------------------------------------------------------------------
 
-inline float Enemy::GetDamage() const
+inline int Enemy::GetDamage() const
 {
     return danoAtaque;    // Retorna o dano de ataque do inimigo
 }
 
 // ---------------------------------------------------------------------------------
 
-inline void Enemy::SetVida(float damage)
+inline void Enemy::SetVida(int damage)
 {
     vida -= damage;      // Reduz a vida do inimigo com base no dano recebido
 }

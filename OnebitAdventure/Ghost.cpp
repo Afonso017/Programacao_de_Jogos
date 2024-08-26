@@ -24,13 +24,13 @@ Ghost::Ghost(float width, float height)
 	anim->Add(ATACK, Seq2, 3);
 
 	vida = 5;				// Vida padrão do fastasma (Não tem na wiki informando o máximo nem quanto aumenta)
-	danoAtaque = 1.0f;      // Dano de ataque de 1	(Não tem na wiki informando o máximo nem quanto aumenta)
+	danoAtaque = 1;			// Dano de ataque de 1	(Não tem na wiki informando o máximo nem quanto aumenta)
 
 	// Inicialize BBox após walking ser definido
 	InitializeBBox();
 
 	// Inicializa a posição do Ghost
-	MoveTo(window->CenterX(), window->CenterY() - (2.0f * height), Layer::FRONT);
+	MoveTo(window->CenterX(), window->CenterY() - (4.0f * height), Layer::UPPER);
 
 	targetX = X();
 	targetY = Y();
@@ -52,8 +52,28 @@ void Ghost::OnCollision(Object* obj)
 	if (obj->Type() == PLAYER && isHit) {
 		//enemyState = ATACK;
 
-		targetX = prevX;
-		targetY = prevY;
+		/*targetX = prevX;
+		targetY = prevY;*/
+
+		switch (direction)
+		{
+		case STILL:						// Se estiver parado, não faz nada
+			break;
+		case WALKUP:
+			targetY = targetY + VelY;	// Se estiver andando para cima, volta para a posição anterior
+			break;
+		case WALKDOWN:
+			targetY = targetY - VelY;	// Se estiver andando para baixo, volta para a posição anterior
+			break;
+		case WALKLEFT:
+			targetX = targetX + VelX;	// Se estiver andando para a esquerda, volta para a posição anterior
+			break;
+		case WALKRIGHT:
+			targetX = targetX - VelX;	// Se estiver andando para a direita, volta para a posição anterior
+			break;
+		default:
+			break;
+		}
 		
 		Character* player = (Character*)(obj);
 		player->SetVida(danoAtaque);

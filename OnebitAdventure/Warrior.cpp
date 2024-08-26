@@ -24,7 +24,7 @@ Warrior::Warrior(float width, float height)
 
 	maxLife = 72;
     vida = maxLife;
-	danoAtaque = 2.0f;      // Dano de ataque de 2
+	danoAtaque = 2;      // Dano de ataque de 2
 	chanceCritica = 2.0f;   // Chance de crítico de 2%
 
     // Inicialize BBox após walking ser definido
@@ -58,21 +58,23 @@ void Warrior::OnCollision(Object* obj)
 
 		int EnemyX = enemy->GetPrevX();
 		int EnemyY = enemy->GetPrevY();
+		int PlayerX = targetX;
+		int PlayerY = targetY;
 
 		// Se o player vai para a posição anterior do inimigo, ele ataca o inimigo e vice-versa
-		if ((int) targetX == EnemyX && (int) targetY == EnemyY) {
+		if (PlayerX == EnemyX && PlayerY == EnemyY) {
 
 			SetMovementType(BACK);
 
 			// Recupera a referência ao inimigo colidido
-			float dano = danoAtaque;
+			int dano = danoAtaque;
 
 			// Gera um número aleatório entre 0 e 100
-			float randomValue = static_cast<float>(rand() % 100);
+			int randomValue = rand() % 100;
 
 			// Se o valor gerado for menor que a chance crítica, aplica o crítico
 			if (randomValue < chanceCritica) {
-				dano *= 2.0f; // Dano crítico, multiplicado por 2
+				dano *= 2; // Dano crítico, multiplicado por 2
 			}
 
 			// Aplica o dano ao inimigo

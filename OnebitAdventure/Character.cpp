@@ -27,7 +27,7 @@ Character::Character(float width, float height)
 	characterState = WALKLEFT;	// Estado inicial do jogador
 	direction = WALKLEFT;		// Direção inicial do jogador
 	type = PLAYER;				// Tipo do jogador
-	movementType = WALK;		// Tipo de animação do jogador
+	movementType = IDLE;		// Tipo de animação do jogador
 	isHit = false;				// Flag para indicar se o personagem já foi atingido
 	isDead = false;				// Flag para indicar se o personagem está morto
 	isMoving = false;			// Flag para indicar se o personagem está se movendo
@@ -35,7 +35,7 @@ Character::Character(float width, float height)
 	// --------------------------------------------------------------------------------------------
 	// Inicializar variáveis de movimentação do jogador
 
-	interpolationSpeed = 20.0f; // Velocidade de interpolação do movimento do jogador, aumentar esse número para acelerar
+	interpolationSpeed = 22.0f; // Velocidade de interpolação do movimento do jogador, aumentar esse número para acelerar
 	VelX = width;				// Velocidade horizontal (Quanto ele percorre horizontalmente)
 	VelY = height;				// Velocidade vertical	 (Quanto ele percorre verticalmente)
 	targetX = x;				// Posição x do destino do jogador pós movimento
@@ -56,7 +56,8 @@ Character::Character(float width, float height)
 	timer = new Timer();							// Timer para controlar o tempo de exibição do texto
 	consolas = new Font("Resources/Pexilify.png");	// Fonte para exibir texto na tela
 	consolas->Spacing("Resources/Pexilify.dat");	// Espaçamento da fonte
-	attackTimer = new Timer();							// Timer para controlar o tempo de exibição do texto
+	attackTimer = new Timer();						// Timer para controlar o tempo de exibição do texto
+	speedMovement = new Timer();					// Timer para controlar a velocidade de movimento do jogador
 
 	// --------------------------------------------------------------------------------------------
 	// Inicializar atributos básicos de todo jogador
@@ -88,7 +89,7 @@ void Character::Update()
 
 	InterpolateMovement(gameTime);  // Interpolação do movimento do jogador para suavizar a movimentação
 	UpdateAnimation(); 				// Atualiza a animação do jogador para o próximo frame
-	ConstrainToScreen();			// Limita o jogador a ficar dentro da tela do jogo
+	ConstrainToScreen();			// Garante que o jogador não ultrapasse os limites da tela
 }
 
 // ---------------------------------------------------------------------------------
@@ -110,18 +111,25 @@ void Character::BackMovement() {
 // ---------------------------------------------------------------------------------
 
 void Character::HandleInput() {
-	if (!isDead && (newX == targetX && newY == targetY) && attackTimer->Elapsed(0.2f)) {
-		if (window->KeyDown(VK_UP) && Y() == targetY) {							// Moveu para cima
-			SetMovementDirection(WALKUP, characterState, 0.0f, -VelY);
-		}
-		else if (window->KeyDown(VK_DOWN) && Y() == targetY) {					// Moveu para baixo
-			SetMovementDirection(WALKDOWN, characterState, 0.0f, VelY);
-		}
-		else if (window->KeyDown(VK_LEFT) && X() == targetX) {					// Moveu para esquerda	
-			SetMovementDirection(WALKLEFT, WALKLEFT, -VelX, 0.0f);
-		}
-		else if (window->KeyDown(VK_RIGHT) && X() == targetX) {					// Moveu para direita
-			SetMovementDirection(WALKRIGHT, WALKRIGHT, VelX, 0.0f);
+	if (!isDead && newX == targetX && newY == targetY && attackTimer->Elapsed(0.2f)) {
+		if (speedMovement->Elapsed(0.3f)) {  // Verifica se o timer permite um novo movimento
+
+			movementType = WALK;			 // Define o tipo de movimento do jogador para andar
+
+			if (window->KeyDown(VK_UP) && Y() == targetY) {
+				SetMovementDirection(WALKUP, characterState, 0.0f, -VelY);
+			}
+			else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
+				SetMovementDirection(WALKDOWN, characterState, 0.0f, VelY);
+			}
+			else if (window->KeyDown(VK_LEFT) && X() == targetX) {
+				SetMovementDirection(WALKLEFT, WALKLEFT, -VelX, 0.0f);
+			}
+			else if (window->KeyDown(VK_RIGHT) && X() == targetX) {
+				SetMovementDirection(WALKRIGHT, WALKRIGHT, VelX, 0.0f);
+			}
+
+			ConstrainToScreen(); // Garante que o jogador não ultrapasse os limites da tela
 		}
 	}
 }
@@ -137,6 +145,8 @@ void Character::SetMovementDirection(DirectingAnimation newDirection, DirectingA
 	targetY = Y() + deltaY;			// Define a posição y do destino do jogador pós movimento
 	isMoving = true;				// Indica que o jogador está se movendo
 	isHit = true;					// Indica que o jogador pode atacar o inimigo e ser atingido (Se houver colisão)
+
+	speedMovement->Start();         // Inicia o timer após o movimento
 }
 
 // ---------------------------------------------------------------------------------
@@ -149,6 +159,8 @@ void Character::InterpolateMovement(float gameTime) {
 	if (abs(targetY - newY) < 0.5f) newY = targetY;					// Corrige a posição y do jogador em pequenos passos
 
 	MoveTo(newX, newY);												// Move o jogador para a nova posição
+
+	float diff = 0.067f * Level1::hud->Width();
 }
 
 // ---------------------------------------------------------------------------------
@@ -163,23 +175,28 @@ void Character::UpdateAnimation() {
 void Character::ConstrainToScreen() {
 	float diff = 0.067f * Level1::hud->Width();
 
-	if (x + width / 2.0f > window->CenterX() + Level1::hud->Width() / 2.0f - diff) { // Checando se passou do lado direito
-		//Translate(-4, 0);
-		targetX = newX = prevX;
+	// Verifica o limite direito
+	if (targetX + width / 2.0f > window->CenterX() + Level1::hud->Width() / 2.0f - diff) {
+		newX = targetX = prevX;
+		movementType = IDLE;
 	}
-	else if (x - width / 2.0f < window->CenterX() - Level1::hud->Width() / 2.0f + diff) { // Checando se passou do lado esquerdo
-		//Translate(4, 0);
-		targetX = newX = prevX;
+	// Verifica o limite esquerdo
+	if (targetX - width / 2.0f < window->CenterX() - Level1::hud->Width() / 2.0f + diff) {
+		newX = targetX = prevX;
+		movementType = IDLE;
+	}
+	// Verifica o limite inferior
+	if (targetY + walking->TileHeight() / 2.0f > window->Height()) {
+		newY = targetY = prevY;
+		movementType = IDLE;
+	}
+	// Verifica o limite superior
+	if (targetY - walking->TileHeight() / 2.0f < 0) {
+		newY = targetY = prevY;
+		movementType = IDLE;
 	}
 
-	if (y + walking->TileHeight() / 2.0f > window->Height()) { // Checando se passou da parte inferior
-		//Translate(0, -4);
-		targetY = newY = prevY;
-	}
-	else if (y - walking->TileHeight() / 2.0f < 0) { // checando se passou da parte superior
-		//Translate(0, 4);
-		targetY = newY = prevY;
-	}
+	MoveTo(newX, newY); // Atualiza a posição do jogador
 }
 
 // ---------------------------------------------------------------------------------
