@@ -24,14 +24,14 @@ Enemy::Enemy(float width, float height)
 	// --------------------------------------------------------------------------------------------
     // Inicializa as variáveis de estado do inimigo
 
-    enemyState = WALKLEFT;        // Estado inicial do inimigo
+    enemyState = WALK;        // Estado inicial do inimigo
     type = ENEMY;                 // Tipo do inimigo
     isHit = false;                // Flag para indicar se o inimigo foi atingido
 
 	// --------------------------------------------------------------------------------------------
     // Inicializa as variáveis de movimentação do inimigo
 
-    interpolationSpeed = 25.0f;   // Velocidade de interpolação (Fazendo testes com os inimigos sendo mais rápidos que o player)
+    interpolationSpeed = 20.0f;   // Velocidade de interpolação (Fazendo testes com os inimigos sendo mais rápidos que o player)
     VelX = width;                 // Velocidade horizontal do inimigo (em pixels por frame)
     VelY = height;                // Velocidade vertical do inimigo (em pixels por frame)
     targetX = x;                  // Posição X do destino do inimigo pós-movimento
@@ -48,7 +48,7 @@ Enemy::Enemy(float width, float height)
 	// --------------------------------------------------------------------------------------------
     // Inicializa variáveis auxiliares
 
-    proximityThreshold = 150.0f; // Distância para começar a perseguir o jogador
+    proximityThreshold = 100.0f; // Distância para começar a perseguir o jogador
 
 	// --------------------------------------------------------------------------------------------
     // Inicializa atributos básicos do inimigo
@@ -87,19 +87,19 @@ void Enemy::MoveRandomly() {
     switch (direction) {
     case 0: 
         targetX = X() + VelX;           // Move para a direita
-		enemyState = WALKRIGHT;
+		//enemyState = WALKRIGHT;
         break; 
     case 1: 
         targetX = X() - VelX;           // Move para a esquerda
-		enemyState = WALKLEFT;
+		//enemyState = WALKLEFT;
         break; 
     case 2: 
         targetY = Y() + VelY; 
-		enemyState = WALKDOWN;          // Move para baixo
+		//enemyState = WALKDOWN;          // Move para baixo
         break; 
     case 3: 
         targetY = Y() - VelY; 
-		enemyState = WALKUP;            // Move para cima
+		//enemyState = WALKUP;            // Move para cima
         break;
     default: 
         break;                          // Fica parado
@@ -193,22 +193,22 @@ void Enemy::MoveTowardsPlayer(float deltaX, float deltaY) {
         // Move horizontalmente
 		if (deltaX > 0) {    // Delta X positivo significa que o jogador está à direita
             targetX += VelX; // Move para a direita
-			enemyState = WALKRIGHT; // Atualiza o estado do inimigo
+			//enemyState = WALKRIGHT; // Atualiza o estado do inimigo
         }
 		else {               // Delta X negativo significa que o jogador está à esquerda
             targetX -= VelX; // Move para a esquerda
-			enemyState = WALKLEFT; // Atualiza o estado do inimigo
+			//enemyState = WALKLEFT; // Atualiza o estado do inimigo
         }
     }
     else {
         // Move verticalmente
 		if (deltaY > 0) {    // Delta Y positivo significa que o jogador está abaixo
             targetY += VelY; // Move para baixo
-			enemyState = WALKDOWN; // Atualiza o estado do inimigo
+			//enemyState = WALKDOWN; // Atualiza o estado do inimigo
         }
 		else {               // Delta Y negativo significa que o jogador está acima
             targetY -= VelY; // Move para cima
-			enemyState = WALKUP; // Atualiza o estado do inimigo
+			//enemyState = WALKUP; // Atualiza o estado do inimigo
         }
     }
 }
