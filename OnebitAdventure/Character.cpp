@@ -59,8 +59,8 @@ Character::Character(float width, float height)
 	// Inicializar variáveis auxiliares para construções de lógicas
 
 	timer = new Timer();							// Timer para controlar o tempo de exibição do texto
-	consolas = new Font("Resources/Pexilify.png");	// Fonte para exibir texto na tela
-	consolas->Spacing("Resources/Pexilify.dat");	// Espaçamento da fonte
+	consolas = new Font("Resources/press12.png");	// Fonte para exibir texto na tela
+	consolas->Spacing("Resources/press12.dat");		// Espaçamento da fonte
 	attackTimer = new Timer();						// Timer para controlar o tempo de exibição do texto
 	speedMovement = new Timer();					// Timer para controlar a velocidade de movimento do jogador
 
@@ -117,7 +117,7 @@ void Character::BackMovement() {
 
 void Character::HandleInput() {
 	if (!isDead && newX == targetX && newY == targetY && attackTimer->Elapsed(0.2f)) {
-		if (speedMovement->Elapsed(0.01f)) {  // Verifica se o timer permite um novo movimento
+		if (speedMovement->Elapsed(0.03f)) {  // Verifica se o timer permite um novo movimento
 
 			movementType = WALK;			 // Define o tipo de movimento do jogador para andar
 

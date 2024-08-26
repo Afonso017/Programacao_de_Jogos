@@ -36,8 +36,8 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
     };
     scene = new Scene();
 
-    consolas = new Font("Resources/consolas12.png");
-    consolas->Spacing("Resources/consolas12.dat");
+    consolas = new Font("Resources/press12.png");
+    consolas->Spacing("Resources/press12.dat");
 
     // Faz a leitura do arquivo descritor do mapa e adiciona props na cena
     ifstream fin;
@@ -162,7 +162,7 @@ void Hud::Draw()
     dano.append(", ");
     dano.append(std::to_string(Level1::enemy->GetVelY()));
 
-    consolas->Draw(700, 150, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.2f, 0.0f);
+    consolas->Draw(500, 150, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.0f);
 
     dano = "Prev Warrior: ";
     dano.append(std::to_string(Level1::player->GetPrevX()));
@@ -177,7 +177,7 @@ void Hud::Draw()
     dano.append(", ");
     dano.append(std::to_string(Level1::player->GetVelY()));
 
-    consolas->Draw(700, 200, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.2f, 0.0f);
+    consolas->Draw(500, 200, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.0f);
 }
 
 // ---------------------------------------------------------------------------------

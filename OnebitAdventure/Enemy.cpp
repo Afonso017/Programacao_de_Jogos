@@ -36,7 +36,7 @@ Enemy::Enemy(float width, float height)
 	// --------------------------------------------------------------------------------------------
     // Inicializa as variáveis de movimentação do inimigo
 
-    interpolationSpeed = 20.0f;   // Velocidade de interpolação (Fazendo testes com os inimigos sendo mais rápidos que o player)
+    interpolationSpeed = 18.0f;   // Velocidade de interpolação (Fazendo testes com os inimigos sendo mais rápidos que o player)
     VelX = width;                 // Velocidade horizontal do inimigo (em pixels por frame)
     VelY = height;                // Velocidade vertical do inimigo (em pixels por frame)
     targetX = x;                  // Posição X do destino do inimigo pós-movimento
@@ -107,8 +107,8 @@ void Enemy::MoveRandomly() {
         direction = WALKUP;             // Move para cima
         break;
     default:
-        prevX = X();                    // Armazena a posição X anterior
-        prevY = Y();                    // Armazena a posição Y anterior
+        prevX = X();                    // Atualiza a posição X anterior
+        prevY = Y();                    // Atualiza a posição Y anterior
 		direction = STILL;              // Fica parado
         break;
     }
@@ -118,19 +118,19 @@ void Enemy::MoveRandomly() {
 
 // Lida com a movimentação do inimigo
 void Enemy::HandleMovement() {
-	if (newX == targetX && newY == targetY) {   // Se o inimigo chegou ao destino anterior, então, ele pode se mover novamente
+	if (newX == targetX && newY == targetY) {   // Se o inimigo já chegou ao destino anterior, então, ele pode se mover novamente
 
         isHit = true;   // Indica que o inimigo pode atacar o jogador
         prevX = X();    // Armazena a posição X anterior
         prevY = Y();    // Armazena a posição Y anterior
 
-        float deltaX = Level1::player->X() - X();                           // Distância em X para o jogador
-        float deltaY = Level1::player->Y() - Y();                           // Distância em Y para o jogador
+        float deltaX = Level1::player->X() - X();                   // Distância em X para o jogador
+        float deltaY = Level1::player->Y() - Y();                   // Distância em Y para o jogador
         float distanceSquared = deltaX * deltaX + deltaY * deltaY;  // Distância ao quadrado (para eficiência)
 
         if (distanceSquared < proximityThreshold * proximityThreshold) {
             // 85% de chance de mover na direção do jogador
-            if (rand() % 100 < 90) {
+            if (rand() % 100 < 95) {
                 MoveTowardsPlayer(deltaX, deltaY);
             }
             else {

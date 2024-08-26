@@ -145,10 +145,10 @@ inline void Character::Draw()			// Desenha o jogador relacionados ao player e o 
 	anim->Draw(x, y, z);
 
 	// desenhar o texto de unored_map
-	if (!text.empty() && !timer->Elapsed(0.5f)) {
+	if (!text.empty() && !timer->Elapsed(0.7f)) {
 		int i = 40;
 		for (auto& it : text) {
-			consolas->Draw(x,y - i,it.first, it.second, Layer::FRONT, 1.5f);
+			consolas->Draw(x,y - i,it.first, it.second, Layer::FRONT, 1.0f);
 			i+=40;
 		}
 	}

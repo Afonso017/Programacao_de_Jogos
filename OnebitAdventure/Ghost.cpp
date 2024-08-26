@@ -52,28 +52,8 @@ void Ghost::OnCollision(Object* obj)
 	if (obj->Type() == PLAYER && isHit) {
 		//enemyState = ATACK;
 
-		/*targetX = prevX;
-		targetY = prevY;*/
-
-		switch (direction)
-		{
-		case STILL:						// Se estiver parado, não faz nada
-			break;
-		case WALKUP:
-			targetY = targetY + VelY;	// Se estiver andando para cima, volta para a posição anterior
-			break;
-		case WALKDOWN:
-			targetY = targetY - VelY;	// Se estiver andando para baixo, volta para a posição anterior
-			break;
-		case WALKLEFT:
-			targetX = targetX + VelX;	// Se estiver andando para a esquerda, volta para a posição anterior
-			break;
-		case WALKRIGHT:
-			targetX = targetX - VelX;	// Se estiver andando para a direita, volta para a posição anterior
-			break;
-		default:
-			break;
-		}
+		targetX = prevX;
+		targetY = prevY;
 		
 		Character* player = (Character*)(obj);
 		player->SetVida(danoAtaque);
