@@ -15,7 +15,7 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
     // configura a janela do jogo
     engine->window->Mode(WINDOWED);
-    engine->window->Size(1360, 690);        // testando uma resolução diferente
+    //engine->window->Size(1360, 690);        // testando uma resolução diferente
     engine->window->Color(25, 25, 25);
     engine->window->Title("OneBit Adventure");
     engine->window->Icon(IDI_ICON);

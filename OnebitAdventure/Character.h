@@ -38,7 +38,7 @@ protected:
 	DirectingAnimation direction;		// direção do jogador
 	bool isHit;							// Flag para indicar se o personagem já foi atingido
 	bool isDead;						// Flag para indicar se o personagem está morto
-	bool isMoving = false;				// verifica se o personagem está se movendo
+	bool isMoving;						// verifica se o personagem está se movendo
 
 	// --------------------------------------------------------------------------------------------
 	// Atributos de movimentação

@@ -13,7 +13,7 @@ Scene * Hud::scene = nullptr;
 Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
 {
     // Background tem 1/3 da largura da janela e 4x a altura da janela
-    width = window->Width() / 3.0f;
+    width = window->Width() / 2.5f;
     height = window->Height() * 4.0f;
 
     // Carrega mapa vazio e o posiciona na janela no sentido baixo-cima
@@ -26,8 +26,8 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
     float x, y;
     imagesSize = 7;
     images = new Image*[imagesSize] {
-        new Image("Resources/Props/tree.png"),
-        new Image("Resources/Props/wall.png"),
+        new Image("Resources/Props/tree.png", tw, th),
+        new Image("Resources/Props/wall.png", tw, th),
         new Image("Resources/Props/coin.png"),
         new Image("Resources/Props/door.png"),
         new Image("Resources/Props/grass.png"),
@@ -40,34 +40,34 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
     consolas->Spacing("Resources/consolas12.dat");
 
     // Faz a leitura do arquivo descritor do mapa e adiciona props na cena
-    //ifstream fin;
-    //fin.open("Resources/Hud/mapa1.txt");
-    //fin >> type;
-    //while (!fin.eof())
-    //{
-    //    if (fin.good())
-    //    {
-    //        fin >> x; fin >> y; fin >> interactable; fin >> bbox;
-    //        
-    //        // Verificar se é um Prop ou Inimigo
-    //        
-    //        // Caso seja um prop, adiciona na cena do Hud
-    //        Image * img = images[type];
-    //        float line = window->Height() - x * th - th / 2.0f + 3.0f;
-    //        float col = backg->Width() + y * tw + tw / 2.0f + 1.0f;
+    ifstream fin;
+    fin.open("Resources/Hud/mapa1.txt");
+    fin >> type;
+    while (!fin.eof())
+    {
+        if (fin.good())
+        {
+            fin >> x; fin >> y; fin >> interactable; fin >> bbox;
+            
+            // Verificar se é um Prop ou Inimigo
+            
+            // Caso seja um prop, adiciona na cena do Hud
+            Image * img = images[type];
+            float line = window->Height() - x * th - th / 2.0f;
+            float col = window->CenterX() - backg->Width() / 2.0f + y * tw + tw / 2.0f;
 
-    //        scene->Add(new Prop(img, col, line, tw, th, interactable, bbox), STATIC);
-    //    }
-    //    else
-    //    {
-    //        // Ignora comentários
-    //        fin.clear();
-    //        char temp[80];
-    //        fin.getline(temp, 80);
-    //    }
-    //    fin >> type;
-    //}
-    //fin.close();
+            scene->Add(new Prop(img, col, line, tw, th, interactable, bbox), STATIC);
+        }
+        else
+        {
+            // Ignora comentários
+            fin.clear();
+            char temp[80];
+            fin.getline(temp, 80);
+        }
+        fin >> type;
+    }
+    fin.close();
 
     // Inicializa o hud
     hud = new Sprite(new Image("Resources/Hud/hud2.png", width, 144.0f));
@@ -141,7 +141,7 @@ void Hud::Draw()
     lifeTxt.append("/");
     lifeTxt.append(std::to_string(Level1::player->MaxLife()));
 
-    consolas->Draw(backg->Width() + 48.0f, window->Height() - 72.0f, lifeTxt, Color(1.0f, 1.0f, 1.0f, 1.0f), 0.001f, 1.2f, 0.0f);
+    consolas->Draw(backg->Width() + 60.0f, window->Height() - 72.0f, lifeTxt, Color(1.0f, 1.0f, 1.0f, 1.0f), 0.001f, 1.2f, 0.0f);
 
     scene->Draw();
 

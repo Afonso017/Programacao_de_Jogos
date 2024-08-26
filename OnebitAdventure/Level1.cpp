@@ -19,7 +19,8 @@ Scene     * Level1::scene   = nullptr;
 void Level1::Init()
 {
     // Background original tem 11.25 quadros de largura e 38.57 de altura
-    float tileWidth = (window->Width() / 3.0f - 98.0f) / 11.0f;
+    float width = window->Width() / 2.5f;
+    float tileWidth = (width - width * 0.12f) / 11.25f;
     float tileHeight = window->Height() / 19.0f;
 
     hud = new Hud(tileWidth, tileHeight);

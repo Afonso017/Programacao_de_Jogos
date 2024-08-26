@@ -17,7 +17,7 @@ Prop::Prop(string path, float x, float y, float width, float height, bool intera
 
 Prop::Prop(Image * image, float x, float y, float width, float height, bool interactable, bool bbox)
 {
-	image->Resize(width, height);
+	//image->Resize(width, height);
 	sprite = new Sprite(image);
 
 	MoveTo(x, y, Layer::MIDDLE);

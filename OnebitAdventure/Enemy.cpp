@@ -69,7 +69,7 @@ Enemy::~Enemy()
 
 // Atualiza o estado do inimigo
 void Enemy::Update() {
-    if (player->IsMoving()) {
+    if (Level1::player->IsMoving()) {
         HandleMovement(); // Atualiza a movimentação do inimigo
     }
 
@@ -114,8 +114,8 @@ void Enemy::HandleMovement() {
 	prevX = X();    // Armazena a posição X anterior
 	prevY = Y();    // Armazena a posição Y anterior
 
-    float deltaX = player->X() - X();                           // Distância em X para o jogador
-    float deltaY = player->Y() - Y();                           // Distância em Y para o jogador
+    float deltaX = Level1::player->X() - X();                           // Distância em X para o jogador
+    float deltaY = Level1::player->Y() - Y();                           // Distância em Y para o jogador
     float distanceSquared = deltaX * deltaX + deltaY * deltaY;  // Distância ao quadrado (para eficiência)
 
     if (distanceSquared < proximityThreshold * proximityThreshold) {
@@ -142,8 +142,8 @@ void Enemy::InterpolateMovement(float gameTime) {
     newY = Y() + (targetY - Y()) * interpolationSpeed * gameTime;
 
     // Ajusta a nova posição se estiver muito perto do alvo
-    if (abs(targetX - newX) < 0.99f) newX = targetX;
-    if (abs(targetY - newY) < 0.99f) newY = targetY;
+    if (abs(targetX - newX) < 0.5f) newX = targetX;
+    if (abs(targetY - newY) < 0.5f) newY = targetY;
 
     MoveTo(newX, newY); // Move o inimigo para a nova posição
 }
@@ -160,26 +160,24 @@ void Enemy::UpdateAnimation() {
 
 // Garante que o inimigo não ultrapasse os limites da tela
 void Enemy::ConstrainToScreen() {
-    float diff = 0.067f * Level1::hud->Width(); // Margem para a borda da tela
+    float diff = 0.067f * Level1::hud->Width();
 
-    // Limita a posição X do inimigo
-    if (x + width / 2.0f > window->CenterX() + Level1::hud->Width() / 2.0f - diff + 8.0f) {
-        Translate(-4, 0);
-        targetX = newX = window->CenterX() + Level1::hud->Width() / 2.0f - diff - width / 2.0f;
+    if (x + width / 2.0f > window->CenterX() + Level1::hud->Width() / 2.0f - diff) { // Checando se passou do lado direito
+        //Translate(-4, 0);
+        targetX = newX = prevX;
     }
-    else if (x - width / 2.0f < window->CenterX() - Level1::hud->Width() / 2.0f + diff - 8.0f) {
-        Translate(4, 0);
-        targetX = newX = window->CenterX() - Level1::hud->Width() / 2.0f + diff + width / 2.0f;
+    else if (x - width / 2.0f < window->CenterX() - Level1::hud->Width() / 2.0f + diff) { // Checando se passou do lado esquerdo
+        //Translate(4, 0);
+        targetX = newX = prevX;
     }
 
-    // Limita a posição Y do inimigo
-    if (y + walking->TileHeight() / 2.0f > window->Height()) {
-        Translate(0, -4);
-        targetY = newY = window->Height() - walking->TileHeight() / 2.0f;
+    if (y + walking->TileHeight() / 2.0f > window->Height()) { // Checando se passou da parte inferior
+        //Translate(0, -4);
+        targetY = newY = prevY;
     }
-    else if (y - walking->TileHeight() / 2.0f < 0) {
-        Translate(0, 4);
-        targetY = newY = walking->TileHeight() / 2.0f;
+    else if (y - walking->TileHeight() / 2.0f < 0) { // checando se passou da parte superior
+        //Translate(0, 4);
+        targetY = newY = prevY;
     }
 }
 

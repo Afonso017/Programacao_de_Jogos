@@ -163,22 +163,22 @@ void Character::UpdateAnimation() {
 void Character::ConstrainToScreen() {
 	float diff = 0.067f * Level1::hud->Width();
 
-	if (x + width / 2.0f > window->CenterX() + Level1::hud->Width() / 2.0f - diff + 8.0f) {
-		Translate(-4, 0);
-		targetX = newX = window->CenterX() + Level1::hud->Width() / 2.0f - diff - width / 2.0f;
+	if (x + width / 2.0f > window->CenterX() + Level1::hud->Width() / 2.0f - diff) { // Checando se passou do lado direito
+		//Translate(-4, 0);
+		targetX = newX = prevX;
 	}
-	else if (x - width / 2.0f < window->CenterX() - Level1::hud->Width() / 2.0f + diff - 8.0f) {
-		Translate(4, 0);
-		targetX = newX = window->CenterX() - Level1::hud->Width() / 2.0f + diff + width / 2.0f;
+	else if (x - width / 2.0f < window->CenterX() - Level1::hud->Width() / 2.0f + diff) { // Checando se passou do lado esquerdo
+		//Translate(4, 0);
+		targetX = newX = prevX;
 	}
 
-	if (y + walking->TileHeight() / 2.0f > window->Height()) {
-		Translate(0, -4);
-		targetY = newY = window->Height() - walking->TileHeight() / 2.0f;
+	if (y + walking->TileHeight() / 2.0f > window->Height()) { // Checando se passou da parte inferior
+		//Translate(0, -4);
+		targetY = newY = prevY;
 	}
-	else if (y - walking->TileHeight() / 2.0f < 0) {
-		Translate(0, 4);
-		targetY = newY = walking->TileHeight() / 2.0f;
+	else if (y - walking->TileHeight() / 2.0f < 0) { // checando se passou da parte superior
+		//Translate(0, 4);
+		targetY = newY = prevY;
 	}
 }
 

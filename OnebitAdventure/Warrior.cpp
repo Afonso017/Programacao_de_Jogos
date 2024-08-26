@@ -56,11 +56,11 @@ void Warrior::OnCollision(Object* obj)
 		timer->Start(); // Inicia o timer para o cálculo de tempo de exibição da mensagem!
 		attackTimer->Start(); // Inicia o timer para o cálculo de tempo de pausa entre os ataques!
 
-		float EnemyX = enemy->GetPrevX();
-		float EnemyY = enemy->GetPrevY();
+		int EnemyX = enemy->GetPrevX();
+		int EnemyY = enemy->GetPrevY();
 
 		// Se o player vai para a posição anterior do inimigo, ele ataca o inimigo e vice-versa
-		if (targetX == EnemyX && targetY == EnemyY) {
+		if ((int) targetX == EnemyX && (int) targetY == EnemyY) {
 
 			SetMovementType(BACK);
 

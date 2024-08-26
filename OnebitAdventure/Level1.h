@@ -16,8 +16,8 @@
 class Level1 : public Game
 {
 private:
-	bool viewBox = false;				// controle de visualização de caixas de colisão
-	int progress = 0;					// Variável para contar o progresso do player!
+	bool viewBox = false;			// controle de visualização de caixas de colisão
+	int progress = 0;				// Variável para contar o progresso do player!
 
 public:
 	static Character * player;		// instancia do jogador (classe guerreiro)
