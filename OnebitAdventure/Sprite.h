@@ -87,6 +87,13 @@ public:
         float x, float y, float z = Layer::MIDDLE,            // coordenadas da tela
         float scale = 1.0f, float rotation = 0.0f,            // escala e rotação
         Color color = { 1, 1, 1, 1 });                        // efeito de cor
+
+    void DrawResize(                                          // desenha sprite
+        float x, float y,                                     // coordenadas da tela
+        float width, float height,                            // dimensões do sprite
+        float z = Layer::MIDDLE,                              // camada da tela    
+        float scale = 1.0f, float rotation = 0.0f,            // escala e rotação
+        Color color = { 1, 1, 1, 1 });                        // efeito de cor
 };
 
 // ---------------------------------------------------------------------------------

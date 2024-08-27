@@ -1,0 +1,58 @@
+﻿  compilation object save succeeded; see C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Shaders\Pixel.cso
+  compilation object save succeeded; see C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Shaders\Vertex.cso
+  Animation.cpp
+  Hud.cpp
+  Character.cpp
+  Enemy.cpp
+  Engine.cpp
+  Font.cpp
+  Game.cpp
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Character.cpp(27,9): warning C4244: 'inicializando': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Character.cpp(27,24): warning C4244: 'inicializando': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Character.cpp(66,62): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Character.cpp(66,54): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Hud.cpp(16,67): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Hud.cpp(16,60): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Hud.cpp(88,65): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Hud.cpp(88,58): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Hud.cpp(89,81): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Hud.cpp(89,74): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Enemy.cpp(26,12): warning C4244: 'inicializando': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Enemy.cpp(26,27): warning C4244: 'inicializando': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Enemy.cpp(52,64): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Enemy.cpp(52,57): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Enemy.cpp(53,66): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Enemy.cpp(53,58): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+  Geometry.cpp
+  Ghost.cpp
+  Graphics.cpp
+  Home.cpp
+  Image.cpp
+  Level1.cpp
+  Object.cpp
+  OneBitAdventure.cpp
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Home.cpp(13,73): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Home.cpp(15,56): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+  Prop.cpp
+  Renderer.cpp
+  Scene.cpp
+  Select.cpp
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Prop.cpp(12,64): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Prop.cpp(12,59): warning C4244: 'argumento': conversão de 'float' para 'uint', possível perda de dados
+  Sprite.cpp
+  Texture.cpp
+  TileSet.cpp
+  Timer.cpp
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Sprite.cpp(80,20): warning C4244: '=': conversão de 'float' para 'uint', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Sprite.cpp(81,21): warning C4244: '=': conversão de 'float' para 'uint', possível perda de dados
+  Warrior.cpp
+  Window.cpp
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Warrior.cpp(61,14): warning C4244: 'inicializando': conversão de 'float' para 'int', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Warrior.cpp(62,14): warning C4244: 'inicializando': conversão de 'float' para 'int', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Warrior.cpp(63,15): warning C4244: 'inicializando': conversão de 'float' para 'int', possível perda de dados
+C:\Users\Brwno\source\repos\Programacao_de_Jogos\OnebitAdventure\Warrior.cpp(64,15): warning C4244: 'inicializando': conversão de 'float' para 'int', possível perda de dados
+  Gerando código
+  Previous IPDB not found, fall back to full compilation.
+  All 1249 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finalizada a geração de código
+  OnebitAdventure.vcxproj -> C:\Users\Brwno\source\repos\Programacao_de_Jogos\x64\Release\OnebitAdventure.exe

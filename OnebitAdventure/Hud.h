@@ -12,6 +12,7 @@
 #include "Sprite.h"
 #include "Font.h"
 #include "Animation.h"
+#include "Prop.h"
 
 // ---------------------------------------------------------------------------------
 
@@ -25,32 +26,38 @@ enum Life
 class Hud : public Object
 {
 private:
-    Sprite * backg = nullptr;           // sprite do background
-    Sprite * hud = nullptr;             // hud para mostrar estado do jogador
-    Font * consolas = nullptr;			// Fonte para exibir texto na tela!
-    Image ** images = nullptr;          // Vetor de ponteiros para imagens que serão usadas no mapa
+    Sprite * backg = nullptr;               // sprite do background
+    Sprite * hud = nullptr;                 // hud para mostrar estado do jogador
+    Font * consolas = nullptr;			    // Fonte para exibir texto na tela!
+    string ** images = nullptr;             // Vetor de ponteiros para imagens que serão usadas no mapa
 
-    int imagesSize;
-    float width;
-    float height;
-    float tw;
-    float th;
-    bool viewBox = false;
+	int imagesSize;                         // Tamanho do vetor de imagens 
+	float width;                            // Largura do background principal
+	float height;	                        // Altura do background principal
+	float tw;		                        // Largura de um tile
+	float th;		                        // Altura de um tile
+    float rightSide;                        // Lado direito do background principal
+    float tileBottom;                       // Posição y da primeira linha do background (de baixo para cima)
+    float offset;                           // Offset proporcional de pixels de um lado do background
+    float leftSide;                         // Lado esquerdo do background principal 
 
     // Animation para representar a vida do jogador
     Animation * life = nullptr;
 
 public:
-    Hud(float tileWidth, float tileHeight);    // construtor
-    ~Hud();                                    // destrutor
+    Hud(float tileWidth, float tileHeight);     // construtor
+    ~Hud();                                     // destrutor
 
-    static Scene * scene;
+    void Update();                              // atualização do objeto
+    void Draw();                                // desenho do objeto
 
-    void Update();                      // atualização do objeto
-    void Draw();                        // desenho do objeto
-
-    int Width();
-    int Height();
+    bool nextLevel; 					        // Flag para indicar que o jogador passou de nível
+	int Width();								// Retorna a largura do background principal
+	int Height();								// Retorna a altura do background principal
+    float Line(float x) const;                  // Retorna a posição y de uma linha no background
+    float Col(float y) const;                   // Retorna a posição x de uma coluna no background
+    bool Collision(Object*, Object*, int);      // Verifica colisão entre dois objetos
+	bool Collision(int, int, int, int, int);    // Verifica colisão entre dois pontos
 }; 
 
 // ---------------------------------------------------------------------------------
@@ -64,6 +71,28 @@ inline int Hud::Width()
 inline int Hud::Height()
 {
     return backg->Height();
+}
+
+inline float Hud::Line(float y) const
+{
+    return window->Height() - y * th;
+}
+
+inline float Hud::Col(float x) const
+{
+    return leftSide + offset + tw / 2.0f + x * tw;
+}
+
+inline bool Hud::Collision(Object* obj1, Object* obj2, int tolerance = 1)
+{
+    // Verifica se dois objetos estão se colidindo com uma tolerância de 1 inteiro
+    return abs(obj1->X() - obj2->X()) <= tolerance && abs(obj1->Y() - obj2->Y()) <= tolerance;
+}
+
+inline bool Hud::Collision(int x1, int y1, int x2, int y2, int tolerance = 1)
+{
+    // Verifica se dois objetos estão se colidindo com uma tolerância de 1 inteiro
+    return abs(x1 - x2) <= tolerance && abs(y1 - y2) <= tolerance;
 }
 
 // ---------------------------------------------------------------------------------

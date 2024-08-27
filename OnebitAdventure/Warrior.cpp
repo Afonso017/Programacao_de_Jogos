@@ -22,16 +22,18 @@ Warrior::Warrior(float width, float height)
     anim->Add(WALKRIGHT, SeqRight, 4);
     anim->Add(WALKLEFT, SeqLeft, 4);
 
-	maxLife = 72;
+	maxLife = 52 + (10 * (level - 1));
     vida = maxLife;
-	danoAtaque = 2;      // Dano de ataque de 2
+	danoAtaque = 2;			// Dano de ataque de 2
 	chanceCritica = 2.0f;   // Chance de crítico de 2%
 
     // Inicialize BBox após walking ser definido
     InitializeBBox();
 
-	// Inicializa a posição do Warrior
-	MoveTo(window->CenterX(), window->CenterY(), Layer::UPPER);
+	// Inicializa a posição do Warrior ao lado da fogueira
+	float col = Level1::hud->Col(5);
+	float line = Level1::hud->Line(7);
+	MoveTo(col, line, Layer::UPPER);
 
 	targetX = X();
 	targetY = Y();
@@ -105,6 +107,14 @@ void Warrior::OnCollision(Object* obj)
 			anim = new Animation(walking, 0.125f, true);		   //
 			isDead = true;										   // foi de base
 		}
+	}
+	else if (obj->Type() == COIN)
+	{
+		Level1::scene->Delete(obj, STATIC);
+	}
+	else if (obj->Type() != DOOR)
+	{
+		SetMovementType(BACK);
 	}
 }
 

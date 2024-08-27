@@ -6,10 +6,6 @@ using namespace std;
 
 // ---------------------------------------------------------------------------------
 
-Scene * Hud::scene = nullptr;
-
-// ---------------------------------------------------------------------------------
-
 Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
 {
     // Background tem 1/3 da largura da janela e 4x a altura da janela
@@ -20,24 +16,27 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
     backg = new Sprite(new Image("Resources/Hud/mapa.png", width, height));
     MoveTo(window->CenterX(), 0.75f * backg->Height());
 
+    leftSide = window->CenterX() - backg->Width() / 2.0f;
+    rightSide = window->CenterX() + backg->Width() / 2.0f;
+    tileBottom = window->Height() - tw / 2.0f;
+    offset = 0.067f * width;
+    nextLevel = false;
+
     // Prepara para carregar as informações do mapa
     int type;
     bool interactable, bbox;
     float x, y;
-    imagesSize = 7;
-    images = new Image*[imagesSize] {
-        new Image("Resources/Props/tree.png", tw, th),
-        new Image("Resources/Props/wall.png", tw, th),
-        new Image("Resources/Props/coin.png"),
-        new Image("Resources/Props/door.png"),
-        new Image("Resources/Props/grass.png"),
-        new Image("Resources/Props/chest.png"),
-        new Image("Resources/Props/campfire.png")
+    imagesSize = 8;
+    images = new string * [imagesSize] {
+        new string("Resources/Props/grass.png"),
+        new string("Resources/Props/wall.png"),
+        new string("Resources/Props/coin.png"),
+        new string("Resources/Props/door.png"),
+        new string("Resources/Props/tree.png"),
+        new string("Resources/Props/chest.png"),
+        new string("Resources/Props/campfire.png"),
+		new string("Resources/Props/fence.png"),
     };
-    scene = new Scene();
-
-    consolas = new Font("Resources/press12.png");
-    consolas->Spacing("Resources/press12.dat");
 
     // Faz a leitura do arquivo descritor do mapa e adiciona props na cena
     ifstream fin;
@@ -48,15 +47,28 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
         if (fin.good())
         {
             fin >> x; fin >> y; fin >> interactable; fin >> bbox;
-            
-            // Verificar se é um Prop ou Inimigo
-            
-            // Caso seja um prop, adiciona na cena do Hud
-            Image * img = images[type];
-            float line = window->Height() - x * th - th / 2.0f;
-            float col = window->CenterX() - backg->Width() / 2.0f + y * tw + tw / 2.0f;
 
-            scene->Add(new Prop(img, col, line, tw, th, interactable, bbox), STATIC);
+            string img = *images[type];
+
+            // Verificar tipo do Prop ou se é um Inimigo
+            switch (type)
+            {
+            case 2:
+                type = COIN;
+                break;
+            case 3:
+                type = DOOR;
+                break;
+            case 5:
+                type = CHEST;
+                break;
+            default:
+                type = PROP;
+                break;
+            }
+
+            // Adiciona Prop/Inimigo na cena
+            Level1::scene->Add(new Prop(type, img, Col(y), Line(x), tw, th, interactable, bbox), STATIC);
         }
         else
         {
@@ -68,6 +80,9 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
         fin >> type;
     }
     fin.close();
+
+    consolas = new Font("Resources/press12.png");
+    consolas->Spacing("Resources/press12.dat");
 
     // Inicializa o hud
     hud = new Sprite(new Image("Resources/Hud/hud2.png", width, 144.0f));
@@ -82,15 +97,10 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
 
 Hud::~Hud()
 {
-    delete backg;
-    delete hud;
-    delete life;
-    delete consolas;
-    delete scene;
-
-    for (int i = 0; i < imagesSize; i++)
-        delete images[i];
-    delete[] images;
+	delete backg;
+	delete hud;
+	delete consolas;
+	delete life;
 }
 
 // ---------------------------------------------------------------------------------
@@ -103,22 +113,16 @@ void Hud::Update()
     else if (y + backg->Height() / 2.0f < window->Height())
         MoveTo(x, -backg->Height() / 2.0f);
 
-    if (window->KeyPress('B'))
-        viewBox = !viewBox;
-
     // Pega a vida do player e atualiza hud da vida
     int ratio = 100 * Level1::player->GetVida() / Level1::player->MaxLife();
-    if (ratio >= 75)
+    if (ratio >= 99)
         life->Select(Life::FULL);
-    else if (ratio >= 50)
+    else if (ratio >= 75)
         life->Select(Life::THREE_QUARTERS);
-    else if (ratio >= 25)
+    else if (ratio >= 50)
         life->Select(Life::HALF);
     else
         life->Select(Life::QUARTER);
-
-    scene->Update();
-    scene->CollisionDetection();
 }
 
 // ---------------------------------------------------------------------------------
@@ -126,14 +130,11 @@ void Hud::Update()
 void Hud::Draw()
 {
     backg->Draw(x, y, Layer::BACK);
-    hud->Draw(x, window->Height() - 72.0f, Layer::FRONT);
+    hud->Draw(window->CenterX(), window->Height() - 72.0f, Layer::FRONT);
 
-    if (viewBox)
-        scene->DrawBBox();
-    
     // Desenha vida se o player estiver vivo
     if (Level1::player->GetVida() > 0)
-        life->Draw(x, window->Height() - 72.0f, Layer::FRONT);
+        life->Draw(window->CenterX(), window->Height() - 72.0f, Layer::FRONT);
 
     // Desenha o texto do indicador de vida
     string lifeTxt = "";
@@ -141,43 +142,7 @@ void Hud::Draw()
     lifeTxt.append("/");
     lifeTxt.append(std::to_string(Level1::player->MaxLife()));
 
-    consolas->Draw(backg->Width() + 60.0f, window->Height() - 72.0f, lifeTxt, Color(1.0f, 1.0f, 1.0f, 1.0f), 0.001f, 1.2f, 0.0f);
-
-    scene->Draw();
-
-    // --------------------------------------------------------------------------------------
-    // DEBUG
-    // --------------------------------------------------------------------------------------
-
-    string dano = "Prev Ghost: ";
-    dano.append(std::to_string(Level1::enemy->GetPrevX()));
-    dano.append(", ");
-    dano.append(std::to_string(Level1::enemy->GetPrevY()));
-    dano.append(" - ");
-    dano.append(std::to_string(Level1::enemy->GetTargetX()));
-    dano.append(", ");
-    dano.append(std::to_string(Level1::enemy->GetTargetY()));
-    dano.append(" - ");
-    dano.append(std::to_string(Level1::enemy->GetVelX()));
-    dano.append(", ");
-    dano.append(std::to_string(Level1::enemy->GetVelY()));
-
-    consolas->Draw(500, 150, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.0f);
-
-    dano = "Prev Warrior: ";
-    dano.append(std::to_string(Level1::player->GetPrevX()));
-    dano.append(", ");
-    dano.append(std::to_string(Level1::player->GetPrevY()));
-    dano.append(" - ");
-    dano.append(std::to_string(Level1::player->GetTargetX()));
-    dano.append(", ");
-    dano.append(std::to_string(Level1::player->GetTargetY()));
-    dano.append(" - ");
-    dano.append(std::to_string(Level1::player->GetVelX()));
-    dano.append(", ");
-    dano.append(std::to_string(Level1::player->GetVelY()));
-
-    consolas->Draw(500, 200, dano, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.0f);
+    consolas->Draw(leftSide + offset + tw * 0.33f, window->Height() - 72.0f, lifeTxt, Color(1.0f, 1.0f, 1.0f, 1.0f), 0.001f, 0.7f, 0.0f);
 }
 
 // ---------------------------------------------------------------------------------

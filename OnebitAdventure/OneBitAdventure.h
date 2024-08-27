@@ -10,6 +10,9 @@ enum OneBitObjects // Enumeração dos tipos de objetos
     PLAYER,
     ENEMY,
     PROP,
+    DOOR,
+    CHEST,
+    COIN
 };
 
 // ------------------------------------------------------------------------------

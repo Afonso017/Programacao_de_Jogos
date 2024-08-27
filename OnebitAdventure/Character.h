@@ -36,7 +36,7 @@ protected:
 	MovementType movementType;			// Próxima animação a ser executada
 	DirectingAnimation characterState;	// estado atual do jogador
 	DirectingAnimation direction;		// direção do jogador
-	bool isHit;							// Flag para indicar se o personagem já foi atingido
+	bool isHit;							// Flag para indicar se o personagem já atacou
 	bool isDead;						// Flag para indicar se o personagem está morto
 	bool isMoving;						// verifica se o personagem está se movendo
 
@@ -52,7 +52,6 @@ protected:
 	float prevY;						// posição y anterior do jogador
 	float newX;							// nova posição x do jogador
 	float newY;							// nova posição y do jogador
-	Timer* attackTimer;					// timer para controlar o tempo de ataque do jogador
 
 	// --------------------------------------------------------------------------------------------
 	// Atributos de sprites e animação
@@ -61,23 +60,27 @@ protected:
 	Animation* anim = nullptr;          // animação do personagem
 	uint width;							// largura do Character
 	uint height;						// altura do Character
-	
+
 	// --------------------------------------------------------------------------------------------
 	// Objetos auxiliares para construções de lógicas
 
 	unordered_map<string, Color> text;  // unordered_map para armazenar o texto a ser exibido na tela
 	Timer* timer;						// timer para controlar o tempo de exibição do texto
-	Font* consolas;						// fonte para exibir texto na tela
+	Font* press12;						// fonte para exibir texto na tela
 	Timer* speedMovement;				// timer para controlar a velocidade de movimento do jogador
+	Timer* attackTimer;					// timer para controlar o tempo de ataque do jogador
+	Sprite* xpBar;							// sprite para representar a experiência do jogador
 
 	//--------------------------------------------------------------------------------------------
 	// Atributos básicos de todo jogador
 
 	int maxLife = 0;
 	int vida = 0;						// vida do jogador
-	int danoAtaque = 0;				// dano de ataque fisico do jogador (não utiliza mana e todas classes tem)
+	int danoAtaque = 0;					// dano de ataque fisico do jogador (não utiliza mana e todas classes tem)
 	int level;							// nível do jogador
-	
+	int xp;								// experiência do jogador
+	int maxXp;							// experiência máxima do jogador
+
 	// --------------------------------------------------------------------------------------------
 	// Métodos protegidos 
 
@@ -123,6 +126,7 @@ public:
 	float GetPrevY() const;									// retorna a posição y anterior do jogador
 	float GetVelX() const;									// Retorna a velocidade horizontal do inimigo
 	float GetVelY() const;									// Retorna a velocidade vertical do inimigo
+	void setXp(int xp);										// seta a experiência do jogador
 	DirectingAnimation GetDirection() const;				// retorna a direção do jogador
 	void setIsMoving(boolean move);							// seta se o personagem está se movendo
 	boolean IsHit() const;									// verifica se o personagem foi atingido
@@ -132,7 +136,7 @@ public:
 	// --------------------------------------------------------------------------------------------
 	// Métodos auxiliares
 
-	bool IsMoving();										// verifica se o personagem está se movendo
+	bool IsMoving() const;										// verifica se o personagem está se movendo
 	void Update();											// atualização
 	void Draw();											// desenho
 };
@@ -140,31 +144,9 @@ public:
 // --------------------------------------------------------------------------------------------------
 // Função Membro Inline
 
-inline void Character::Draw()			// Desenha o jogador relacionados ao player e o textos na tela
+inline bool Character::IsMoving() const
 {
-	anim->Draw(x, y, z);
-
-	// desenhar o texto de unored_map
-	if (!text.empty() && !timer->Elapsed(0.7f)) {
-		int i = 40;
-		for (auto& it : text) {
-			consolas->Draw(x,y - i,it.first, it.second, Layer::FRONT, 1.0f);
-			i+=40;
-		}
-	}
-	else {
-		// limpar o unordered_map
-		text.clear();
-	}
-}
-
-// ---------------------------------------------------------------------------------
-
-inline bool Character::IsMoving()
-{
-	bool move = isMoving;
-	isMoving = false;
-	return move;
+	return isMoving;
 }
 
 // ---------------------------------------------------------------------------------
@@ -270,6 +252,13 @@ inline float Character::GetVelY() const
 inline boolean Character::IsHit() const
 {
 	return isHit;
+}
+
+// ---------------------------------------------------------------------------------	
+
+inline void Character::setXp(int xp)
+{
+	this->xp += xp;
 }
 
 // ---------------------------------------------------------------------------------

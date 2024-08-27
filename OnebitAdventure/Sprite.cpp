@@ -74,3 +74,20 @@ void Sprite::Draw(float x, float y, float z, float scale, float rotation, Color 
 }
 
 // ---------------------------------------------------------------------------------
+
+void Sprite::DrawResize(float x, float y, float width, float height, float z, float scale, float rotation, Color color)
+{
+    sprite.width = width;
+    sprite.height = height;
+    sprite.x = x;
+    sprite.y = y;
+    sprite.depth = z;
+    sprite.scale = scale;
+    sprite.rotation = rotation;
+    sprite.color = color;
+
+    // adiciona o sprite na lista de desenho
+    Engine::renderer->Draw(sprite);
+}
+
+// ---------------------------------------------------------------------------------
