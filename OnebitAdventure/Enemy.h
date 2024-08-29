@@ -38,6 +38,7 @@ protected:
     float prevY;                        // Posição Y anterior do inimigo
     float newX;                         // Nova posição X do inimigo
     float newY;                         // Nova posição Y do inimigo
+	boolean playerInRange;              // Flag que indica se o jogador está dentro do alcance do inimigo
 
     // --------------------------------------------------------------------------------------------
     // Atributos de Sprites e Animação
@@ -120,8 +121,13 @@ public:
     // --------------------------------------------------------------------------------------------
     // Métodos Principais
 
-    void Update();        // Atualiza o estado e a movimentação do inimigo
-    void Draw();          // Desenha o inimigo na tela
+    void Update();                   // Atualiza o estado e a movimentação do inimigo
+    void Draw();                     // Desenha o inimigo na tela
+	void DrawHealthBar();            // Desenha a barra de vida do inimigo 
+	void DrawHealthText();           // Desenha o texto de vida do inimigo
+	void DrawLevel();                // Desenha o nível do inimigo
+	void DrawName();                 // Desenha o nome do inimigo    
+
 };
 
 // ---------------------------------------------------------------------------------

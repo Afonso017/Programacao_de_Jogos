@@ -11,13 +11,11 @@
 // Inicializa a BBox para colisão
 void Character::InitializeBBox()
 {
-	// Inicializa a BBox
 	BBox(new Rect(
 		x - walking->TileWidth() / 4.0f,
 		y - walking->TileHeight() / 4.0f,
 		x + walking->TileWidth() / 4.0f,
-		y + walking->TileHeight() / 4.0f)
-	);
+		y + walking->TileHeight() / 4.0f));
 }
 
 // ---------------------------------------------------------------------------------
@@ -92,14 +90,14 @@ Character::~Character()
 
 void Character::Update()
 {
-	HandleInput();					// Detecta a entrada do jogador para movimentá-lo na direção correta
+	HandleInput();							// Detecta a entrada do jogador para movimentá-lo na direção correta
 
 	if (movementType == BACK)
-		BackMovement();				// Realiza a animação de recuo do jogador
+		BackMovement();						// Realiza a animação de recuo do jogador
 
-	InterpolateMovement(gameTime);  // Interpolação do movimento do jogador para suavizar a movimentação
-	UpdateAnimation(); 				// Atualiza a animação do jogador para o próximo frame
-	ConstrainToScreen();			// Garante que o jogador não ultrapasse os limites da tela
+	InterpolateMovement(gameTime);			// Interpolação do movimento do jogador para suavizar a movimentação
+	UpdateAnimation(); 						// Atualiza a animação do jogador para o próximo frame
+	ConstrainToScreen();					// Garante que o jogador não ultrapasse os limites da tela
 
 	if (xp >= maxXp) {
 		level++;							// Aumenta o nível do jogador
@@ -120,12 +118,6 @@ void Character::Update()
 
 		press12->Draw(window->CenterX() - 50.0f, window->CenterY(), "Game Over", Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.2f);
 	}
-}
-
-// ---------------------------------------------------------------------------------
-
-void Character::PerformAttack() {
-	// Lógica que movimenta o jogador para a direção do ataque apenas para colidir com o inimigo
 }
 
 // ---------------------------------------------------------------------------------
@@ -231,11 +223,16 @@ void Character::ConstrainToScreen() {
 
 // ---------------------------------------------------------------------------------
 
-void Character::Draw()			// Desenha o jogador relacionados ao player e o textos na tela
-{
+void Character::Draw() {
 	anim->Draw(x, y, z);
 
-	// desenhar o texto de unored_map
+	DrawTextGet();
+	DrawExperienceBar();
+	DrawLevelAndXp();
+}
+// ---------------------------------------------------------------------------------
+
+void Character::DrawTextGet() {
 	if (!text.empty() && !timer->Elapsed(0.7f)) {
 		int i = 40;
 		for (auto& it : text) {
@@ -244,13 +241,13 @@ void Character::Draw()			// Desenha o jogador relacionados ao player e o textos 
 		}
 	}
 	else {
-		// limpar o unordered_map
 		text.clear();
 	}
+}
 
-	// --------------------------------------------------------------------------------------------
-	// Desenhar a barra de experiência do jogador
+// ---------------------------------------------------------------------------------
 
+void Character::DrawExperienceBar() {
 	// Calcula a porcentagem de xp atual em relação ao máximo
 	float percent = (float)xp / maxXp;
 
@@ -258,8 +255,8 @@ void Character::Draw()			// Desenha o jogador relacionados ao player e o textos 
 	float currentWidth = 387.0f * percent;
 
 	// Percentuais para a posição desejada
-	float xPercent = 0.50f;		// 10% da largura da tela
-	float yPercent = 0.886f;	// 90% da altura da tela
+	float xPercent = 0.50f;		// 50% da largura da tela
+	float yPercent = 0.886f;	// 88.6% da altura da tela
 
 	// Calcula a posição X e Y com base nas dimensões da tela
 	float definirX = window->Width() * xPercent;
@@ -270,17 +267,18 @@ void Character::Draw()			// Desenha o jogador relacionados ao player e o textos 
 
 	// Desenha a barra de experiência do jogador
 	xpBar->DrawResize(offset, definirY, currentWidth, 5.0f);
+}
 
-	// --------------------------------------------------------------------------------------------
-	// Desenhar o level do jogador e o xp atual e máximo
+// ---------------------------------------------------------------------------------
 
+void Character::DrawLevelAndXp() {
 	// Percentuais para a posição desejada
-	xPercent = 0.475f;		// 10% da largura da tela
-	yPercent = 0.886f;		// 90% da altura da tela
+	float xPercent = 0.475f;	// 47.5% da largura da tela
+	float yPercent = 0.886f;	// 88.6% da altura da tela
 
 	// Calcula a posição X e Y com base nas dimensões da tela
-	definirX = window->Width() * xPercent;
-	definirY = window->Height() * yPercent;
+	float definirX = window->Width() * xPercent;
+	float definirY = window->Height() * yPercent;
 
 	press12->Draw(definirX - (9 + level % 10), definirY - 45, "Nv:" + std::to_string(level), Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.2f);
 	press12->Draw(definirX, definirY - 25, std::to_string(xp) + "/" + std::to_string(maxXp), Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.0f);

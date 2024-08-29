@@ -77,6 +77,7 @@ Enemy::~Enemy()
 {
     delete life;
     delete hudLife;
+    delete press12;
 }
 
 // ------------------------------------------------------------------------------
@@ -84,13 +85,13 @@ Enemy::~Enemy()
 // Atualiza o estado do inimigo
 void Enemy::Update() {
 
-    deltaX = Level1::player->X() - X();                   // Distância em X para o jogador
-    deltaY = Level1::player->Y() - Y();                   // Distância em Y para o jogador
-    distance = deltaX * deltaX + deltaY * deltaY;         // Distância ao quadrado (para eficiência)
+    deltaX = Level1::player->X() - X();                     // Distância em X para o jogador
+    deltaY = Level1::player->Y() - Y();                     // Distância em Y para o jogador
+    distance = deltaX * deltaX + deltaY * deltaY;           // Distância ao quadrado (para eficiência)
 
     if (Level1::player->IsMoving() && Level1::player->GetMovementType() != IDLE) {
 
-        HandleMovement();                                 // Atualiza a movimentação do inimigo
+        HandleMovement();                                   // Atualiza a movimentação do inimigo
     }
 
     if (distance < proximityThreshold) {
@@ -98,9 +99,9 @@ void Enemy::Update() {
         DisplayEnemyHealth();
     }
 
-    InterpolateMovement(gameTime);      // Interpola o movimento do inimigo
-    UpdateAnimation();                  // Atualiza a animação do inimigo
-    ConstrainToScreen();                // Garante que o inimigo não ultrapasse os limites da tela
+    InterpolateMovement(gameTime);                          // Interpola o movimento do inimigo
+    UpdateAnimation();                                      // Atualiza a animação do inimigo
+    ConstrainToScreen();                                    // Garante que o inimigo não ultrapasse os limites da tela
 }
 
 // ------------------------------------------------------------------------------
@@ -244,36 +245,41 @@ void Enemy::MoveTowardsPlayer(float deltaX, float deltaY) {
 // ------------------------------------------------------------------------------
 
 void Enemy::DisplayEnemyHealth() {
-    // Calcula a dimensão da barra de vida
-    float barWidth = 86.0f;                             // Largura da barra de vida
-    float barHeight = 6.0f;                             // Altura da barra de vida
+    DrawHealthBar();
+    DrawHealthText();
+    DrawLevel();
+    DrawName();
+}
 
-    // Calcula a porcentagem de vida restante
-    float percent = (float)vida / vidaMax;              // Porcentagem de vida restante
+// ------------------------------------------------------------------------------
 
-    // Calcula a largura da barra de vida atual
-    float currentWidth = barWidth * percent;            // Largura da barra de vida atual
-
-    // Calcula o deslocamento (offset) da barra
+void Enemy::DrawHealthBar() {
+    float barWidth = 86.0f;
+    float barHeight = 6.0f;
+    float percent = (float)vida / vidaMax;
+    float currentWidth = barWidth * percent;
     float offset = x - (barWidth - currentWidth) / 2;
 
-    // Desenha a barra de vida atual
-    hudLife->Draw(x, y - (45.0f + hudLife->Height()));  // Desenha o fundo da barra de vida
-
-    // Desenha a barra de vida atual (barra de vida)
-    // Ajusta a posição X para que a barra de vida comece do canto esquerdo da hudLife
+    hudLife->Draw(x, y - (45.0f + hudLife->Height()));
     life->DrawResize(offset, y - (46.0f + hudLife->Height()), currentWidth, barHeight);
+}
 
-    // Exibe a vida atual do inimigo e a vida máxima em texto
-    std::string vidaTexto = std::to_string(GetVida());
-    vidaTexto.append("/");
-    vidaTexto.append(std::to_string(vidaMax));
+// ------------------------------------------------------------------------------
+
+void Enemy::DrawHealthText() {
+    std::string vidaTexto = std::to_string(GetVida()) + "/" + std::to_string(vidaMax);
     press12->Draw(x - 13.0f, y - 40.0f, vidaTexto, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 0.8f);
+}
 
-    // Exibe o nível do inimigo
+// ------------------------------------------------------------------------------
+
+void Enemy::DrawLevel() {
     press12->Draw((x + 15) - width / 2.0f, y - 80.0f, "Nv:" + std::to_string(level), Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 0.8f);
+}
 
-    // Exibe o nome do inimigo
+// ------------------------------------------------------------------------------
+
+void Enemy::DrawName() {
     press12->Draw(x - width / 2.0f, y - 100.0f, name, Color(1.0f, 1.0f, 1.0f, 1.0f), Layer::FRONT, 1.0f);
 }
 

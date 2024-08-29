@@ -110,7 +110,6 @@ public:
 	void InterpolateMovement(float gameTime);	// interpolação do movimento do jogador
 	void UpdateAnimation();						// atualiza a animação do jogador
 	void ConstrainToScreen();					// limita o jogador a tela
-	void PerformAttack();						// lógica de movimento de ataque do jogador
 	void BackMovement();						// lógica de movimento de recuo do jogador
 
 	//--------------------------------------------------------------------------------------------
@@ -136,9 +135,12 @@ public:
 	// --------------------------------------------------------------------------------------------
 	// Métodos auxiliares
 
-	bool IsMoving() const;										// verifica se o personagem está se movendo
+	bool IsMoving() const;									// verifica se o personagem está se movendo
 	void Update();											// atualização
 	void Draw();											// desenho
+	void DrawTextGet();										// desenha o texto na tela
+	void DrawExperienceBar();								// desenha a barra de experiência do jogador
+	void DrawLevelAndXp();									// desenha o level e a experiência do jogador
 };
 
 // --------------------------------------------------------------------------------------------------
