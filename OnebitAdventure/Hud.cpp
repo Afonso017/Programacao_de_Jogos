@@ -19,7 +19,7 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
     leftSide = window->CenterX() - backg->Width() / 2.0f;
     rightSide = window->CenterX() + backg->Width() / 2.0f;
     tileBottom = window->Height() - tw / 2.0f;
-    offset = 0.067f * width;
+    offset = 0.067f * width;    
     nextLevel = false;
 
     consolas = new Font("Resources/press12.png");
@@ -27,12 +27,19 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
 
     // Inicializa o hud
     hud = new Sprite("Resources/Hud/hud2.png", width, 144.0f);
-    tileSet = new TileSet("Resources/Hud/hud3.png", width, 144.0f, 1, 4);
+	Image* img = new Image("Resources/Hud/hud3.png", width, 576.0f);
+    tileSet = new TileSet(img, width, 144.0f, 4, 1);
     life = new Animation(tileSet, 0.0f, false);
-    life->Add(Life::FULL, new uint{ 0 }, 1);
-    life->Add(Life::THREE_QUARTERS, new uint{ 1 }, 1);
-    life->Add(Life::HALF, new uint{ 2 }, 1);
-    life->Add(Life::QUARTER, new uint{ 3 }, 1);
+
+    uint seq1[1] = { 0 };
+	uint seq2[1] = { 1 };
+	uint seq3[1] = { 2 };
+	uint seq4[1] = { 3 };
+
+    life->Add(Life::FULL, seq1, 1);
+    life->Add(Life::THREE_QUARTERS, seq2, 1);
+    life->Add(Life::HALF, seq3, 1);
+    life->Add(Life::QUARTER, seq4, 1);
 }
 
 // ---------------------------------------------------------------------------------
@@ -77,7 +84,7 @@ void Hud::Draw()
 
     // Desenha vida se o player estiver vivo
     if (Level1::player->GetVida() > 0)
-        life->Draw(window->CenterX(), window->Height() - 72.0f, Layer::FRONT);
+        life->Draw(window->CenterX(), window->Height() - 76.0f, Layer::FRONT);
 
     // Desenha o texto do indicador de vida
     string lifeTxt = "";
@@ -85,7 +92,11 @@ void Hud::Draw()
     lifeTxt.append("/");
     lifeTxt.append(std::to_string(Level1::player->MaxLife()));
 
-    consolas->Draw(leftSide + offset + tw * 0.33f, window->Height() - 72.0f, lifeTxt, Color(1.0f, 1.0f, 1.0f, 1.0f), 0.001f, 0.7f, 0.0f);
+	float positionY = window->Height() * 0.93;  // 93% da altura da janela
+	float positionX = window->Width() * 0.33;   // 33% da largura da janela
+
+    consolas->Draw(positionX, positionY, lifeTxt, Color(1.0f, 1.0f, 1.0f, 1.0f), 0.001f, 0.7f, 0.0f);
+    //consolas->Draw(leftSide + offset + tw * 0.33f, window->Height() - 72.0f, lifeTxt, Color(1.0f, 1.0f, 1.0f, 1.0f), 0.001f, 0.7f, 0.0f);
 }
 
 // ---------------------------------------------------------------------------------

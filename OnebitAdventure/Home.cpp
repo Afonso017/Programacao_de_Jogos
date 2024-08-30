@@ -10,7 +10,8 @@
 void Home::Init()
 {
 	// carrega o tile set do fundo
-    tileBackg = new TileSet("Resources/TitleScreen.png", 3840 / 2.0f, 1080, 2, 2);
+	Image* img = new Image("Resources/TitleScreen.png");
+    tileBackg = new TileSet(img, 3840 / 2.0f, 1080, 2, 2);
 
     // tela de fundo é uma animação de um tile set 1x2
     backg = new Animation(tileBackg, 0.6f, true);
