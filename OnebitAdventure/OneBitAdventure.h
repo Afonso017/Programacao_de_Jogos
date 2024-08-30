@@ -12,7 +12,13 @@ enum OneBitObjects // Enumeração dos tipos de objetos
     PROP,
     DOOR,
     CHEST,
-    COIN
+    COIN,
+	GRASS,
+    WALL,
+    TREE,
+    PILLAR,
+    FENCE,
+	CAMPFIRE
 };
 
 // ------------------------------------------------------------------------------

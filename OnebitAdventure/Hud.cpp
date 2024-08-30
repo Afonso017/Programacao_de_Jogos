@@ -13,7 +13,7 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
     height = window->Height() * 4.0f;
 
     // Carrega mapa vazio e o posiciona na janela no sentido baixo-cima
-    backg = new Sprite(new Image("Resources/Hud/mapa.png", width, height));
+    backg = new Sprite("Resources/Hud/mapa.png", width, height);
     MoveTo(window->CenterX(), 0.75f * backg->Height());
 
     leftSide = window->CenterX() - backg->Width() / 2.0f;
@@ -22,71 +22,13 @@ Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
     offset = 0.067f * width;
     nextLevel = false;
 
-    // Prepara para carregar as informações do mapa
-    int type;
-    bool interactable, bbox;
-    float x, y;
-    imagesSize = 8;
-    images = new string * [imagesSize] {
-        new string("Resources/Props/grass.png"),
-        new string("Resources/Props/wall.png"),
-        new string("Resources/Props/coin.png"),
-        new string("Resources/Props/door.png"),
-        new string("Resources/Props/tree.png"),
-        new string("Resources/Props/chest.png"),
-        new string("Resources/Props/campfire.png"),
-		new string("Resources/Props/fence.png"),
-    };
-
-    // Faz a leitura do arquivo descritor do mapa e adiciona props na cena
-    ifstream fin;
-    fin.open("Resources/Hud/mapa1.txt");
-    fin >> type;
-    while (!fin.eof())
-    {
-        if (fin.good())
-        {
-            fin >> x; fin >> y; fin >> interactable; fin >> bbox;
-
-            string img = *images[type];
-
-            // Verificar tipo do Prop ou se é um Inimigo
-            switch (type)
-            {
-            case 2:
-                type = COIN;
-                break;
-            case 3:
-                type = DOOR;
-                break;
-            case 5:
-                type = CHEST;
-                break;
-            default:
-                type = PROP;
-                break;
-            }
-
-            // Adiciona Prop/Inimigo na cena
-            Level1::scene->Add(new Prop(type, img, Col(y), Line(x), tw, th, interactable, bbox), STATIC);
-        }
-        else
-        {
-            // Ignora comentários
-            fin.clear();
-            char temp[80];
-            fin.getline(temp, 80);
-        }
-        fin >> type;
-    }
-    fin.close();
-
     consolas = new Font("Resources/press12.png");
     consolas->Spacing("Resources/press12.dat");
 
     // Inicializa o hud
-    hud = new Sprite(new Image("Resources/Hud/hud2.png", width, 144.0f));
-    life = new Animation(new TileSet(new Image("Resources/Hud/hud3.png", width, 576.0f), 4, 1), 0.0f, false);
+    hud = new Sprite("Resources/Hud/hud2.png", width, 144.0f);
+    tileSet = new TileSet("Resources/Hud/hud3.png", width, 144.0f, 1, 4);
+    life = new Animation(tileSet, 0.0f, false);
     life->Add(Life::FULL, new uint{ 0 }, 1);
     life->Add(Life::THREE_QUARTERS, new uint{ 1 }, 1);
     life->Add(Life::HALF, new uint{ 2 }, 1);
@@ -101,6 +43,7 @@ Hud::~Hud()
 	delete hud;
 	delete consolas;
 	delete life;
+	delete tileSet;
 }
 
 // ---------------------------------------------------------------------------------

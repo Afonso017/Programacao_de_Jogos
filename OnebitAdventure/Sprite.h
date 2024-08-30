@@ -76,9 +76,10 @@ private:
     const Image * image;            // ponteiro para uma imagem
 
 public:
-    Sprite(string filename);        // constroi sprite a partir de um arquivo
-    Sprite(const Image * img);      // constroi sprite a partir de imagem existente
-    ~Sprite();                      // destrutor do sprite
+    Sprite(string filename);                                    // constroi sprite a partir de um arquivo
+    Sprite(string filename, float width, float height);         // constroi sprite a partir de um arquivo
+    Sprite(const Image * img);                                  // constroi sprite a partir de imagem existente
+    ~Sprite();                                                  // destrutor do sprite
 
     int Width();                    // largura do sprite
     int Height();                   // altura do sprite

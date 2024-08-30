@@ -13,6 +13,7 @@ class Home : public Game
 {
 private:
 	Animation * backg = nullptr;   // plano de fundo
+	TileSet* tileBackg = nullptr;  // tile set do fundo
 
 public:
 	void Init();                    // inicialização

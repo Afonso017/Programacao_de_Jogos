@@ -26,20 +26,19 @@ enum Life
 class Hud : public Object
 {
 private:
-    Sprite * backg = nullptr;               // sprite do background
-    Sprite * hud = nullptr;                 // hud para mostrar estado do jogador
-    Font * consolas = nullptr;			    // Fonte para exibir texto na tela!
-    string ** images = nullptr;             // Vetor de ponteiros para imagens que serão usadas no mapa
+    Sprite * backg = nullptr;                   // sprite do background
+    Sprite * hud = nullptr;                     // hud para mostrar estado do jogador
+	TileSet* tileSet = nullptr;                 // tileset para mostrar estado do jogador
+    Font * consolas = nullptr;			        // Fonte para exibir texto na tela!
 
-	int imagesSize;                         // Tamanho do vetor de imagens 
-	float width;                            // Largura do background principal
-	float height;	                        // Altura do background principal
-	float tw;		                        // Largura de um tile
-	float th;		                        // Altura de um tile
-    float rightSide;                        // Lado direito do background principal
-    float tileBottom;                       // Posição y da primeira linha do background (de baixo para cima)
-    float offset;                           // Offset proporcional de pixels de um lado do background
-    float leftSide;                         // Lado esquerdo do background principal 
+	float width;                                // Largura do background principal
+	float height;	                            // Altura do background principal
+	float tw;		                            // Largura de um tile
+	float th;		                            // Altura de um tile
+    float rightSide;                            // Lado direito do background principal
+    float tileBottom;                           // Posição y da primeira linha do background (de baixo para cima)
+    float offset;                               // Offset proporcional de pixels de um lado do background
+    float leftSide;                             // Lado esquerdo do background principal 
 
     // Animation para representar a vida do jogador
     Animation * life = nullptr;

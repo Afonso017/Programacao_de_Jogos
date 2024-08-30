@@ -38,7 +38,6 @@ protected:
     float prevY;                        // Posição Y anterior do inimigo
     float newX;                         // Nova posição X do inimigo
     float newY;                         // Nova posição Y do inimigo
-	boolean playerInRange;              // Flag que indica se o jogador está dentro do alcance do inimigo
 
     // --------------------------------------------------------------------------------------------
     // Atributos de Sprites e Animação

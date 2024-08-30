@@ -6,6 +6,10 @@
 #include "Select.h"
 #include "Warrior.h"
 #include "Ghost.h"
+#include <fstream>
+#include <sstream>
+#include "Hud.h"
+using namespace std;
 
 // ------------------------------------------------------------------------------
 
@@ -17,7 +21,7 @@ Scene     * Level1::scene   = nullptr;
 
 void Level1::Init()
 {
-    // Background original tem 11 quadros de largura e 19 de altura
+    // Configura o tamanho dos tiles
     float width = window->Width() / 2.5f;
     float tileWidth = (width - width * 0.12f) / 11.25f;
     float tileHeight = window->Height() / 19.0f;
@@ -78,6 +82,9 @@ void Level1::Init()
     enemy = new Ghost(tileWidth, tileHeight, col, line);
 
     scene->Add(enemy, MOVING);
+
+    // Carrega os Props a partir do arquivo
+    LoadPropsFromFile("Resources/Props/mapa1.txt", tileWidth, tileHeight);
 }
 
 // ------------------------------------------------------------------------------
@@ -115,6 +122,65 @@ void Level1::Draw()
 void Level1::Finalize()
 {
     delete scene;
+}
+
+// ------------------------------------------------------------------------------
+
+// Método para ler o arquivo e criar os Props
+void Level1::LoadPropsFromFile(const std::string& filename, float tileWidth, float tileHeight)
+{
+    std::ifstream file(filename);
+
+    if (!file.is_open())
+    {
+        return;
+    }
+
+    std::string line;
+
+    while (std::getline(file, line))
+    {
+        // Ignora linhas vazias e comentários
+        if (line.empty() || line[0] == '/')
+            continue;
+
+        std::istringstream iss(line);
+        int type;
+        float x, y;
+        bool interactable, bbox;
+
+        // Lê e processa cada linha
+        while (iss >> type >> x >> y >> interactable >> bbox)
+        {
+            // Converte tipo para o valor correspondente
+            OneBitObjects propType;
+            switch (type)
+            {
+            case 0: propType = GRASS; break;
+            case 1: propType = WALL; break;
+            case 2: propType = COIN; break;
+            case 3: propType = DOOR; break;
+			case 4: propType = TREE; break;
+            case 5: propType = TREE; break;
+            case 6: propType = CHEST; break;
+            case 7: propType = CAMPFIRE; break;
+            case 8: propType = FENCE; break;
+			case 9: propType = PILLAR; break;
+            case 10: propType = PILLAR; break;
+            default: propType = PROP; break;
+            }
+
+            // Ajusta a posição conforme o tamanho do tile
+            float col = hud->Col(x);
+            float line = hud->Line(y);
+
+            // Cria o Prop e adiciona à cena
+            Prop* prop = new Prop(propType, type, col, line, tileWidth, tileHeight, interactable, bbox);
+            scene->Add(prop, STATIC);
+        }
+    }
+
+    file.close();
 }
 
 // ------------------------------------------------------------------------------

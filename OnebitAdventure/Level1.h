@@ -22,10 +22,10 @@ private:
 
 public:
 	static Character * player;		// instancia do jogador (classe guerreiro)
-	
 	static Hud * hud;				// classe que gerencia o hud do jogo
 	static Scene * scene;			// gerenciador de cena
 
+	void LoadPropsFromFile(const std::string& filename, float tileWidth, float tileHeight);	// carrega os objetos do mapa
 	void Init();					// inicialização
 	void Update();					// atualização
 	void Draw();					// desenho

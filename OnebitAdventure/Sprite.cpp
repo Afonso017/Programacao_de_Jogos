@@ -38,6 +38,20 @@ Sprite::Sprite(string filename)
 
 // ---------------------------------------------------------------------------------
 
+Sprite::Sprite(string filename, float width, float height)
+{
+    // carrega imagem
+    image = new Image(filename);
+    localImage = true;
+
+    // configura sprite
+    sprite.width = width;
+    sprite.height = height;
+    sprite.texture = image->View();
+}
+
+// ---------------------------------------------------------------------------------
+
 Sprite::Sprite(const Image * img)
 {
     // aponta para imagem externa

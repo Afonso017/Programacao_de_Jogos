@@ -17,9 +17,12 @@ class Prop : public Object
 private:
 	Sprite* sprite = nullptr;
 	Animation* anim = nullptr;
+	TileSet* tileSet = nullptr;
 
 public:
-	Prop(uint type, string image, float col, float line, float width, float height, bool interactable, bool bbox = true);
+	static std::vector<std::string> images;		// Vetor de ponteiros para imagens que serão usadas no mapa
+
+	Prop(OneBitObjects type, int imagem, float col, float line, float width, float height, bool interactable, bool bbox = true);
 	~Prop();
 
 	bool interactable;

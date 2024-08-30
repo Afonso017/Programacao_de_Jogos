@@ -11,7 +11,7 @@
 
 void Select::Init()
 {
-	backg = new Sprite(new Image("Resources/TelaEscolha5.png", window->Width(), window->Height()));
+	backg = new Sprite("Resources/TelaEscolha5.png");
 }
 
 // ------------------------------------------------------------------------------
