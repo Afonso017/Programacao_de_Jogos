@@ -52,6 +52,7 @@ protected:
 	float prevY;						// posição y anterior do jogador
 	float newX;							// nova posição x do jogador
 	float newY;							// nova posição y do jogador
+	float limiarY;						// limiar de movimento vertical
 
 	// --------------------------------------------------------------------------------------------
 	// Atributos de sprites e animação
@@ -69,7 +70,8 @@ protected:
 	Font* press12;						// fonte para exibir texto na tela
 	Timer* speedMovement;				// timer para controlar a velocidade de movimento do jogador
 	Timer* attackTimer;					// timer para controlar o tempo de ataque do jogador
-	Sprite* xpBar;							// sprite para representar a experiência do jogador
+	Sprite* xpBar;						// sprite para representar a experiência do jogador
+	Timer* stillTimer;					// timer para controlar o tempo de pausa
 
 	//--------------------------------------------------------------------------------------------
 	// Atributos básicos de todo jogador

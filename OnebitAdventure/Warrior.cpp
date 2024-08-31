@@ -55,8 +55,12 @@ void Warrior::OnCollision(Object* obj)
 
 	if (obj->Type() == ENEMY && isHit) {
 
-		timer->Start(); // Inicia o timer para o cálculo de tempo de exibição da mensagem!
-		attackTimer->Start(); // Inicia o timer para o cálculo de tempo de pausa entre os ataques!
+		timer->Start();			// Inicia o timer para o cálculo de tempo de exibição da mensagem!
+
+		// Reinicia o timer de ataque
+		attackTimer->Reset();
+		attackTimer->Stop();
+		attackTimer->Start();	// Inicia o timer para o cálculo de tempo de pausa entre os ataques!
 
 		int EnemyX = enemy->GetPrevX();
 		int EnemyY = enemy->GetPrevY();

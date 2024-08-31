@@ -6,20 +6,23 @@ using namespace std;
 
 // ---------------------------------------------------------------------------------
 
-Hud::Hud(float tileWidth, float tileHeight) : tw(tileWidth), th(tileHeight)
+Hud::Hud(float tileWidth, float tileHeight, float offset) : tw(tileWidth), th(tileHeight), offset(offset)
 {
     // Background tem 1/3 da largura da janela e 4x a altura da janela
-    width = window->Width() / 2.5f;
-    height = window->Height() * 4.0f;
+    width = window->Width() / 3.0f + (2 * offset);
+    height = window->Height();
 
     // Carrega mapa vazio e o posiciona na janela no sentido baixo-cima
     backg = new Sprite("Resources/Hud/mapa.png", width, height);
-    MoveTo(window->CenterX(), 0.75f * backg->Height());
+    MoveTo(window->CenterX(), window->CenterY());
 
+    // Lado esquerdo e direito do background principal
     leftSide = window->CenterX() - backg->Width() / 2.0f;
     rightSide = window->CenterX() + backg->Width() / 2.0f;
-    tileBottom = window->Height() - tw / 2.0f;
-    offset = 0.067f * width;    
+
+	// Posição y da primeira linha do background (de baixo para cima)
+    tileBottom = window->Height() - tw / 2.0f; 
+
     nextLevel = false;
 
     consolas = new Font("Resources/press12.png");

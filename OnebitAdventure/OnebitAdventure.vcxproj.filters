@@ -129,6 +129,12 @@
     <ClCompile Include="Prop.cpp">
       <Filter>Game\Arquivos de Origem\Entity\Prop</Filter>
     </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Game\Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>Game\Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -214,6 +220,12 @@
     </ClInclude>
     <ClInclude Include="Prop.h">
       <Filter>Game\Arquivos de Cabeçalho\Entity\Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Game\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>Game\Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

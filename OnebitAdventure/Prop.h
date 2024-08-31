@@ -20,7 +20,7 @@ private:
 	TileSet* tileSet = nullptr;
 
 public:
-	static std::vector<std::string> images;		// Vetor de ponteiros para imagens que serão usadas no mapa
+	static std::vector<std::string> images;							// Vetor de ponteiros para imagens que serão usadas no mapa
 
 	Prop(OneBitObjects type, int imagem, float col, float line, float width, float height, bool interactable, bool bbox = true);
 	~Prop();

@@ -22,13 +22,19 @@ Scene     * Level1::scene   = nullptr;
 void Level1::Init()
 {
     // Configura o tamanho dos tiles
-    float width = window->Width() / 2.5f;
-    float tileWidth = (width - width * 0.12f) / 11.25f;
-    float tileHeight = window->Height() / 19.0f;
+	float Width = window->Width() / 3.0f;                       // Largura da área central
+	float Height = window->Height();                            // Altura da área central
 
+	// Descontando as bordas laterais de 5% da largura total
+	float BorderWidth = Width * 0.05f;                          // Exemplo de 5% de borda em cada lado
+
+	// Área útil de movimento, sem contar as bordas
+	float tileWidth = (Width - (2 * BorderWidth)) / 11.0f;        // Largura e passada horizontal de um tile
+	float tileHeight = Height / 19.0f;  				        // Altura e passada vertical de um tile
+    
     scene = new Scene();
 
-    hud = new Hud(tileWidth, tileHeight);
+    hud = new Hud(tileWidth, tileHeight, BorderWidth);
     player = new Warrior(tileWidth, tileHeight);
 
     // Inicializa a posição do Ghost 1

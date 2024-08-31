@@ -38,15 +38,16 @@ Character::Character(float width, float height)
 	// --------------------------------------------------------------------------------------------
 	// Inicializar variáveis de movimentação do jogador
 
-	interpolationSpeed = 25.0f; // Velocidade de interpolação do movimento do jogador, aumentar esse número para acelerar
-	VelX = width;				// Velocidade horizontal (Quanto ele percorre horizontalmente)
-	VelY = height;				// Velocidade vertical	 (Quanto ele percorre verticalmente)
-	targetX = x;				// Posição x do destino do jogador pós movimento
-	targetY = y;				// Posição y do destino do jogador pós movimento
-	newX = x;					// Nova posição x do jogador
-	newY = y;					// Nova posição y do jogador
-	prevX = x;					// Posição x anterior do jogador
-	prevY = y;					// Posição y anterior do jogador
+	interpolationSpeed = 25.0f;		// Velocidade de interpolação do movimento do jogador, aumentar esse número para acelerar
+	VelX = width;					// Velocidade horizontal (Quanto ele percorre horizontalmente)
+	VelY = height;					// Velocidade vertical	 (Quanto ele percorre verticalmente)
+	targetX = x;					// Posição x do destino do jogador pós movimento
+	targetY = y;					// Posição y do destino do jogador pós movimento
+	newX = x;						// Nova posição x do jogador
+	newY = y;						// Nova posição y do jogador
+	prevX = x;						// Posição x anterior do jogador
+	prevY = y;						// Posição y anterior do jogador
+	limiarY = Level1::hud->Line(10); // Limiar de movimento vertical do jogador
 
 	// --------------------------------------------------------------------------------------------
 	// Inicializar variáveis de sprites e animação do jogador
@@ -62,6 +63,8 @@ Character::Character(float width, float height)
 	attackTimer = new Timer();												// Timer para controlar o tempo de exibição do texto
 	speedMovement = new Timer();											// Timer para controlar a velocidade de movimento do jogador
 	xpBar = new Sprite(new Image("Resources/xpBar.png", 387.0f, 5.0f));		// Sprite para representar a experiência do jogador
+	stillTimer = new Timer();												// Timer para controlar o tempo de exibição do texto
+	stillTimer->Start();													// Inicia o timer de movimento
 
 	// --------------------------------------------------------------------------------------------
 	// Inicializar atributos básicos de todo jogador
@@ -84,6 +87,7 @@ Character::~Character()
 	delete attackTimer;
 	delete speedMovement;
 	delete xpBar;
+	delete stillTimer;
 }
 
 // ---------------------------------------------------------------------------------
@@ -94,6 +98,14 @@ void Character::Update()
 
 	if (movementType == BACK)
 		BackMovement();						// Realiza a animação de recuo do jogador
+
+
+	if (!isMoving && Y() < limiarY) {
+		//stillTimer->Start();
+		if (stillTimer->Elapsed(2.0f) && !isMoving) {
+			targetY = limiarY;
+		}
+	}
 
 	InterpolateMovement(gameTime);			// Interpolação do movimento do jogador para suavizar a movimentação
 	UpdateAnimation(); 						// Atualiza a animação do jogador para o próximo frame
@@ -133,12 +145,10 @@ void Character::BackMovement() {
 // ---------------------------------------------------------------------------------
 
 void Character::HandleInput() {
-	isMoving = false;						  // Indica que o jogador não está se movendo	
+	isMoving = false;						  // Indica que o jogador não está se movendo
 
 	if (!isDead && newX == targetX && newY == targetY && attackTimer->Elapsed(0.2f)) {
 		if (speedMovement->Elapsed(0.03f)) {  // Verifica se o timer permite um novo movimento
-
-			movementType = WALK;			  // Define o tipo de movimento do jogador para andar
 
 			if (window->KeyDown(VK_UP) && Y() == targetY) {
 				SetMovementDirection(WALKUP, characterState, 0.0f, -VelY);
@@ -161,6 +171,7 @@ void Character::HandleInput() {
 // ---------------------------------------------------------------------------------
 
 void Character::SetMovementDirection(DirectingAnimation newDirection, DirectingAnimation newAnimation, float deltaX, float deltaY) {
+	movementType = WALK;			// Define o tipo de movimento do jogador para andar
 	prevX = X();					// Salva a posição x anterior do jogador
 	prevY = Y();					// Salva a posição y anterior do jogador
 	direction = newDirection; 		// Atualiza a direção do jogador
@@ -170,6 +181,7 @@ void Character::SetMovementDirection(DirectingAnimation newDirection, DirectingA
 	isMoving = true;				// Indica que o jogador está se movendo
 	isHit = true;					// Indica que o jogador pode atacar o inimigo e ser atingido (Se houver colisão)
 	speedMovement->Start();         // Inicia o timer após o movimento
+	stillTimer->Reset();			// Reseta o timer de movimento
 }
 
 // ---------------------------------------------------------------------------------
@@ -195,7 +207,7 @@ void Character::UpdateAnimation() {
 // ---------------------------------------------------------------------------------
 
 void Character::ConstrainToScreen() {
-	float diff = 0.067f * Level1::hud->Width();
+	float diff = 0.08f * Level1::hud->Width();
 
 	// Verifica o limite direito
 	if (targetX > window->CenterX() + Level1::hud->Width() / 2.0f - diff) {
@@ -240,8 +252,10 @@ void Character::DrawTextGet() {
 			i += 40;
 		}
 	}
-	else {
+	else if (timer->Elapsed(0.7f)){
 		text.clear();
+		timer->Reset();
+		timer->Stop();
 	}
 }
 

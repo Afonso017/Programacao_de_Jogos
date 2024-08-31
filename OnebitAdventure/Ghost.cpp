@@ -71,6 +71,10 @@ void Ghost::OnCollision(Object* obj)
 
 		isHit = false;
 	}
+	else if (obj->Type() == ENEMY) {
+		targetX = prevX;
+		targetY = prevY;
+	}
 }
 
 // ---------------------------------------------------------------------------------

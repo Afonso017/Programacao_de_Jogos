@@ -44,8 +44,8 @@ private:
     Animation * life = nullptr;
 
 public:
-    Hud(float tileWidth, float tileHeight);     // construtor
-    ~Hud();                                     // destrutor
+    Hud(float tileWidth, float tileHeight, float offset);     // construtor
+    ~Hud();                                                   // destrutor
 
     void Update();                              // atualização do objeto
     void Draw();                                // desenho do objeto
@@ -76,6 +76,7 @@ inline float Hud::Line(float y) const
 {
     return window->Height() - y * th;
 }
+
 
 inline float Hud::Col(float x) const
 {
