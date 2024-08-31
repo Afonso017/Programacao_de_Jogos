@@ -29,7 +29,7 @@ void Level1::Init()
 	float BorderWidth = Width * 0.05f;                          // Exemplo de 5% de borda em cada lado
 
 	// Área útil de movimento, sem contar as bordas
-	float tileWidth = (Width - (2 * BorderWidth)) / 11.0f;        // Largura e passada horizontal de um tile
+	float tileWidth = (Width - (2 * BorderWidth)) / 11.0f;      // Largura e passada horizontal de um tile
 	float tileHeight = Height / 19.0f;  				        // Altura e passada vertical de um tile
     
     scene = new Scene();

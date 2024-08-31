@@ -34,19 +34,20 @@ Character::Character(float width, float height)
 	isHit = false;				// Flag para indicar se o personagem já foi atingido
 	isDead = false;				// Flag para indicar se o personagem está morto
 	isMoving = false;			// Flag para indicar se o personagem está se movendo
+	isMovingUp = false;			// Flag para indicar se o personagem está se movendo para cima
 
 	// --------------------------------------------------------------------------------------------
 	// Inicializar variáveis de movimentação do jogador
 
-	interpolationSpeed = 25.0f;		// Velocidade de interpolação do movimento do jogador, aumentar esse número para acelerar
-	VelX = width;					// Velocidade horizontal (Quanto ele percorre horizontalmente)
-	VelY = height;					// Velocidade vertical	 (Quanto ele percorre verticalmente)
-	targetX = x;					// Posição x do destino do jogador pós movimento
-	targetY = y;					// Posição y do destino do jogador pós movimento
-	newX = x;						// Nova posição x do jogador
-	newY = y;						// Nova posição y do jogador
-	prevX = x;						// Posição x anterior do jogador
-	prevY = y;						// Posição y anterior do jogador
+	interpolationSpeed = 25.0f;		 // Velocidade de interpolação do movimento do jogador, aumentar esse número para acelerar
+	VelX = width;					 // Velocidade horizontal (Quanto ele percorre horizontalmente)
+	VelY = height;					 // Velocidade vertical	 (Quanto ele percorre verticalmente)
+	targetX = x;					 // Posição x do destino do jogador pós movimento
+	targetY = y;					 // Posição y do destino do jogador pós movimento
+	newX = x;						 // Nova posição x do jogador
+	newY = y;						 // Nova posição y do jogador
+	prevX = x;						 // Posição x anterior do jogador
+	prevY = y;						 // Posição y anterior do jogador
 	limiarY = Level1::hud->Line(10); // Limiar de movimento vertical do jogador
 
 	// --------------------------------------------------------------------------------------------
@@ -100,9 +101,8 @@ void Character::Update()
 		BackMovement();						// Realiza a animação de recuo do jogador
 
 
-	if (!isMoving && Y() < limiarY) {
-		//stillTimer->Start();
-		if (stillTimer->Elapsed(2.0f) && !isMoving) {
+	if (!isMovingUp && Y() < limiarY) {
+		if (stillTimer->Elapsed(1.5f) && !isMovingUp) {
 			targetY = limiarY;
 		}
 	}
@@ -146,12 +146,15 @@ void Character::BackMovement() {
 
 void Character::HandleInput() {
 	isMoving = false;						  // Indica que o jogador não está se movendo
+	isMovingUp = false;						  // Indica que o jogador não está se movendo para cima
 
 	if (!isDead && newX == targetX && newY == targetY && attackTimer->Elapsed(0.2f)) {
 		if (speedMovement->Elapsed(0.03f)) {  // Verifica se o timer permite um novo movimento
 
 			if (window->KeyDown(VK_UP) && Y() == targetY) {
 				SetMovementDirection(WALKUP, characterState, 0.0f, -VelY);
+				isMovingUp = true;
+				stillTimer->Reset();			// Reseta o timer de movimento
 			}
 			else if (window->KeyDown(VK_DOWN) && Y() == targetY) {
 				SetMovementDirection(WALKDOWN, characterState, 0.0f, VelY);
@@ -181,7 +184,6 @@ void Character::SetMovementDirection(DirectingAnimation newDirection, DirectingA
 	isMoving = true;				// Indica que o jogador está se movendo
 	isHit = true;					// Indica que o jogador pode atacar o inimigo e ser atingido (Se houver colisão)
 	speedMovement->Start();         // Inicia o timer após o movimento
-	stillTimer->Reset();			// Reseta o timer de movimento
 }
 
 // ---------------------------------------------------------------------------------
@@ -207,15 +209,15 @@ void Character::UpdateAnimation() {
 // ---------------------------------------------------------------------------------
 
 void Character::ConstrainToScreen() {
-	float diff = 0.08f * Level1::hud->Width();
+	float diff = 0.05f * Level1::hud->Width();
 
 	// Verifica o limite direito
-	if (targetX > window->CenterX() + Level1::hud->Width() / 2.0f - diff) {
+	if (targetX > (window->CenterX() + Level1::hud->Width() / 2.0f) - diff) {
 		newX = targetX = prevX;
 		movementType = IDLE;
 	}
 	// Verifica o limite esquerdo
-	if (targetX < window->CenterX() - Level1::hud->Width() / 2.0f + diff) {
+	if (targetX < (window->CenterX() - Level1::hud->Width() / 2.0f) + diff) {
 		newX = targetX = prevX;
 		movementType = IDLE;
 	}
@@ -266,10 +268,10 @@ void Character::DrawExperienceBar() {
 	float percent = (float)xp / maxXp;
 
 	// Calcula a largura da barra de vida atual
-	float currentWidth = 387.0f * percent;
+	float currentWidth = 350.0f * percent;
 
 	// Percentuais para a posição desejada
-	float xPercent = 0.50f;		// 50% da largura da tela
+	float xPercent = 0.503f;		// 50% da largura da tela
 	float yPercent = 0.886f;	// 88.6% da altura da tela
 
 	// Calcula a posição X e Y com base nas dimensões da tela
@@ -277,7 +279,7 @@ void Character::DrawExperienceBar() {
 	float definirY = window->Height() * yPercent;
 
 	// Calcula o offset para centralizar a barra de vida
-	float offset = definirX - (387.0f - currentWidth) / 2;
+	float offset = definirX - (350.0f - currentWidth) / 2;
 
 	// Desenha a barra de experiência do jogador
 	xpBar->DrawResize(offset, definirY, currentWidth, 5.0f);

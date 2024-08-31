@@ -39,6 +39,7 @@ protected:
 	bool isHit;							// Flag para indicar se o personagem já atacou
 	bool isDead;						// Flag para indicar se o personagem está morto
 	bool isMoving;						// verifica se o personagem está se movendo
+	bool isMovingUp;					// verifica se o personagem está se movendo para cima
 
 	// --------------------------------------------------------------------------------------------
 	// Atributos de movimentação

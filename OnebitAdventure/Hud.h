@@ -29,6 +29,8 @@ private:
     Sprite * backg = nullptr;                   // sprite do background
     Sprite * hud = nullptr;                     // hud para mostrar estado do jogador
 	TileSet* tileSet = nullptr;                 // tileset para mostrar estado do jogador
+	Image* img = nullptr;                       // imagem para mostrar estado do jogador
+	Image* img3 = nullptr;                      // imagem para mostrar estado do jogador
     Font * consolas = nullptr;			        // Fonte para exibir texto na tela!
 
 	float width;                                // Largura do background principal
@@ -54,6 +56,7 @@ public:
 	int Width();								// Retorna a largura do background principal
 	int Height();								// Retorna a altura do background principal
     float Line(float x) const;                  // Retorna a posição y de uma linha no background
+	int InverseLine(float y) const;			    // Retorna a posição y de uma linha no background
     float Col(float y) const;                   // Retorna a posição x de uma coluna no background
     bool Collision(Object*, Object*, int);      // Verifica colisão entre dois objetos
 	bool Collision(int, int, int, int, int);    // Verifica colisão entre dois pontos
@@ -72,11 +75,16 @@ inline int Hud::Height()
     return backg->Height();
 }
 
+inline int Hud::InverseLine(float y) const
+{
+    return (window->Height() - y) / th;
+}
+
+
 inline float Hud::Line(float y) const
 {
     return window->Height() - y * th;
 }
-
 
 inline float Hud::Col(float x) const
 {

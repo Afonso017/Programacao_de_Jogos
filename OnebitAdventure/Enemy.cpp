@@ -99,6 +99,14 @@ void Enemy::Update() {
         DisplayEnemyHealth();
     }
 
+	// Se a vida do inimigo for menor ou igual a zero ele vai de base, é deletado e o jogador ganha experiência
+    if (vida <= 0) {
+        // Morreu
+        // Deleta o objeto
+        Level1::scene->Delete(this, MOVING);
+        Level1::player->setXp(20 * (level));
+    }
+
     InterpolateMovement(gameTime);                          // Interpola o movimento do inimigo
     UpdateAnimation();                                      // Atualiza a animação do inimigo
     ConstrainToScreen();                                    // Garante que o inimigo não ultrapasse os limites da tela
@@ -189,24 +197,24 @@ void Enemy::UpdateAnimation() {
 // ------------------------------------------------------------------------------
 
 void Enemy::ConstrainToScreen() {
-    float diff = 0.067f * Level1::hud->Width();
+ 	float diff = 0.12f * Level1::hud->Width();
 
-    // Verifica o limite direito
-    if (targetX > window->CenterX() + Level1::hud->Width() / 2.0f - diff) {
-        newX = targetX = prevX;
-    }
-    // Verifica o limite esquerdo
-    if (targetX < window->CenterX() - Level1::hud->Width() / 2.0f + diff) {
-        newX = targetX = prevX;
-    }
-    // Verifica o limite inferior
-    if (targetY > window->Height()) {
-        newY = targetY = prevY;
-    }
-    // Verifica o limite superior
-    if (targetY < 0) {
-        newY = targetY = prevY;
-    }
+	// Verifica o limite direito
+	if (targetX > (window->CenterX() + Level1::hud->Width() / 2.0f) - diff) {
+		newX = targetX = prevX;
+	}
+	// Verifica o limite esquerdo
+	if (targetX < (window->CenterX() - Level1::hud->Width() / 2.0f) + diff) {
+		newX = targetX = prevX;
+	}
+	// Verifica o limite inferior
+	if (targetY > window->Height()) {
+		newY = targetY = prevY;
+	}
+	// Verifica o limite superior
+	if (targetY < 0) {
+		newY = targetY = prevY;
+	}
 
     // Atualiza a posição se ela estiver dentro dos limites
     MoveTo(newX, newY);

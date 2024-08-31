@@ -9,11 +9,12 @@ using namespace std;
 Hud::Hud(float tileWidth, float tileHeight, float offset) : tw(tileWidth), th(tileHeight), offset(offset)
 {
     // Background tem 1/3 da largura da janela e 4x a altura da janela
-    width = window->Width() / 3.0f + (2 * offset);
+    width = window->Width() / 3.0f;
     height = window->Height();
 
     // Carrega mapa vazio e o posiciona na janela no sentido baixo-cima
-    backg = new Sprite("Resources/Hud/mapa.png", width, height);
+	img = new Image("Resources/Hud/mapa.png", width, height);
+    backg = new Sprite(img);
     MoveTo(window->CenterX(), window->CenterY());
 
     // Lado esquerdo e direito do background principal
@@ -29,9 +30,11 @@ Hud::Hud(float tileWidth, float tileHeight, float offset) : tw(tileWidth), th(ti
     consolas->Spacing("Resources/press12.dat");
 
     // Inicializa o hud
-    hud = new Sprite("Resources/Hud/hud2.png", width, 144.0f);
-	Image* img = new Image("Resources/Hud/hud3.png", width, 576.0f);
-    tileSet = new TileSet(img, width, 144.0f, 4, 1);
+
+	img3 = new Image("Resources/Hud/hud2.png", width, 144.0f);
+    hud = new Sprite(img3);
+	Image* img2 = new Image("Resources/Hud/hud3.png", width, 576.0f);
+    tileSet = new TileSet(img2, width, 144.0f, 4, 1);
     life = new Animation(tileSet, 0.0f, false);
 
     uint seq1[1] = { 0 };
@@ -54,6 +57,7 @@ Hud::~Hud()
 	delete consolas;
 	delete life;
 	delete tileSet;
+    delete img;
 }
 
 // ---------------------------------------------------------------------------------
