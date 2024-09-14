@@ -1,27 +1,18 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
-#pragma once
 #ifndef WARRIOR_H
 #define WARRIOR_H
 
 #include "Object.h"						// interface de Object
-#include "Character.h"						// interface de Player
+#include "Character.h"					// interface de Player
 
 // ------------------------------------------------------------------------------
 
 class Warrior : public Character
 {
-private:
-	// --------------------------------------------------------------------------------------------
-	// atributos específicos do Warrior
-
-	float chanceCritica;
-
-	// --------------------------------------------------------------------------------------------
-
 public:
-	Warrior(float width, float height);
+	Warrior(int col, int line);
 	~Warrior() override;
 
 	void OnCollision(Object* obj) override;					// resolução de colisões

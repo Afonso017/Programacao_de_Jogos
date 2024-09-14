@@ -1,13 +1,13 @@
 // Prop.h
 
-#pragma once
 #ifndef PROP_H
 #define PROP_H
 
 // ----------------------------------------------------------------------------------
 // Inclusões
 
-#include "Object.h"
+#include "Entity.h"
+#include "Image.h"
 #include "Sprite.h"
 #include "TileSet.h"
 #include "Animation.h"
@@ -15,7 +15,7 @@
 
 // ----------------------------------------------------------------------------------
 
-class Prop : public Object
+class Prop : public Entity
 {
 private:
 	Sprite* sprite = nullptr;										// Ponteiro para sprite do objeto
@@ -23,10 +23,9 @@ private:
 	TileSet* tileSet = nullptr;										// Ponteiro para tileset do objeto	(Se ele tiver um)
 
 public:
-	static std::vector<std::string> images;							// Vetor de ponteiros para imagens que serão usadas no mapa
 	bool interactable;												// Flag para indicar se o objeto é interagível
 
-	Prop(OneBitObjects type, int imagem, float col, float line, float width, float height, bool interactable, bool bbox = true);
+	Prop(uint type, Image * image, float col, float line, bool interactable, bool bbox = true);
 	~Prop();
 
 	void Update();
@@ -38,7 +37,7 @@ public:
 
 inline void Prop::Draw()
 {
-	if (type == DOOR || type == CHEST)
+	if (type == DOOR || type == CHEST || type == CAMPFIRE)
 		anim->Draw(x, y, z);
 	else
 		sprite->Draw(x, y, z);

@@ -1,42 +1,41 @@
 // ---------------------------------------------------------------------------------
 // Inclusões
 
+#include "Level1.h"
 #include "Warrior.h"
 #include "Enemy.h"
 #include "Ghost.h"
-#include "Level1.h"
 #include "Sprite.h"
+#include "Image.h"
+#include "Animation.h"
 
 // ---------------------------------------------------------------------------------
 
 // Construtor da classe Warrior, inicializa tudo especifico do Warrior
-Warrior::Warrior(float width, float height) 
-	: Character(width, height) // Chamada do construtor da classe base
+Warrior::Warrior(int col, int line)
+	: Character() // Chamada do construtor da classe base
 {
-	Image* img = new Image("Resources/WarriorSprite.png", this->width * 4, this->height * 2); // Carrega a imagem do Warrior
-	walking = new TileSet(img, this->width, this->height, 4, 8);                              // Cria o TileSet do Warrior
+	Image* img = new Image("Resources/WarriorSprite.png", (uint)width * 4, (uint)height * 2); // Carrega a imagem do Warrior
+	walking = new TileSet(img, (uint)width, (uint)height, 4, 8);                              // Cria o TileSet do Warrior
 	anim = new Animation(walking, 0.125f, true);											  // Cria a animação do Warrior
 
     uint SeqRight[4] = { 0,1,2,3 };
     uint SeqLeft[4] = { 4,5,6,7 };
-    anim->Add(WALKRIGHT, SeqRight, 4);
-    anim->Add(WALKLEFT, SeqLeft, 4);
+    anim->Add(WALKLEFT, SeqRight, 4);
+    anim->Add(WALKRIGHT, SeqLeft, 4);
 
-	maxLife = 52 + (10 * (level - 1));
-    vida = maxLife;
-	danoAtaque = 2;			// Dano de ataque de 2
-	chanceCritica = 2.0f;   // Chance de crítico de 2%
+	maxLife = 52 + (10 * (level - 1));	// Vida máxima do Warrior por nível
+	life = maxLife;						// Vida padrão do Warrior
+	attack = 2;							// Dano de ataque de 2
+	criticalChance = 2.0f;				// Chance de crítico de 2%
 
     // Inicialize BBox após walking ser definido
     InitializeBBox();
 
-	// Inicializa a posição do Warrior ao lado da fogueira
-	float col = Level1::hud->Col(5);
-	float line = Level1::hud->Line(7);
-	MoveTo(col, line, Layer::UPPER);
-
-	targetX = X();
-	targetY = Y();
+	// Inicializa a posição
+	targetX = prevX = Level1::hud->Col(col);
+	targetY = prevY = Level1::hud->Line(line);
+	MoveTo(targetX, targetY, Layer::MIDDLE);
 }
 
 // ---------------------------------------------------------------------------------
@@ -52,8 +51,9 @@ Warrior::~Warrior()
 void Warrior::OnCollision(Object* obj)
 {
 	Enemy* enemy = (Enemy*)obj;
+	uint type = obj->Type();
 
-	if (obj->Type() == ENEMY && isHit) {
+	if (type == ENEMY && isHit) {
 
 		timer->Start();			// Inicia o timer para o cálculo de tempo de exibição da mensagem!
 
@@ -73,18 +73,18 @@ void Warrior::OnCollision(Object* obj)
 			SetMovementType(BACK);
 
 			// Recupera a referência ao inimigo colidido
-			int dano = danoAtaque;
+			int dano = attack;
 
 			// Gera um número aleatório entre 0 e 100
 			int randomValue = rand() % 100;
 
 			// Se o valor gerado for menor que a chance crítica, aplica o crítico
-			if (randomValue < chanceCritica) {
+			if (randomValue < criticalChance) {
 				dano *= 2; // Dano crítico, multiplicado por 2
 			}
 
 			// Aplica o dano ao inimigo
-			enemy->SetVida(dano);
+			enemy->SetDamage(dano);
 
 			// seta a mensagem de dano no unored_map
 			// Dano que o personagem causou
@@ -104,7 +104,7 @@ void Warrior::OnCollision(Object* obj)
 		isHit = false;
 
 		// Se a vida do personagem for menor ou igual a 0, remove-o da cena
-		if (vida <= 0) {
+		if (life <= 0) {
 
 			Image* img = new Image("Resources/morte.png", 64, 64); // Carrega a imagem do Warrior
 			walking = new TileSet(img, 64, 64, 1, 1);              // Cria o TileSet do Warrior
@@ -112,13 +112,19 @@ void Warrior::OnCollision(Object* obj)
 			isDead = true;										   // foi de base
 		}
 	}
-	else if (obj->Type() == COIN)
+	else if (type == COIN)
 	{
 		Level1::scene->Delete(obj, STATIC);
 	}
-	else if (obj->Type() != DOOR)
+	else if (type != DOOR)
 	{
-		SetMovementType(BACK);
+		targetX = prevX;
+		targetY = prevY;
+
+		if (type == BOX)
+		{
+			// Implementar interação com a caixa: sprite de vida e itens dropados
+		}
 	}
 }
 

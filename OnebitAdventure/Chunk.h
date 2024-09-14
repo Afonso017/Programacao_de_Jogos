@@ -1,23 +1,13 @@
-// ------------------------------------------------------------------------------
-// Inclusões
+#ifndef CHUNK_H
+#define CHUNK_H
 
-#include <vector>
-#include "Prop.h"
+// ----------------------------------------------------------------------------------
 
-// ------------------------------------------------------------------------------
+class Chunk
+{
 
-class Chunk {
-private:
-    int width;
-    int height;
-    std::vector<Prop> props;
-
-public:
-
-    Chunk(int width, int height);
-    void generateChunk();
-    void draw();
-    // Outros atributos como elementos do mapa
 };
 
-// ------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
+
+#endif // CHUNK_H

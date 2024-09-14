@@ -77,7 +77,7 @@ private:
 
 public:
     Sprite(string filename);                                    // constroi sprite a partir de um arquivo
-    Sprite(string filename, float width, float height);         // constroi sprite a partir de um arquivo
+    Sprite(string filename, uint width, uint height);           // constroi sprite a partir de um arquivo
     Sprite(const Image * img);                                  // constroi sprite a partir de imagem existente
     ~Sprite();                                                  // destrutor do sprite
 

@@ -1,40 +1,37 @@
 #include "Hud.h"
-#include "Level1.h"
-#include "Prop.h"
-#include <fstream>
-using namespace std;
 
 // ---------------------------------------------------------------------------------
 
-Hud::Hud(float tileWidth, float tileHeight, float offset) : tw(tileWidth), th(tileHeight), offset(offset)
+Hud::Hud()
 {
-    // Background tem 1/3 da largura da janela e 4x a altura da janela
-    width = window->Width() / 3.0f;
-    height = window->Height();
+	// Dimensões comuns aos 3 huds
+    width = window->Width() / 3.0f;     // Largura da área central
+	height = window->Height();          // Altura da área central
 
-    // Carrega mapa vazio e o posiciona na janela no sentido baixo-cima
-	img = new Image("Resources/Hud/mapa.png", width, height);
-    backg = new Sprite(img);
-    MoveTo(window->CenterX(), window->CenterY());
+    // Descontando as bordas laterais de 5% da largura total
+    offset = width * 0.05f;                          // Exemplo de 5% de borda em cada lado
+
+    // Área útil de movimento, sem contar as bordas
+    tileWidth = (width - (2.0f * offset)) / 11.0f;         // Largura e passada horizontal de um tile
+    tileHeight = height / 19.0f;  				                // Altura e passada vertical de um tile
+
+    // Imagem do background esquerdo
+
+    // -------------------------------------------------------------------------
+    // Inicializa hud principal
+    // 
+    // Imagem do background principal
+    mainBackg = new Sprite("Resources/Hud/mapa.png", width, height);
 
     // Lado esquerdo e direito do background principal
-    leftSide = window->CenterX() - backg->Width() / 2.0f;
-    rightSide = window->CenterX() + backg->Width() / 2.0f;
+    mainLeftSide = window->CenterX() - mainBackg->Width() / 2.0f;
+    mainRightSide = window->CenterX() + mainBackg->Width() / 2.0f;
+    mainBottomSide = window->Height() - tileHeight / 2.0f;       // Posição da primeira linha do background
 
-	// Posição y da primeira linha do background (de baixo para cima)
-    tileBottom = window->Height() - tw / 2.0f; 
-
-    nextLevel = false;
-
-    consolas = new Font("Resources/press12.png");
-    consolas->Spacing("Resources/press12.dat");
-
-    // Inicializa o hud
-
-	img3 = new Image("Resources/Hud/hud2.png", width, 144.0f);
-    hud = new Sprite(img3);
-	Image* img2 = new Image("Resources/Hud/hud3.png", width, 576.0f);
-    tileSet = new TileSet(img2, width, 144.0f, 4, 1);
+	// Hud do player com vida, mana, xp, etc
+    playerHud = new Sprite("Resources/Hud/hud2.png", width, 2.8f * tileHeight);
+	Image* img = new Image("Resources/Hud/hud3.png", width, 4.0f * 2.8f * tileHeight);
+    tileSet = new TileSet(img, width, 2.8f * tileHeight, 4, 1);
     life = new Animation(tileSet, 0.0f, false);
 
     uint seq1[1] = { 0 };
@@ -42,68 +39,69 @@ Hud::Hud(float tileWidth, float tileHeight, float offset) : tw(tileWidth), th(ti
 	uint seq3[1] = { 2 };
 	uint seq4[1] = { 3 };
 
-    life->Add(Life::FULL, seq1, 1);
-    life->Add(Life::THREE_QUARTERS, seq2, 1);
-    life->Add(Life::HALF, seq3, 1);
-    life->Add(Life::QUARTER, seq4, 1);
+    life->Add(FULL, seq1, 1);
+    life->Add(THREE_QUARTERS, seq2, 1);
+    life->Add(HALF, seq3, 1);
+    life->Add(QUARTER, seq4, 1);
+
+    // --------------------------------------------------------------------------
+
+    // Imagem do background direito
+    
+
+	// Fonte para exibir texto na tela
+    consolas = new Font("Resources/press12.png");
+    consolas->Spacing("Resources/press12.dat");
 }
 
 // ---------------------------------------------------------------------------------
 
 Hud::~Hud()
 {
-	delete backg;
-	delete hud;
-	delete consolas;
-	delete life;
-	delete tileSet;
-    delete img;
+    delete mainBackg;
+    delete playerHud;
+    delete tileSet;
+    delete life;
+    delete consolas;
 }
 
 // ---------------------------------------------------------------------------------
 
 void Hud::Update()
 {
-    // Mantém background dentro da janela
-    if (y - backg->Height() / 2.0f > 0)
-        MoveTo(x, window->Height() - 1.0f);
-    else if (y + backg->Height() / 2.0f < window->Height())
-        MoveTo(x, -backg->Height() / 2.0f);
-
     // Pega a vida do player e atualiza hud da vida
-    int ratio = 100 * Level1::player->GetVida() / Level1::player->MaxLife();
+    int ratio = 100 * 1/*Level1::player->GetVida() / Level1::player->MaxLife()*/;
     if (ratio >= 99)
-        life->Select(Life::FULL);
+        life->Select(FULL);
     else if (ratio >= 75)
-        life->Select(Life::THREE_QUARTERS);
+        life->Select(THREE_QUARTERS);
     else if (ratio >= 50)
-        life->Select(Life::HALF);
+        life->Select(HALF);
     else
-        life->Select(Life::QUARTER);
+        life->Select(QUARTER);
 }
 
 // ---------------------------------------------------------------------------------
 
 void Hud::Draw()
 {
-    backg->Draw(x, y, Layer::BACK);
-    hud->Draw(window->CenterX(), window->Height() - 72.0f, Layer::FRONT);
+    mainBackg->Draw(window->CenterX(), window->CenterY(), Layer::BACK);
+    playerHud->Draw(window->CenterX(), window->Height() - playerHud->Height() / 2.0f, Layer::FRONT);
 
     // Desenha vida se o player estiver vivo
-    if (Level1::player->GetVida() > 0)
-        life->Draw(window->CenterX(), window->Height() - 76.0f, Layer::FRONT);
+    if (72/*Level1::player->GetVida()*/ > 0)
+        life->Draw(window->CenterX(), window->Height() - playerHud->Height() / 2.0f, Layer::FRONT);
 
     // Desenha o texto do indicador de vida
     string lifeTxt = "";
-    lifeTxt.append(std::to_string(Level1::player->GetVida()));
+    lifeTxt.append(std::to_string(72/*Level1::player->GetVida()*/));
     lifeTxt.append("/");
-    lifeTxt.append(std::to_string(Level1::player->MaxLife()));
+    lifeTxt.append(std::to_string(72/*Level1::player->MaxLife()*/));
 
-	float positionY = window->Height() * 0.93;  // 93% da altura da janela
-	float positionX = window->Width() * 0.33;   // 33% da largura da janela
+	float positionX = mainLeftSide + offset + 0.25f * tileWidth;
+    float positionY = mainBottomSide - 0.8f * tileHeight;
 
     consolas->Draw(positionX, positionY, lifeTxt, Color(1.0f, 1.0f, 1.0f, 1.0f), 0.001f, 0.7f, 0.0f);
-    //consolas->Draw(leftSide + offset + tw * 0.33f, window->Height() - 72.0f, lifeTxt, Color(1.0f, 1.0f, 1.0f, 1.0f), 0.001f, 0.7f, 0.0f);
 }
 
 // ---------------------------------------------------------------------------------

@@ -1,46 +1,37 @@
-#pragma once
 #ifndef MAP_H
 #define MAP_H
 
 // ------------------------------------------------------------------------------
-// Inclusões
 
-#include "Object.h"
-#include "Prop.h"
-#include <queue>
+#include "Types.h"
+#include "Image.h"
 #include <vector>
-using std::vector;
-using std::deque;
 
 // ------------------------------------------------------------------------------
 
-class Map: public Object {
-private:
-	// Propriedades do mapa
-	deque<vector<Prop>> linesMap;									// Lista de props (Ah ideia é ter (20 vetores com no máximo 11 props)
-	float width;													// Largura do mapa
-	float height;													// Altura do mapa
-	boolean nextChunk;												// Flag para indicar que o jogador passou de chunk
-
-public:
-	Map(float tileWidth, float tileHeight);
-	~Map();
-
-	void Draw();
-	void Update();
-	// Outros atributos como elementos do mapa
+enum Biome // Tipo do chunk (cada chunk é um bioma diferente)
+{
+	FIELD, FOREST, RUIN
 };
 
 // ------------------------------------------------------------------------------
 
-void Map::Draw() {
-	// Laço que percorre a lista de LinesMap desenhando cada prop de cada vetor
-	for (auto& vec : linesMap) {
-		for (auto& prop : vec) {
-			prop.Draw();  // Chama o método Draw de cada Prop
-		}
-	}
-}
+class Map
+{
+private:
+	// Propriedades do mapa
+	static const int propsLength = 15;					// Número de props
+	Image* images[propsLength];							// Vetor de imagens de props
+	int chunkSize;										// Tamanho do chunk
+	int lastPos;										// Posição do último prop desenhado
+
+public:
+
+	Map(uint seed);
+	~Map();
+
+	void Generate();						// Gera um chunk
+};
 
 // ------------------------------------------------------------------------------
 

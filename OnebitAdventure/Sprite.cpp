@@ -38,10 +38,10 @@ Sprite::Sprite(string filename)
 
 // ---------------------------------------------------------------------------------
 
-Sprite::Sprite(string filename, float width, float height)
+Sprite::Sprite(string filename, uint width, uint height)
 {
     // carrega imagem
-    image = new Image(filename);
+    image = new Image(filename, width, height);
     localImage = true;
 
     // configura sprite

@@ -7,9 +7,10 @@
 // Inclusões
 
 #include "Game.h"
-#include "Hud.h"
-#include "Enemy.h"
 #include "Scene.h"
+#include "Character.h"
+#include "Hud.h"
+#include "Map.h"
 
 // ------------------------------------------------------------------------------
 
@@ -17,15 +18,13 @@ class Level1 : public Game
 {
 private:
 	bool viewBox = false;			// controle de visualização de caixas de colisão
-	int progress = 0;				// Variável para contar o progresso do player!
-	Enemy* enemy;					// instância do inimigo (classe fantasma)
 
 public:
-	static Character * player;		// instancia do jogador (classe guerreiro)
-	static Hud * hud;				// classe que gerencia o hud do jogo
 	static Scene * scene;			// gerenciador de cena
+	static Hud * hud;				// gerenciador do hud do jogo
+	static Map * map;				// gerenciador do mapa do jogo
+	static Character * player;		// instancia do jogador (classe guerreiro)
 
-	void LoadPropsFromFile(const std::string& filename, float tileWidth, float tileHeight);	// carrega os objetos do mapa
 	void Init();					// inicialização
 	void Update();					// atualização
 	void Draw();					// desenho

@@ -129,11 +129,14 @@
     <ClCompile Include="Prop.cpp">
       <Filter>Game\Arquivos de Origem\Entity\Prop</Filter>
     </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>Game\Arquivos de Origem</Filter>
+    </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Game\Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="Chunk.cpp">
-      <Filter>Game\Arquivos de Origem</Filter>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Game\Arquivos de Origem\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -221,11 +224,14 @@
     <ClInclude Include="Prop.h">
       <Filter>Game\Arquivos de Cabeçalho\Entity\Prop</Filter>
     </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>Game\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Game\Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="Chunk.h">
-      <Filter>Game\Arquivos de Cabeçalho</Filter>
+    <ClInclude Include="Entity.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

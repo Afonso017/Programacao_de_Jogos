@@ -3,54 +3,45 @@
 
 // ----------------------------------------------------------------------------------
 
-// Inicialização do vetor estático fora da classe
-std::vector<std::string> Prop::images = {
-	"Resources/Props/grass.png",
-	"Resources/Props/wall.png",
-	"Resources/Props/coin.png",
-	"Resources/Props/door.png",
-	"Resources/Props/tree.png",
-	"Resources/Props/tree2.png",
-	"Resources/Props/chest.png",
-	"Resources/Props/campfire.png",
-	"Resources/Props/fence.png",
-	"Resources/Props/pilar.png",
-	"Resources/Props/pilar2.png",
-};
-
-// ----------------------------------------------------------------------------------
-
-Prop::Prop(OneBitObjects type, int indexImage, float col, float line, float width, float height, bool interactable, bool bbox)
+Prop::Prop(uint type, Image* image, float col, float line, bool interactable, bool bbox)
+	: Entity(), interactable(interactable)
 {
 	this->type = type;
-	this->interactable = interactable;
+
+	uint width, height;
 
 	if (type == DOOR || type == CHEST)
 	{
-		Image* image = new Image(images[indexImage], width * 2, height);
-		tileSet = new TileSet(image, width, height, 2, 2);
+		width = image->Width() / 2;
+		height = image->Height();
+
+		tileSet = new TileSet(image, width, height, 2, 2, false);
 		anim = new Animation(tileSet, 0.0f, false);
 
 		uint seq1[1] = { 0 };
 		uint seq2[1] = { 1 };
 
 		// Sequência 0 padrão, 1 quando player interage
-		anim->Add(0, seq1, 1); // Estava disperdiçando memória!
+		anim->Add(0, seq1, 1);
 		anim->Add(1, seq2, 1);
 		anim->Select(0);
 	}
+	else if (type == CAMPFIRE)
+	{
+		width = image->Width() / 2;
+		height = image->Height();
+
+		tileSet = new TileSet(image, width, height, 2, 2, false);
+		anim = new Animation(tileSet, 1.0f, true);
+	}
 	else {
-		sprite = new Sprite(images[indexImage]);
+		sprite = new Sprite(image);
+		width = sprite->Width();
+		height = sprite->Height();
 	}
 
-	if (type == PILLAR) {
-		BBox(new Rect(
-			x - width / 2.4f,
-			y - 90 / 1.0f,
-			x + width / 2.4f,
-			y + 90 / 1.0f)
-		);
-	} else if (interactable || bbox) {
+	if (bbox)
+	{
 		BBox(new Rect(
 			x - width / 2.4f,
 			y - height / 2.3f,
@@ -59,24 +50,35 @@ Prop::Prop(OneBitObjects type, int indexImage, float col, float line, float widt
 		);
 	}
 
-	MoveTo(col, line, Layer::LOWER);
+	if (type == PILLAR)
+	{
+		MoveTo(col, line, Layer::MIDDLE - 0.1f);
+		targetX = prevX = line = x;
+		targetY = prevY = col = y;
+	}
+	else
+	{
+		MoveTo(col, line, Layer::LOWER);
+		targetX = prevX = line = x;
+		targetY = prevY = col = y;
+	}
 }
 
 // ----------------------------------------------------------------------------------
 
 Prop::~Prop()
 {
-	if (sprite != nullptr) delete sprite;
-	if (anim != nullptr) delete anim;
-	if (tileSet != nullptr) delete tileSet;
-
-	// images não precisa ser deletado, pois é um vetor estático e será deletado automaticamente ao final do programa
+	if (sprite) delete sprite;
+	if (anim) delete anim;
+	if (tileSet) delete tileSet;
 }
 
 // ----------------------------------------------------------------------------------
 
 void Prop::Update()
 {
+	Entity::CameraMovement();
+
 	// Verifica se o player passou pela porta
 	if (type == DOOR && anim->Frame() == 1)
 	{
@@ -85,6 +87,11 @@ void Prop::Update()
 			// Fecha a porta
 			anim->Select(0);
 		}
+	}
+
+	if (type == CAMPFIRE)
+	{
+		anim->NextFrame();
 	}
 }
 

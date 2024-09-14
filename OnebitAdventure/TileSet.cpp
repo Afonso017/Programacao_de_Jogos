@@ -14,26 +14,27 @@
 
 // -------------------------------------------------------------------------------
 
-TileSet::TileSet(string filename, uint tileWidth, uint tileHeight, uint numCols, uint numTiles) : 
-    image(new Image(filename)), 
+TileSet::TileSet(string filename, uint imgWidth, uint imgHeight, uint tileWidth, uint tileHeight, uint numCols, uint numTiles) :
+    image(new Image(filename, imgWidth, imgHeight)), 
     width(tileWidth), 
     height(tileHeight), 
     columns(numCols),    
     size(numTiles)
 {
-    
+    localImage = true;
 }
 
 // -------------------------------------------------------------------------------
 
-TileSet::TileSet(Image* img, uint tileWidth, uint tileHeight, uint numCols, uint numTiles) :
+TileSet::TileSet(Image* img, uint tileWidth, uint tileHeight, uint numCols, uint numTiles, bool localImage) :
     image(img),
     width(tileWidth),
     height(tileHeight),
     columns(numCols),
-    size(numTiles)
+    size(numTiles),
+	localImage(localImage)
 {
-
+    
 }
 
 // -------------------------------------------------------------------------------
@@ -43,16 +44,18 @@ TileSet::TileSet(string filename, uint numLines, uint numCols) :
     columns(numCols),
     size(numLines* numCols)
 {
+    localImage = true;
     width = image->Width() / numCols;
     height = image->Height() / numLines;
 }
 
 // -------------------------------------------------------------------------------
 
-TileSet::TileSet(Image* image, uint numLines, uint numCols) :
+TileSet::TileSet(Image* image, uint numLines, uint numCols, bool localImage) :
     image(image),
     columns(numCols),
-    size(numLines* numCols)
+    size(numLines* numCols),
+    localImage(localImage)
 {
     width = image->Width() / numCols;
     height = image->Height() / numLines;
@@ -63,10 +66,8 @@ TileSet::TileSet(Image* image, uint numLines, uint numCols) :
 TileSet::~TileSet()
 {
     // libera memória ocupada pela imagem
-    if (image)
-    {
+    if (localImage)
          delete image;
-    }
 }
 
 // -------------------------------------------------------------------------------
