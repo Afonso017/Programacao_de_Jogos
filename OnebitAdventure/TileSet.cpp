@@ -26,15 +26,14 @@ TileSet::TileSet(string filename, uint imgWidth, uint imgHeight, uint tileWidth,
 
 // -------------------------------------------------------------------------------
 
-TileSet::TileSet(Image* img, uint tileWidth, uint tileHeight, uint numCols, uint numTiles, bool localImage) :
+TileSet::TileSet(Image* img, uint tileWidth, uint tileHeight, uint numCols, uint numTiles) :
     image(img),
     width(tileWidth),
     height(tileHeight),
     columns(numCols),
-    size(numTiles),
-	localImage(localImage)
+    size(numTiles)
 {
-    
+    localImage = false;
 }
 
 // -------------------------------------------------------------------------------
@@ -44,14 +43,14 @@ TileSet::TileSet(string filename, uint numLines, uint numCols) :
     columns(numCols),
     size(numLines* numCols)
 {
-    localImage = true;
     width = image->Width() / numCols;
     height = image->Height() / numLines;
+    localImage = true;
 }
 
 // -------------------------------------------------------------------------------
 
-TileSet::TileSet(Image* image, uint numLines, uint numCols, bool localImage) :
+TileSet::TileSet(Image* image, uint numLines, uint numCols) :
     image(image),
     columns(numCols),
     size(numLines* numCols),
@@ -59,6 +58,7 @@ TileSet::TileSet(Image* image, uint numLines, uint numCols, bool localImage) :
 {
     width = image->Width() / numCols;
     height = image->Height() / numLines;
+    localImage = false;
 }
 
 // -------------------------------------------------------------------------------

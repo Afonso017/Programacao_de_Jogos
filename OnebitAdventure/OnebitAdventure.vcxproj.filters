@@ -114,12 +114,6 @@
     <ClCompile Include="Warrior.cpp">
       <Filter>Game\Arquivos de Origem\Entity\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Ghost.cpp">
-      <Filter>Game\Arquivos de Origem\Entity\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Game\Arquivos de Origem\Entity\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Hud.cpp">
       <Filter>Game\Arquivos de Origem</Filter>
     </ClCompile>
@@ -137,6 +131,12 @@
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Game\Arquivos de Origem\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,12 +203,6 @@
     <ClInclude Include="Warrior.h">
       <Filter>Game\Arquivos de Cabeçalho\Entity\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Ghost.h">
-      <Filter>Game\Arquivos de Cabeçalho\Entity\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\Arquivos de Cabeçalho\Entity\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Game\Arquivos de Recurso</Filter>
     </ClInclude>
@@ -232,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Game\Arquivos de Cabeçalho\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Ghost.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

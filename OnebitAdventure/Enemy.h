@@ -11,7 +11,8 @@
 #include "OneBitAdventure.h"            // Cabecalho principal do jogo
 #include "Animation.h"                  // Animações de sprites
 #include "Font.h"                       // Fonte para exibir texto na tela
-#include "TileSet.h"                    // Folha de sprites
+#include "TileSet.h"                    // Folha de sprite
+#include "Level1.h"
 #include <string>                       // Biblioteca para manipulação de strings
 
 // ------------------------------------------------------------------------------
@@ -24,22 +25,19 @@ protected:
     // Estados e Flags do Inimigo
 
     MovementType enemyState;            // Estado atual da animação do inimigo
-    bool isHit;                         // Flag que indica se o inimigo já atacou
-    DirectingAnimation direction;       // Direção da animação do inimigo
 
     // --------------------------------------------------------------------------------------------
     // Atributos de Sprites e Animação
 
     TileSet* walking = nullptr;         // Folha de sprites do inimigo
     Animation* anim = nullptr;          // Animação do inimigo
-    uint width;                         // Largura do inimigo
-    uint height;                        // Altura do inimigo
     Sprite* lifeSprite;                 // Animação para representar a vida do inimigo
     Sprite* hudLife;                    // Sprite para representar a vida do inimigo
 
     // --------------------------------------------------------------------------------------------
     // Objetos Auxiliares
 
+    float playerDistance;               // distância do inimigo para o jogador
     float proximityThreshold;           // Distância para iniciar a perseguição ao jogador
     Font* press12;					    // fonte para exibir texto na tela
 
@@ -54,7 +52,8 @@ protected:
 
     void InitializeBBox();              // Inicializa a caixa de colisão (BBox)
     void MoveRandomly();                // Move o inimigo aleatoriamente
-    void HandleMovement();
+	void HandleMovement();			    // Controla a movimentação do inimigo
+    float PlayerDistance();             // Calcula a distância até o jogador
 
 public:
     // --------------------------------------------------------------------------------------------
@@ -71,10 +70,8 @@ public:
     // --------------------------------------------------------------------------------------------
     // Métodos de Movimentação e Animação
 
-    void ConstrainToScreen();
     void UpdateAnimation();                             // Atualiza a animação do inimigo
-    void InterpolateMovement();
-    void MoveTowardsPlayer(float deltaX, float deltaY); // Movimenta o inimigo em direção ao jogador
+    void MoveTowardsPlayer();                           // Movimenta o inimigo em direção ao jogador
     void DisplayEnemyHealth();                          // Exibe a vida do inimigo na tela
 
     // --------------------------------------------------------------------------------------------
@@ -103,6 +100,13 @@ inline void Enemy::Draw() {
 inline bool Enemy::IsHit() const
 {
     return isHit;     // Retorna se o inimigo foi atingido
+}
+
+inline float Enemy::PlayerDistance()
+{
+    float deltaX = Level1::player->X() - x;
+    float deltaY = Level1::player->Y() - y;
+    return sqrt(deltaX * deltaX + deltaY * deltaY);
 }
 
 // ---------------------------------------------------------------------------------

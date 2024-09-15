@@ -165,9 +165,8 @@ Map::Map(uint seed)
 
 Map::~Map()
 {
-	for (Image* img : images) {
+	for (Image* img : images)
 		delete img;
-	}
 }
 
 // ------------------------------------------------------------------------------

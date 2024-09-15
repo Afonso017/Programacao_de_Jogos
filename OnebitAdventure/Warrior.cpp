@@ -15,9 +15,12 @@
 Warrior::Warrior(int col, int line)
 	: Character() // Chamada do construtor da classe base
 {
-	Image* img = new Image("Resources/WarriorSprite.png", (uint)width * 4, (uint)height * 2); // Carrega a imagem do Warrior
-	walking = new TileSet(img, (uint)width, (uint)height, 4, 8);                              // Cria o TileSet do Warrior
-	anim = new Animation(walking, 0.125f, true);											  // Cria a animação do Warrior
+	// Cria o TileSet do Warrior
+	walking = new TileSet("Resources/WarriorSprite.png", width * 4, height * 2, 
+		width, height, 4, 8);
+
+	// Cria a animação do Warrior
+	anim = new Animation(walking, 0.125f, true);
 
     uint SeqRight[4] = { 0,1,2,3 };
     uint SeqLeft[4] = { 4,5,6,7 };
@@ -42,37 +45,38 @@ Warrior::Warrior(int col, int line)
 
 Warrior::~Warrior()
 {
-	delete walking;
 	delete anim;
+	delete walking;
 }
 
 // ---------------------------------------------------------------------------------
 
 void Warrior::OnCollision(Object* obj)
 {
-	Enemy* enemy = (Enemy*)obj;
 	uint type = obj->Type();
 
-	if (type == ENEMY && isHit) {
+	// Se o objeto colidido for um inimigo
+	if (type == ENEMY && isHit)
+	{
+		Enemy* enemy = (Enemy*)obj;
 
 		timer->Start();			// Inicia o timer para o cálculo de tempo de exibição da mensagem!
 
 		// Reinicia o timer de ataque
-		attackTimer->Reset();
-		attackTimer->Stop();
-		attackTimer->Start();	// Inicia o timer para o cálculo de tempo de pausa entre os ataques!
+		attackTimer->Reset();	// Inicia o timer para o cálculo de tempo de pausa entre os ataques!
 
-		int EnemyX = enemy->GetPrevX();
-		int EnemyY = enemy->GetPrevY();
-		int PlayerX = targetX;
-		int PlayerY = targetY;
+		// Se o player mover na direção do inimigo
 
-		// Se o player vai para a posição anterior do inimigo, ele ataca o inimigo e vice-versa
-		if (PlayerX == EnemyX && PlayerY == EnemyY) {
+		Direction enemyDirection = enemy->GetDirection();
 
-			SetMovementType(BACK);
+		bool verticalCollision = direction == WALKUP || direction == WALKDOWN 
+			&& enemyDirection == WALKUP || enemyDirection == WALKDOWN;
+		bool horizontalCollision = direction == WALKLEFT || direction == WALKRIGHT
+			&& enemyDirection == WALKLEFT || enemyDirection == WALKRIGHT;
 
-			// Recupera a referência ao inimigo colidido
+		// O player está atacando o inimigo
+		if (verticalCollision || horizontalCollision) 
+		{
 			int dano = attack;
 
 			// Gera um número aleatório entre 0 e 100
@@ -88,29 +92,18 @@ void Warrior::OnCollision(Object* obj)
 
 			// seta a mensagem de dano no unored_map
 			// Dano que o personagem causou
-			text.insert({ std::to_string((int)dano), Color(1.0f,1.0f,1.0f,1.0f) });
+			text.insert({ std::to_string(enemy->GetDamage()), Color(1.0f,1.0f,1.0f,1.0f) });
 
 			// Dano que o inimigo causou
-			text.insert({ std::to_string((int)enemy->GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f) });
+			text.insert({ std::to_string(GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f) });
 		}
 		else {
-			// Se o player não vai para a posição anterior do inimigo, ele é atingido pelo inimigo
-			SetMovementType(WALK);
 			// Dano que o inimigo causou
-			text.insert({ std::to_string((int)enemy->GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f) });
+			text.insert({ std::to_string(GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f) });
 		}
 
 		// Evita que o Warrior continue a ser atingido até que a próxima colisão seja registrada
 		isHit = false;
-
-		// Se a vida do personagem for menor ou igual a 0, remove-o da cena
-		if (life <= 0) {
-
-			Image* img = new Image("Resources/morte.png", 64, 64); // Carrega a imagem do Warrior
-			walking = new TileSet(img, 64, 64, 1, 1);              // Cria o TileSet do Warrior
-			anim = new Animation(walking, 0.125f, true);		   //
-			isDead = true;										   // foi de base
-		}
 	}
 	else if (type == COIN)
 	{
@@ -118,8 +111,8 @@ void Warrior::OnCollision(Object* obj)
 	}
 	else if (type != DOOR)
 	{
-		targetX = prevX;
-		targetY = prevY;
+		// Se o objeto colidido for diferente de uma porta, o Warrior volta para a posição anterior
+		Move(BACKWARD);
 
 		if (type == BOX)
 		{

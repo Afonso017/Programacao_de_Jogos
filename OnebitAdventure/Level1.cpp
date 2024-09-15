@@ -25,6 +25,7 @@ void Level1::Init()
     
     scene->Add(hud, STATIC);
     scene->Add(player, MOVING);
+    scene->Add(new Ghost(8, 12), MOVING);
 }
 
 // ------------------------------------------------------------------------------

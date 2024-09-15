@@ -45,19 +45,17 @@ public:
             uint tileWidth,                 // largura de um quadro
             uint tileHeight,                // altura de um quadro
             uint numCols,                   // número de colunas na folha
-            uint numTiles,                  // quantidade de quadros
-		    bool localImage = true);        // flag para indicar se a imagem é local
+            uint numTiles);                 // quantidade de quadros
 
     TileSet(string filename,                // nome do arquivo
             uint numLines,                  // número de linhas na folha
             uint numCols);                  // número de colunas na folha
 
-    TileSet(Image * image,                  // imagem da folha
+    TileSet(Image* image,                  // imagem da folha
             uint numLines,                  // número de linhas na folha
-		    uint numCols,				    // número de colunas na folha
-            bool localImage = true);        // flag para indicar se a imagem é local
+            uint numCols);				    // número de colunas na folha
 
-    ~TileSet();                                
+    ~TileSet();                     
 
     uint    TileWidth();                    // retorna a largura de um quadro
     uint    TileHeight();                   // retorna a altura de um quadro

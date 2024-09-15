@@ -12,8 +12,11 @@
 Ghost::Ghost(float col, float line)
 	: Enemy() // Chamada do construtor da classe base
 {
-	Image* img = new Image("Resources/GhostFolha.png", this->width * 3, this->height * 2);	// Carrega a imagem do Ghost
-	walking = new TileSet(img, this->width, this->height, 3, 6);							// Cria o TileSet do Ghost
+	width = Level1::hud->tileWidth;
+	height = Level1::hud->tileHeight;
+
+	walking = new TileSet("Resources/GhostFolha.png", width * 3, height * 2,
+		width, height, 3, 6);							// Cria o TileSet do Ghost
 	anim = new Animation(walking, 0.145f, true);
 	// Cria a animação do Ghost
 
@@ -34,7 +37,7 @@ Ghost::Ghost(float col, float line)
 	// Inicializa a posição
 	targetX = prevX = Level1::hud->Col(col);
 	targetY = prevY = Level1::hud->Line(line);
-	MoveTo(targetX, targetY, Layer::MIDDLE);
+	MoveTo(targetX, targetY, Layer::FRONT);
 
 	name = "Ghost";							// Nome do Ghost
 }
@@ -51,29 +54,36 @@ Ghost::~Ghost()
 
 void Ghost::OnCollision(Object* obj)
 {
-	// Implemente a lógica de resolução de colisão aqui
+	uint type = obj->Type();
 
-	if (obj->Type() == PLAYER && isHit) { // Se o objeto colidido for o jogador, ataca o jogador e volta para trás
-		anim->Select(ATACK);
-
-		targetX = prevX;
-		targetY = prevY;
-
+	// Se o objeto colidido for o jogador
+	if (type == PLAYER && isHit)
+	{
 		Character* player = (Character*)(obj);
-		player->SetDamage(attack);
 
-		if (life <= 0) {
-			// Morreu
-			// Deleta o objeto
-			Level1::scene->Delete(this, MOVING);
-			player->SetXp(20 * (level));
+		// Se o ghost estiver parado, o player que está atacando
+		if (direction == STILL) {
+
+			SetDamage(player->GetDamage());		// Recebe o dano do jogador
+			anim->Select(ATACK);				// Seleciona a animação de dano
+
+			// Atualiza a vida do ghost
+			if (life <= 0) {
+				// Morreu
+				// Deleta o objeto
+				Level1::scene->Delete(this, MOVING);
+				player->SetXp(20 * (level));
+			}
+
+			isHit = false;
 		}
-
-		isHit = false;
+		else {
+			player->SetDamage(attack);			// Ataca o jogador
+			Move(BACKWARD);						// Volta o fantasma
+		}
 	}
-	else if (obj->Type() == ENEMY) {
-		targetX = prevX;
-		targetY = prevY;
+	else if (type == ENEMY) {
+		Move(BACKWARD);
 	}
 }
 

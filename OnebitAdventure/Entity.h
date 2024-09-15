@@ -7,12 +7,22 @@
 // Inclusões
 
 #include "Object.h"
-#include "Timer.h"
+
+enum Direction // Enumeração das direções de uma movimentação
+{
+	STILL,
+	WALKUP,
+	WALKDOWN,
+	WALKLEFT,
+	WALKRIGHT,
+	BACKWARD
+};
 
 class Entity : public Object
 {
 protected:
 	// Atributos de dimensão e movimentação
+	Direction direction;				// direção do movimento
 	float width, height;				// largura e altura
 	float speed;						// velocidade de movimento
 	float vx;							// velocidade x
@@ -30,7 +40,11 @@ protected:
 	float limiar;						// posição do limiar
 	float limiarDist;					// distância até o limiar
 	float pullStrength;					// força de retorno
-	bool isMoving;
+
+	bool playerMoved;					// Flag para indicar se o player se moveu
+	bool isHit;							// Flag para indicar se o personagem já atacou
+	bool isDead;						// Flag para indicar se o personagem está morto
+	bool isMoving;						// verifica se está executando um movimento
 
 	// Atributos de combate
 	int maxLife;
@@ -47,10 +61,13 @@ public:
 	virtual void Draw() = 0;
 	virtual void OnCollision(Object* obj) = 0;	// resolução da colisão
 
-	void Movement();							// movimentação da entidade
-	void CameraMovement();						// movimentação da câmera
+	void Move(Direction direction);				// define a direção do próximo movimento
+	void Movement();							// realiza a movimentação da entidade
+	void CameraMovement();						// realiza a movimentação da câmera
+	void ConstrainToScreen();					// limita a movimentação da entidade à tela
 	
 	// Métodos Get
+	bool IsMoving() const;
 	float GetTargetX() const;
 	float GetTargetY() const;
 	float GetPrevX() const;
@@ -58,11 +75,17 @@ public:
 	int GetLife() const;
 	int GetMaxLife() const;
 	int GetDamage() const;						// retorna dano recebido
+	Direction GetDirection() const;
 
 	void SetDamage(int damage);					// recebe o dano e atualiza a vida
 };
 
 // ----------------------------------------------------------------------------------
+
+inline bool Entity::IsMoving() const
+{
+	return isMoving;
+}
 
 inline float Entity::GetTargetX() const
 {
@@ -97,6 +120,11 @@ inline int Entity::GetMaxLife() const
 inline int Entity::GetDamage() const
 {
 	return damage;
+}
+
+inline Direction Entity::GetDirection() const
+{
+	return direction;
 }
 
 inline void Entity::SetDamage(int damage)

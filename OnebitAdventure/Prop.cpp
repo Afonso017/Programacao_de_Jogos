@@ -15,7 +15,7 @@ Prop::Prop(uint type, Image* image, float col, float line, bool interactable, bo
 		width = image->Width() / 2;
 		height = image->Height();
 
-		tileSet = new TileSet(image, width, height, 2, 2, false);
+		tileSet = new TileSet(image, width, height, 2, 2);
 		anim = new Animation(tileSet, 0.0f, false);
 
 		uint seq1[1] = { 0 };
@@ -31,10 +31,11 @@ Prop::Prop(uint type, Image* image, float col, float line, bool interactable, bo
 		width = image->Width() / 2;
 		height = image->Height();
 
-		tileSet = new TileSet(image, width, height, 2, 2, false);
+		tileSet = new TileSet(image, width, height, 2, 2);
 		anim = new Animation(tileSet, 1.0f, true);
 	}
-	else {
+	else
+	{
 		sprite = new Sprite(image);
 		width = sprite->Width();
 		height = sprite->Height();

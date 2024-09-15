@@ -20,18 +20,6 @@ enum OneBitObjects // Enumeração dos tipos de objetos
 
 // ------------------------------------------------------------------------------
 
-enum DirectingAnimation // Enumeração dos estados de movimentação
-{ 
-    STILL, 
-    WALKUP, 
-    WALKDOWN, 
-    WALKLEFT, 
-    WALKRIGHT,
-    DAMAGE
-};
-
-// ------------------------------------------------------------------------------
-
 enum MovementType // Enumeração dos estados de animação
 {
 	ATACK, WALK, BACK, IDLE
